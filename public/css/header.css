@@ -1,0 +1,137 @@
+
+/* Thanh header*/
+.notification-count {
+  position: absolute;
+  top: -5px; /* Adjust positioning */
+  right: -5px; /* Adjust positioning */
+  background-color: red; /* Background color of the count badge */
+  color: white; /* Text color of the count */
+  border-radius: 50%; /* Makes it a circle */
+  width: 20px; /* Adjust width as needed */
+  height: 20px; /* Adjust height as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px; /* Adjust font size as needed */
+  font-weight: bold;
+}
+.notification-container {
+  position: fixed; /* Dùng fixed để bảng thông báo không bị ảnh hưởng bởi các phần tử khác */
+  top: 32px; /* Điều chỉnh vị trí từ trên xuống */
+  right: 20px; /* Điều chỉnh vị trí từ phải vào */
+  z-index: 9999; /* Đảm bảo bảng thông báo nằm trên cùng */
+  display: inline-block;
+}
+
+.thongbao {
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.notification-panel {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 35px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  width: 250px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 9999; /* Đảm bảo bảng thông báo nằm trên cùng */
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.notification-panel ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+}
+
+.notification-panel ul li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-panel ul li:last-child {
+  border-bottom: none;
+}
+
+.notification-panel ul li:hover {
+  background-color: #f1f1f1;
+}
+
+.notification-container:hover .notification-panel {
+  display: block;
+}
+
+
+.logo_header img {
+  width: 70px;
+  z-index: 5;
+}
+
+.text-weight {
+  font-weight: bold;
+  align-self: center;
+}
+
+.logo_header {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.background-container1 > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  z-index: 5;
+}
+
+.background-container1 > div > div:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.background-container1 > div > div:last-child {
+  display: flex;
+  align-items: center;
+}
+
+.thongbao {
+  /* Kích thước icon */
+  align-self: center;
+  cursor: pointer;
+}
+
+.logoutForm {
+  display: flex;
+  align-items: center;
+}
+
+
+.sign {
+  margin-right: 10px;
+}
+
+.text {
+  font-size: 16px;
+}
+.wrapper i {
+  
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 22px;
+  text-align: center;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+  z-index: 5;
+  margin-left: -5px;
+  margin-right: 10px;
+  padding-top: 8px;
+}
