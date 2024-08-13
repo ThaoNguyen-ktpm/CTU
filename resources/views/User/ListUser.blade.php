@@ -1,15 +1,18 @@
 @extends('layouts/layoutAdmin')
 @section('content')
-@php
-session_start();
-// Kiểm tra sessionUserId tồn tại hay không
-$sessionUserId = Session::get('sessionUserId');
-
-if (!$sessionUserId) {
-    header('Location: /Login');
-    exit();
-}
-@endphp   
+        <style>
+            .dataTables_wrapper {
+            padding-top: 0px;
+        }
+        </style>
+        <a href=" /User/addview"  aria-expanded="false" >
+                <div class="logoutForm">
+                <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
+                <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
+                <div class="text" style=" margin-left: 5px;" >Thêm</div>
+                </button>
+                </div>
+        </a>
         <div class="col">
                 <table id="myTableUser">
                     <thead>
@@ -17,6 +20,7 @@ if (!$sessionUserId) {
                             <th>Tài Khoản</th>
                             <th>Số Điện Thoại</th>
                             <th>Email</th>
+                            <th>Vai Trò</th>
                             <th>Loại Tài Khoản</th>
                             <th>Đổi Mật Khẩu</th>
                             <th>Sửa</th>
@@ -48,6 +52,20 @@ if (!$sessionUserId) {
                         }
                     },
                     { data: 'Email' },
+                    {
+                        data: 'Quyen',
+                        render: function(data, type, row) {
+                            if (data == 2) {
+                                return 'Trưởng Phòng';
+                            } else if (data == 3){
+                                return 'Phó Phòng';
+                            }else if ( data == 4){
+                                return 'Nhân Viên';
+                            } else {
+                                return 'Chưa Cấp Quyền';
+                            }
+                        }
+                    },
                     {
                         data: 'google_id',
                         render: function(data, type, row) {

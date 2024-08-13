@@ -6,10 +6,9 @@
             <!-- Separator with title -->
             @if (Session::has('sessionUser'))
                 <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
-                    <span class="welcome-user-text"><i class="fa-solid fa-user-shield"></i> Welcome {{ Session::get('sessionUser') }}</span>
+                    <span class="welcome-user-text"><i class="fa-solid fa-user-shield"></i> Welcome {{ Session::get('sessionUser') }} {{ Session::get('IsAdmin') }}</span>
                 </li>          
             @endif
-          
             <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
                 <small style="font-weight: 700;color: #c5c5c5;">MAIN MENU</small>
             </li>
@@ -30,22 +29,12 @@
                     $IsAdmin = Session::get('IsAdmin');
                 @endphp
             
-                <a href="/Admin/addviewAdmin" class="list-group-item list-group-item-action bg-dark text-white transformY">
-                    <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
-                    <span  class="menu-collapsed">Thêm Admin</span>
-                </a>
-    
-                <a href="/NguoiDung/addview" class="list-group-item list-group-item-action bg-dark text-white transformY">
-                    <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
-                    <span  class="menu-collapsed">Thêm Người Dùng</span>
-                </a>
-
                 <a href="/Admin" class="list-group-item list-group-item-action bg-dark text-white transformY">
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Thông Tin Admin</span>
                 </a>
             
-                <a href="/NguoiDung" class="list-group-item list-group-item-action bg-dark text-white transformY">
+                <a href="/User" class="list-group-item list-group-item-action bg-dark text-white transformY">
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Thông Tin Người Dùng</span>
                 </a>
@@ -67,22 +56,22 @@
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Thông Tin Đơn Vị</span>
                 </a>
-                <a href="/User" class="list-group-item list-group-item-action bg-dark text-white transformY">
+                <a href="/PhongBan" class="list-group-item list-group-item-action bg-dark text-white transformY">
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Thông Tin Phòng Ban</span>
                 </a>
-                <a href="/User" class="list-group-item list-group-item-action bg-dark text-white transformY">
+                <a href="/VaiTro" class="list-group-item list-group-item-action bg-dark text-white transformY">
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Thông Tin Vai Trò</span>
                 </a>
-                <a href="/User" class="list-group-item list-group-item-action bg-dark text-white transformY">
+                <a href="/TacVu" class="list-group-item list-group-item-action bg-dark text-white transformY">
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Thông Tin Tác Vụ</span>
                 </a>
             </div>
           
             <!-- Giai Đoạn -->
-            <a href="/HocVien"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="/GiaiDoan"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
                 <i class="fa-solid fa-graduation-cap" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Quản Lý Giai Đoạn</span>
@@ -90,7 +79,7 @@
                 </div>
             </a>
               <!-- Dự Án -->
-            <a href="/GiaoVien"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="/DuAn"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
                 <i class="fa-solid fa-chalkboard-user" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Quản Lý Dự Án</span>
@@ -98,15 +87,15 @@
                 </div>
             </a>
               <!-- Công Việc -->
-            <a href="/GiaoVienGiangDay"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="/CongViec"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
                 <i class="fa-solid fa-chalkboard-user" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Quản Lý Công Việc</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-              <!-- Lịch Học -->
-              <a href="/LichHoc"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+              <!-- TienDoCongViec -->
+              <a href="/TienDoCongViec"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
                 <i class="fa-solid fa-swatchbook"></i>
                     <span class="menu-collapsed">Quản Lý Tiến Độ Công Việc</span>
@@ -118,7 +107,7 @@
             <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
                 <small style="font-weight: 700;color: #c5c5c5;">OPTIONS</small>
             </li>
-            <a href="/Excel/ImportDSLopView"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="/ThongBao"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
                     <i class="fa-solid fa-file-import" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Quản Lý Thông Báo</span>

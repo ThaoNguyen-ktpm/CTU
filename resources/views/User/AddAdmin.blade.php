@@ -1,15 +1,6 @@
 @extends('layouts/layoutAdmin')
 @section('content')
-@php
-session_start();
-// Kiểm tra sessionUserId tồn tại hay không
-$sessionUserId = Session::get('sessionUserId');
 
-if (!$sessionUserId) {
-    header('Location: /Login');
-    exit();
-}
-@endphp   
 <div class="col">
 <div class="container">
   <h2 class="text-weight">Thêm Admin<small></small></h2>

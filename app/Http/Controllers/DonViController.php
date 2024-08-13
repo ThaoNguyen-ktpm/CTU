@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 class DonViController extends Controller
 {
-   //Danh sách Chứng chỉ
+   //Danh sách Đơn Vị
    public function list()
    {
-       $title = "Danh Sách Chứng chỉ";
+       $title = "Danh Sách Đơn Vị";
        return view('DonVi.ListDonVi', compact('title'));
    }
    public function getDonVi()
@@ -18,10 +18,10 @@ class DonViController extends Controller
         $DonVi = donvi::where('IsActive', 1)->get();
        return response()->json(['data' => $DonVi]);
    }
-   //Thêm Chứng chỉ
+   //Thêm Đơn Vị
    public function addview()
    {
-       $title = "Thêm Chứng chỉ";
+       $title = "Thêm Đơn Vị";
     
        return view('DonVi.AddDonVi', compact('title'));
    }
@@ -54,11 +54,11 @@ class DonViController extends Controller
     
         }
    }
-   //Cập nhật Chứng chỉ
+   //Cập nhật Đơn Vị
    public function updateview($id)
    {
        $DonVi = donvi::find($id);
-       $title = "Cập Nhật Chứng chỉ";
+       $title = "Cập Nhật Đơn Vị";
        return view('DonVi.UpdateDonVi', compact('DonVi', 'title'));
    }
    
@@ -97,7 +97,7 @@ class DonViController extends Controller
            
         }
    }
-   //Xóa Chứng chỉ
+   //Xóa Đơn Vị
    public function remove($id)
    {
        $DonVi= donvi::find($id);

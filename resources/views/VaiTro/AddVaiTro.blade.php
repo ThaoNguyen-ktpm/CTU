@@ -4,11 +4,11 @@
 <div class="col">
 <div class="container">
   <h2 class="text-weight">Thêm Vai Trò<small></small></h2>
-  <form  method="post" class="needs-validation DonVi-form" action="/DonVi/add" novalidate>
+  <form  method="post" class="needs-validation VaiTro-form" action="/VaiTro/add" novalidate>
   @csrf
     <div class="group">
     <label>Tên Vai Trò <span style="color:red;">(*)</span></label>
-      <input  id="usernameInput" name="TenDonVi" type="text"  class="form-control" required pattern="^\S.*">
+      <input  id="usernameInput" name="TenVaiTro" type="text"  class="form-control" required pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
@@ -26,7 +26,7 @@
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
 	$(document).ready(function() {
-		$('.DonVi-form').submit(function(event) {
+		$('.VaiTro-form').submit(function(event) {
 			event.preventDefault(); // Ngăn chặn form submit mặc định
 			var form = $(this);
 			var url = form.attr('action');
@@ -48,7 +48,7 @@
 							var message=""			
 							showSuccessToast1();
 							setTimeout(function() {
-								window.location.href = "/DonVi";
+								window.location.href = "/VaiTro";
 							}, 1000);
 						} else {		
 							showErrorToast1();

@@ -19,11 +19,11 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Tên Người Dùng</th>
                             <th>Đơn Vị</th>
-                            <th>Phòng Ban</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
-                            <th>Export</th>
+                          
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -39,7 +39,7 @@
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'TenPhongBan' },
+                    { data: 'Name' },
                     { data: 'TenDonVi' },
                     {
                         data: null,
@@ -53,12 +53,7 @@
                             return '<button class="btn btn-danger" onclick="deletePhongBan(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return '<button class="btn btn-success DeletePhongBan-form" ><a href="/Excel/ExportLop/'+row.id+'"><i class="fa-solid fa-file-export" style="color: #ffffff;margin:0"></i></a> </button>';
-                        }
-                    }
+                  
                 ]
             });
         });

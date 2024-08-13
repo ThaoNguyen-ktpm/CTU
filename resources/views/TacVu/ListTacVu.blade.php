@@ -6,7 +6,7 @@
             padding-top: 0px;
         }
         </style>
-        <a href=" /PhongBan/addview"  aria-expanded="false" >
+        <a href=" /TacVu/addview"  aria-expanded="false" >
                 <div class="logoutForm">
                 <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
                 <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
@@ -15,15 +15,15 @@
                 </div>
         </a>
         <div class="col">
-                <table id="myTablePhongBan">
+                <table id="myTableTacVu">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Đơn Vị</th>
-                            <th>Phòng Ban</th>
+                            <th>Tên Người Dùng</th>
+                            <th>Vai Trò</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
-                            <th>Export</th>
+                            
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -32,48 +32,43 @@
             <div id="toast1"></div>
         <script>
             $(document).ready(function() {
-            var table = $('#myTablePhongBan').DataTable({
+            var table = $('#myTableTacVu').DataTable({
                 ajax: {
-                    url: "{{ route('PhongBan.data') }}",
+                    url: "{{ route('TacVu.data') }}",
                     dataSrc: 'data'
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'TenPhongBan' },
-                    { data: 'TenDonVi' },
+                    { data: 'Name' },
+                    { data: 'MaVaiTro' },
                     {
                         data: null,
                         render: function(data, type, row) {
-                        return '<form method="get" action="/PhongBan/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
+                        return '<form method="get" action="/TacVu/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
                     }
                     },
                     {
                         data: null,
                         render: function(data, type, row) {
-                            return '<button class="btn btn-danger" onclick="deletePhongBan(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
+                            return '<button class="btn btn-danger" onclick="deleteTacVu(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return '<button class="btn btn-success DeletePhongBan-form" ><a href="/Excel/ExportLop/'+row.id+'"><i class="fa-solid fa-file-export" style="color: #ffffff;margin:0"></i></a> </button>';
-                        }
-                    }
+                   
                 ]
             });
         });
 
-        function deletePhongBan(PhongBanId) {
+        function deleteTacVu(TacVuId) {
             if (confirm('Bạn có chắc chắn muốn xóa vai trò này?')) {
                 // Gửi yêu cầu xóa vai trò đến server
                 $.ajax({
-                    url: '/PhongBan/remove/' + PhongBanId,
+                    url: '/TacVu/remove/' + TacVuId,
                     type: 'GET',
                     success: function(response) {
                         if (response.success) {
                             // Cập nhật lại bảng dữ liệu
                             showSuccessToast1();
-                            var table = $('#myTablePhongBan').DataTable();
+                            var table = $('#myTableTacVu').DataTable();
                             table.ajax.reload(null, false);
                         }
                     },
@@ -85,7 +80,7 @@
             }
         }
         $(document).ready(function() {
-	$('.DeletePhongBan-form').click(function(event) {
+	$('.DeleteTacVu-form').click(function(event) {
 		event.preventDefault(); // Ngăn chặn hành động mặc định của button
 		var button = $(this);
 		var id = button.attr('data-id');
@@ -163,11 +158,11 @@ function toast1({title='',message='',type='info',duration=2000}){
       })
     }
 
-        function exportPhongBan(PhongBanId) {
+        function exportTacVu(TacVuId) {
             if (confirm('Bạn có muốn tải xuống dữ liệu khóa học?')) {
                 // Gửi yêu cầu xuống máy chủ để tạo và tải xuống tệp Excel
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', '/Excel/ExportLop/' + PhongBanId, true);
+                xhr.open('GET', '/Excel/ExportLop/' + TacVuId, true);
                 xhr.responseType = 'blob';
 
                 xhr.onload = function (e) {

@@ -1,7 +1,7 @@
 <?php
 Namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-// use App\Models\user;
+use App\Models\nguoidung;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
@@ -21,7 +21,7 @@ class UserController extends Controller
  }
  public function getUserHocVien()
  {
-    $User = user::where('IsActive', 1)
+    $User = nguoidung::where('IsActive', 1)
     ->where('IsAdmin', 0)
     ->where('IsStudent', 1)
     ->get();
@@ -30,17 +30,17 @@ class UserController extends Controller
  //Cập nhật User Học Viên
  public function updateviewHocVien($id)
  {
-     $User = user::find($id);
+     $User = nguoidung::find($id);
      $title = "Cập Nhật User Học Viên";
      return view('User.UpdateUserHocVien', compact('User', 'title'));
  }
  public function updateHocVien(Request $request, $id)
  {
-      $User = user::where('id', '!=', $id)
+      $User = nguoidung::where('id', '!=', $id)
       ->where('Name', $request->UserName)
       ->where('IsActive', true)
       ->first();
-      $UserEmail = user::where('id', '!=', $id)
+      $UserEmail = nguoidung::where('id', '!=', $id)
       ->where('Email', $request->Email)
       ->where('IsActive', true)
       ->first();
@@ -52,7 +52,7 @@ class UserController extends Controller
           if ($request->Password !== $request->Password1) {
               return response()->json(['message' => false]);
           } else {
-          $User = user::find($id);
+          $User = nguoidung::find($id);
           $User->Name = $request->UserName;
           // $User->Password = $request->Password;
           $User->Email = $request->Email;
@@ -71,7 +71,7 @@ class UserController extends Controller
       return response()->json(['success' => false]);
      
   } else {
-      $user = user::find($id);
+      $user = nguoidung::find($id);
       $user->IsActive = false;
       $user->save();
       return response()->json(['success' => true]);
@@ -87,9 +87,8 @@ class UserController extends Controller
    }
    public function getAdmin()
    {
-        $User = user::where('IsActive', 1)
-        ->where('IsAdmin', 1)
-        ->where('IsStudent', 0)
+        $User = nguoidung::where('IsActive', 1)
+        ->Where('Quyen',1)
         ->get();
         return response()->json(['data' => $User]);
    }
@@ -101,23 +100,17 @@ class UserController extends Controller
    }
    public function addAdmin(Request $request)
    {
-    $User = new user;
+    $User = new nguoidung;
     $User->Name = $request->UserName;
     $User->Password = bcrypt($request->Password);
     $User->Email = $request->Email;
     $User->SDT = $request->SDT;
-    $User->IsAdmin = true;
     $User->IsActive = true;
-    $User->IsStudent = false;
+    $User->Quyen = 1;
     $User->google_id = null;
-    // Mail::send('Email.OTPemail', ['OTP' => $otp], function ($email) use ($request, $otp) {
-    //     $email->to($request->Email);
-    //     $email->subject('Mã OTP Của Bạn:');
-    // });
-    // Kiểm tra trước khi lưu
-    if (user::where('Name', $User->Name)->where('IsActive', true)->exists()) {
+    if (nguoidung::where('Name', $User->Name)->where('IsActive', true)->exists()) {
         return response()->json(['success' => false, 'message' => 'Giá trị UserName đã tồn tại']);
-    } else if (user::where('Email', $User->Email)->where('IsActive', true)->exists()){
+    } else if (nguoidung::where('Email', $User->Email)->where('IsActive', true)->exists()){
         return response()->json(['email' => false]);
     } else{
         if ($request->Password !== $request->Password1) {
@@ -132,17 +125,17 @@ class UserController extends Controller
    //Cập nhật Admin
    public function updateviewAdmin($id)
    {
-       $User = user::find($id);
+       $User = nguoidung::find($id);
        $title = "Cập Nhật Admin";
        return view('User.UpdateAdmin', compact('User', 'title'));
    }
    public function updateAdmin(Request $request, $id)
    {
-        $User = user::where('id', '!=', $id)
+        $User = nguoidung::where('id', '!=', $id)
         ->where('Name', $request->UserName)
         ->where('IsActive', true)
         ->first();
-        $UserEmail = user::where('id', '!=', $id)
+        $UserEmail = nguoidung::where('id', '!=', $id)
         ->where('Email', $request->Email)
         ->where('IsActive', true)
         ->first();
@@ -154,7 +147,7 @@ class UserController extends Controller
             if ($request->Password !== $request->Password1) {
                 return response()->json(['message' => false]);
             } else {
-            $User = user::find($id);
+            $User = nguoidung::find($id);
             $User->Name = $request->UserName;
             // $User->Password = $request->Password;
             $User->Email = $request->Email;
@@ -174,9 +167,12 @@ class UserController extends Controller
    }
    public function getUser()
    {
-    $User = user::where('IsActive', 1)
-    ->where('IsAdmin', 0)
-    ->where('IsStudent', 0)
+    $User = nguoidung::where('IsActive', 1)
+    ->where(function($query) {
+        $query->where('Quyen', 2)
+              ->orWhere('Quyen', 3)
+              ->orWhere('Quyen', 4);
+    })
     ->get();
        return response()->json(['data' => $User]);
    }
@@ -189,23 +185,18 @@ class UserController extends Controller
    }
    public function add(Request $request)
    {
-    $User = new user;
+    $User = new nguoidung;
     $User->Name = $request->UserName;
     $User->Password = bcrypt($request->Password);
     $User->Email = $request->Email;
     $User->SDT = $request->SDT;
-    $User->IsAdmin = false;
     $User->IsActive = true;
-    $User->IsStudent = false;
+    $User->Quyen = $request->Quyen;
     $User->google_id = null;
-    // Mail::send('Email.OTPemail', ['OTP' => $otp], function ($email) use ($request, $otp) {
-    //     $email->to($request->Email);
-    //     $email->subject('Mã OTP Của Bạn:');
-    // });
     // Kiểm tra trước khi lưu
-    if (user::where('Name', $User->Name)->where('IsActive', true)->exists()) {
+    if (nguoidung::where('Name', $User->Name)->where('IsActive', true)->exists()) {
         return response()->json(['success' => false, 'message' => 'Giá trị UserName đã tồn tại']);
-    } else if (user::where('Email', $User->Email)->where('IsActive', true)->exists()) {
+    } else if (nguoidung::where('Email', $User->Email)->where('IsActive', true)->exists()) {
         return response()->json(['email' => false]);
     } else{
         if ($request->Password !== $request->Password1) {
@@ -219,7 +210,7 @@ class UserController extends Controller
    //Cập nhật User
    public function updateview($id)
    {
-       $User = user::find($id);
+       $User = nguoidung::find($id);
        $title = "Cập Nhật User";
        return view('User.UpdateUser', compact('User', 'title'));
    }
@@ -228,14 +219,13 @@ class UserController extends Controller
 
         $sessionUserId = session('sessionUserId');
         $id = $request->id;
-        $user = DB::select('SELECT * FROM `users` WHERE `id`= ? AND IsActive = true AND IsAdmin = true', [ $sessionUserId]);
+        $user = DB::select('SELECT * FROM `nguoidungs` WHERE `id`= ? AND IsActive = true AND Quyen = 1', [ $sessionUserId]);
         if (count($user) > 0 || ($id == $sessionUserId)  ) {
-
-        $User = user::where('id', '!=', $id)
+        $User = nguoidung::where('id', '!=', $id)
         ->where('Name', $request->UserName)
         ->where('IsActive', true)
         ->first();
-        $UserEmail = user::where('id', '!=', $id)
+        $UserEmail = nguoidung::where('id', '!=', $id)
         ->where('Email', $request->Email)
         ->where('IsActive', true)
         ->first();
@@ -247,7 +237,7 @@ class UserController extends Controller
             if ($request->Password !== $request->Password1) {
                 return response()->json(['message' => false]);
             } else {
-            $User = user::find($id);
+            $User = nguoidung::find($id);
             $User->Name = $request->UserName;
             $User->Email = $request->Email;
             $User->SDT = $request->SDT;
@@ -263,12 +253,11 @@ class UserController extends Controller
    public function remove($id)
    {
     $sessionUserId = session('sessionUserId');
-    $user = DB::select('SELECT * FROM `users` WHERE `id`= ? AND IsActive = true AND IsAdmin = true', [ $sessionUserId]);
+    $user = DB::select('SELECT * FROM `nguoidungs` WHERE `id`= ? AND IsActive = true AND Quyen = 1', [ $sessionUserId]);
     if (count($user) == 0  ) {
         return response()->json(['success' => false]);
-       
     } else {
-        $user = user::find($id);
+        $user = nguoidung::find($id);
         $user->IsActive = false;
         $user->save();
         return response()->json(['success' => true]);
@@ -277,7 +266,7 @@ class UserController extends Controller
    // Đổi Mật Khẩu User
    public function addviewChange($id)
    {
-        $User = user::find($id);
+        $User = nguoidung::find($id);
        $title = "Đổi Mật Khẩu";
        return view('User.ChangePassword', compact('User','title'));
    }
@@ -286,11 +275,10 @@ class UserController extends Controller
    {
     $sessionUserId = session('sessionUserId');
     $id = $request->id;
-    $user = DB::select('SELECT * FROM `users` WHERE `id`= ? AND IsActive = true AND IsAdmin = true', [ $sessionUserId]);
-
+    $user = DB::select('SELECT * FROM `nguoidungs` WHERE `id`= ? AND IsActive = true AND Quyen = 1', [ $sessionUserId]);
     if (count($user) > 0 || ($id == $sessionUserId)  ) {
         $ChangePassword = $request->ChangePassword ;
-        $User = DB::select('SELECT * FROM `users` WHERE users.id = ?', [ $id]);
+        $User = DB::select('SELECT * FROM `nguoidungs` WHERE nguoidungs.id = ?', [ $id]);
         $users = $User[0];
     
         if (Hash::check($ChangePassword, $users->Password)) {
@@ -298,7 +286,7 @@ class UserController extends Controller
             if ($request->Password !== $request->Password1) {
                 return response()->json(['success' => false]);
             } else {
-                $User = user::find($id);
+                $User = nguoidung::find($id);
                 $User->Password = bcrypt($request->Password);
                 $User->save();
             return response()->json(['success' => true]);
@@ -318,7 +306,7 @@ class UserController extends Controller
         if ($request->Password !== $request->Password1) {
             return response()->json(['success' => false]);
         } else {
-        $User = user::find($id);
+        $User = nguoidung::find($id);
         $User->Password = bcrypt($request->Password);
             $User->save();
             return response()->json(['success' => true]);
@@ -326,27 +314,7 @@ class UserController extends Controller
     
    }
 
-   // Đổi Mật Khẩu User Học Viên
-   public function addviewChangeHocVien($id)
-   {
-        $User = user::find($id);
-       $title = "Đổi Mật Khẩu";
-       return view('User.ChangePasswordHocVien', compact('User','title'));
-   }
-
-   public function ChangePasswordHocVien(Request $request, $id)
-   {
-    
-        if ($request->Password !== $request->Password1) {
-            return response()->json(['success' => false]);
-        } else {
-        $User = user::find($id);
-        $User->Password = bcrypt($request->Password);
-            $User->save();
-            return response()->json(['success' => true]);
-        }
-    
-   }
+   
    // Quên Mật khẩu
    public function ForgotPasswordView()
    {
@@ -363,7 +331,7 @@ class UserController extends Controller
    {
        $Email = $request->Email;
        if (isset($Email)) {
-           $user = DB::select('SELECT * FROM `users` WHERE `Email`= ?', [$Email]);
+           $user = DB::select('SELECT * FROM `nguoidungs` WHERE `Email`= ?', [$Email]);
            if (count($user) > 0 ) {     
             session(['Email' => $Email]);
             return response()->json(['success' => true]);
@@ -420,7 +388,7 @@ class UserController extends Controller
          }
 
 
-        DB::update('UPDATE users SET Password = ? WHERE Email = ?', [bcrypt($request->Password), $Email]);
+        DB::update('UPDATE nguoidungs SET Password = ? WHERE Email = ?', [bcrypt($request->Password), $Email]);
    
         $request->session()->flush();
         return response()->json(['success' => true]);
@@ -439,18 +407,24 @@ class UserController extends Controller
         $UserName = $request->UserName;
         $Password = $request->Password;
         if (isset($UserName) && isset($Password)) {
-            $user = DB::select('SELECT * FROM `users` WHERE `Name`= BINARY ? AND IsActive = true', [$UserName]);
+            $user = DB::select('SELECT * FROM `nguoidungs` WHERE `Name`= BINARY ? AND IsActive = true', [$UserName]);
             if (count($user) > 0 ) {
                 $user = $user[0];
 
                 // So sánh mật khẩu đã mã hóa trong cơ sở dữ liệu với mật khẩu người dùng nhập vào
-                if (Hash::check($Password, $user->Password) && $user->IsStudent == false) {
+                if (Hash::check($Password, $user->Password) ) {
                     // Đăng nhập thành công
                     Session::put('sessionUser', $user->Name);
                     Session::put('sessionUserId', $user->id);
-                    Session::put('IsAdmin', $user->IsAdmin);    
+                    Session::put('IsAdmin', $user->Quyen);    
                     
-                    return response()->json(['success' => true]);
+                            // Kiểm tra quyền của người dùng
+                        if (in_array($user->Quyen, [1, 2, 3])) {
+                            return response()->json(['success' => true]);
+                        } else {
+                            return response()->json(['successIndex' => true]);
+                        }
+
                 } else {
                     // Mật khẩu không đúng hoặc không phải là admin
                     return response()->json(['success' => false]);
@@ -473,53 +447,34 @@ class UserController extends Controller
     // Đăng Nhập google 
     public function redirectToGoogle()
     {
-        Session::flash('back_url',$_SERVER['HTTP_REFERER']);
+     
         return Socialite::driver('google')->redirect();
     }
     public function handleGoogleCallback()
     {
         try {
-        $user = Socialite::driver('google')->user(); 
-            $findUser = user::where('google_id', $user->id)->where('IsActive', true)->first();
-            // Kiểm tra xem email có kết thúc bằng @student.ctuet.edu.vn hay không @ctuet.edu.vn
-            $emailsToCheck = ["teacher1@ctuet.edu.vn", "teacher2@ctuet.edu.vn","nhandinhctut@gmail.com","dtnhan@ctuet.edu.vn","nvthao.12a5.20@gmail.com"];
-
-            // Kiểm tra xem email có trong danh sách emailsToCheck không
-            if (in_array($user->email, $emailsToCheck)) {
-                // Nếu có trong danh sách, tiếp tục kiểm tra hoặc tạo người dùng
-                if ($findUser) {
-                    Session::put('sessionUser', $findUser->Name);
-                    Session::put('sessionUserId', $findUser->id);
-                    Session::put('IsAdmin', $findUser->IsAdmin);
-    
-                    return redirect()->intended('/Welcome');
+            $user = Socialite::driver('google')->user(); 
+                $findUser = nguoidung::where('Email', $user->email)->where('IsActive', true)->first();
+                // Kiểm tra xem email có trong danh sách emailsToCheck không
+                if ($findUser && in_array($findUser->Quyen, [1, 2, 3])) {
+                    // Nếu có trong danh sách, tiếp tục kiểm tra hoặc tạo người dùng
+                        Session::put('sessionUser', $findUser->Name);
+                        Session::put('sessionUserId', $findUser->id);
+                        Session::put('IsAdmin', $findUser->Quyen);
+                        return redirect()->intended('/admin');  
                 } else {
-                    $User = new user;
-                    $User->Name = $user->name;
-                    $User->Password = encrypt('123456dummy');
-                    $User->Email = $user->email;
-                    $User->SDT = null;
-                    $User->google_id = $user->id;
-                    $User->IsAdmin = false;
-                    $User->IsActive = true;
-                    $User->IsStudent = false;
-                    $User->save();
-                    Session::put('sessionUser', $User->Name);
-                    Session::put('sessionUserId', $user->id);
-                    Session::put('IsAdmin', $User->IsAdmin);
-                 
-                    return redirect()->intended('/Welcome');
-                }
-            } else {
-                // Nếu email không có trong danh sách $emailsToCheck, trả về lỗi
-                return response()->view('Error.google-access-error', ['email' => $user->email], 404);
-                // return response()->json(['success' => false]);
+
+                        Session::put('sessionUser', $findUser->Name);
+                        Session::put('sessionUserId', $findUser->id);
+                        Session::put('IsAdmin', $findUser->Quyen);
+                        return redirect()->intended('/Index');
+                   
+                    }
+                
+            } catch (\Exception $e) {
+                // Nếu có lỗi, trả về JSON response với 'success' là false
+                return redirect(Session::get('back_url','/'));
+                // return response()->view('Error.google-access-error');
             }
-            
-        } catch (\Exception $e) {
-            // Nếu có lỗi, trả về JSON response với 'success' là false
-            return redirect(Session::get('back_url','/'));
-            // return response()->view('Error.google-access-error');
-        }
     } 
 }

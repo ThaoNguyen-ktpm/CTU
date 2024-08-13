@@ -3,26 +3,29 @@
 <div class="col">
 <div class="container">
   <h2 class=" text-weight">Cập Nhật Phòng Ban<small></small></h2>
-  <form  method="post" class="needs-validation PhongBan-form" action="/PhongBan/update/{{$PhongBan->id}}" novalidate>
+  <form  method="post" class="needs-validation PhongBan-form" action="/PhongBan/update/{{$PhongBan[0]->id}}" novalidate>
   @csrf
+  <div class="group">
+      <input id="usernameInput" name="MaNguoiDung" value="{{$PhongBan[0]->MaNguoiDung}}" type="text" class="form-control" required hidden>
+  </div>
     <div class="group">
-    <label>Tên Phòng Ban <span style="color:red;">(*)</span></label>
-      <input  id="usernameInput" name="TenPhongBan" value="{{ $PhongBan->TenPhongBan }}" type="text" class="form-control" required>
+      <label>Tên Người Dùng <span style="color:red;">(*)</span></label>
+      <input id="usernameInput" name="Name" value="{{$PhongBan[0]->Name}}" type="text" class="form-control" required readonly>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Phòng Ban Thành Công
+          Nhập Người Dùng Thành Công
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Phòng Ban !
+          Vui Lòng Nhập Người Dùng !
       </div>
-    </div>
+  </div>
     <div class="group">
     <label>Tên Đơn Vị <span style="color:red;">(*)</span></label>
     <select name="MaDonVi" class="form-control" required>
         <option value="" disabled selected>Chọn Đơn Vị</option>
         @foreach($DonVi as $DonVi1)
-        <option value="{{$DonVi1->id}}" {{ $PhongBan->MaDonVi == $DonVi1->id ? 'selected' : '' }}>{{$DonVi1->TenDonVi}}</option>
+        <option value="{{$DonVi1->id}}" {{ $PhongBan[0]->MaDonVi == $DonVi1->id ? 'selected' : '' }}>{{$DonVi1->TenDonVi}}</option>
         @endforeach
     </select>
     <div class="valid-feedback">

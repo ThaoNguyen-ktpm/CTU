@@ -118,7 +118,13 @@
                     var message=""
                     showSuccessToast1();
                     setTimeout(function() {
-                        window.location.href = "/Welcome";
+                        window.location.href = "/admin";
+                    }, 1000);
+                } else if (response.successIndex === true){
+                    var message=""
+                    showSuccessToast1();
+                    setTimeout(function() {
+                        window.location.href = "/Index";
                     }, 1000);
                 } else {    
                     showErrorToast1();

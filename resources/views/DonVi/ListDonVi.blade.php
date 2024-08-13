@@ -142,7 +142,7 @@ function toast1({title='',message='',type='info',duration=2000}){
     function showSuccessToast1() {
         toast1({
             title: "Success",
-            message: "Xóa Chứng Chỉ Thành Công!",
+            message: "Xóa Đơn Vị Thành Công!",
             type: "success",
             duration: 2000
         })

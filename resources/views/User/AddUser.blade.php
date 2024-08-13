@@ -67,6 +67,21 @@
         Vui Lòng Nhập Email !
       </div>
     </div>
+    <div class="group">
+    <label>Quyền <span style="color:red;">(*)</span></label>
+    <select name="Quyen" class="form-control" required>
+        <option value="" disabled selected>Chọn Quyền</option>
+        <option value="2">Trưởng Phòng</option>
+        <option value="3">Phó Phòng</option>
+        <option value="4">Nhân Viên</option>
+    </select>
+    <div class="valid-feedback">
+        Nhập Đơn Vị Thành Công
+    </div>
+    <div class="invalid-feedback">
+        Vui Lòng Chọn Đơn Vị!
+    </div>
+</div>
       <button name="Add" type="submit" class="submit-btn">Thêm Người Dùng</button>
   </form>
 </div>

@@ -7,16 +7,15 @@ use App\Http\Controllers\PhongBanController;
 use App\Http\Controllers\TacVuController;
 use App\Http\Controllers\DuAnController;
 use App\Http\Controllers\ThongBaoController;
-use App\Http\Controllers\ThanhVienController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Test;
 
 
 Route::get('/admin', [Test::class,'Welcome']);
-Route::get('/', [Test::class,'index']);
+Route::get('/Index', [Test::class,'index']);
 Route::get('/chitiet', [Test::class,'chitiet']);
-Route::get('/Login', [Test::class,'Login']);
+Route::get('/', [Test::class,'Login']);
 Route::get('/MaOTP', [Test::class,'MaOTP']);
 Route::get('/matkhaunew', [Test::class,'matkhaunew']);
 
@@ -65,68 +64,75 @@ Route::post('User/update/{id}', [UserController::class,'update'])->name('User.up
 // Xóa User
 Route::get('User/remove/{id}', [UserController::class,'remove'])->name('User.remove');
 
+//Đổi Mật Khẩu User
+Route::get('User/addview/Change/{id}', [UserController::class,'addviewChange'])->name('User.addviewChange');
+Route::post('User/ChangePasswordAdmin/{id}', [UserController::class,'ChangePasswordAdmin'])->name('User.ChangePasswordAdmin');
+Route::post('User/ChangePasswordUser/{id}', [UserController::class,'ChangePasswordUser'])->name('ChangePasswordUser');
+
 
 // Danh sách Đơn Vị
-Route::get('DonVi', [DonViController::class,'list']);
-Route::get('DonVi/data',[DonViController::class,'getDonVi']);
+Route::get('DonVi', [DonViController::class,'list'])->name('DonVi.listDonVi');
+Route::get('DonVi/data',[DonViController::class,'getDonVi'])->name('DonVi.data');
 //Thêm Đơn Vị
-Route::get('DonVi/addview', [DonViController::class,'addview']);
-Route::post('DonVi/add', [DonViController::class,'add']);
-//Cập nhật Đơn Vị
-Route::get('DonVi/updateview/{id}', [DonViController::class,'updateview']);
-Route::post('DonVi/update/{id}', [DonViController::class,'update']);
+Route::get('DonVi/addview', [DonViController::class,'addview'])->name('DonVi.addview');
+Route::post('DonVi/add', [DonViController::class,'add'])->name('DonVi.add');
+//Cập nhật Đơn vị
+Route::get('DonVi/updateview/{id}', [DonViController::class,'updateview'])->name('DonVi.updateview');
+Route::post('DonVi/update/{id}', [DonViController::class,'update'])->name('DonVi.update');
 // Xóa Đơn Vị
-Route::get('DonVi/remove/{id}', [DonViController::class,'remove']);
+Route::get('DonVi/remove/{id}', [DonViController::class,'remove'])->name('DonVi.remove');
+
 
 // Danh sách Vai Trò
-Route::get('VaiTro', [VaiTroController::class,'list']);
-Route::get('VaiTro/data',[VaiTroController::class,'getVaiTro']);
+Route::get('VaiTro', [VaiTroController::class,'list'])->name('VaiTro.listVaiTro');
+Route::get('VaiTro/data',[VaiTroController::class,'getVaiTro'])->name('VaiTro.data');
 //Thêm Vai Trò
-Route::get('VaiTro/addview', [VaiTroController::class,'addview']);
-Route::post('VaiTro/add', [VaiTroController::class,'add']);
+Route::get('VaiTro/addview', [VaiTroController::class,'addview'])->name('VaiTro.addview');
+Route::post('VaiTro/add', [VaiTroController::class,'add'])->name('VaiTro.add');
 //Cập nhật Vai Trò
-Route::get('VaiTro/updateview/{id}', [VaiTroController::class,'updateview']);
-Route::post('VaiTro/update/{id}', [VaiTroController::class,'update']);
+Route::get('VaiTro/updateview/{id}', [VaiTroController::class,'updateview'])->name('VaiTro.updateview');
+Route::post('VaiTro/update/{id}', [VaiTroController::class,'update'])->name('VaiTro.update');
 // Xóa Vai Trò
-Route::get('VaiTro/remove/{id}', [VaiTroController::class,'remove']);
+Route::get('VaiTro/remove/{id}', [VaiTroController::class,'remove'])->name('VaiTro.remove');
 
 
-// Danh sách Giai Đoạn
-Route::get('GiaiDoan', [GiaiDoanController::class,'list']);
-Route::get('GiaiDoan/data',[GiaiDoanController::class,'getGiaiDoan']);
-//Thêm Giai Đoạn
-Route::get('GiaiDoan/addview', [GiaiDoanController::class,'addview']);
-Route::post('GiaiDoan/add', [GiaiDoanController::class,'add']);
-//Cập nhật Giai Đoạn
-Route::get('GiaiDoan/updateview/{id}', [GiaiDoanController::class,'updateview']);
-Route::post('GiaiDoan/update/{id}', [GiaiDoanController::class,'update']);
-// Xóa Giai Đoạn
-Route::get('GiaiDoan/remove/{id}', [GiaiDoanController::class,'remove']);
+// Danh sách Đơn Vị
+Route::get('GiaiDoan', [GiaiDoanController::class,'list'])->name('GiaiDoan.listGiaiDoan');
+Route::get('GiaiDoan/data',[GiaiDoanController::class,'getGiaiDoan'])->name('GiaiDoan.data');
+//Thêm Đơn Vị
+Route::get('GiaiDoan/addview', [GiaiDoanController::class,'addview'])->name('GiaiDoan.addview');
+Route::post('GiaiDoan/add', [GiaiDoanController::class,'add'])->name('GiaiDoan.add');
+//Cập nhật Đơn vị
+Route::get('GiaiDoan/updateview/{id}', [GiaiDoanController::class,'updateview'])->name('GiaiDoan.updateview');
+Route::post('GiaiDoan/update/{id}', [GiaiDoanController::class,'update'])->name('GiaiDoan.update');
+// Xóa Đơn Vị
+Route::get('GiaiDoan/remove/{id}', [GiaiDoanController::class,'remove'])->name('GiaiDoan.remove');
 
 
 // Danh sách Phòng Ban
-Route::get('PhongBan', [PhongBanController::class,'list']);
-Route::get('PhongBan/data',[PhongBanController::class,'getPhongBan']);
+Route::get('PhongBan', [PhongBanController::class,'list'])->name('PhongBan.listPhongBan');
+Route::get('PhongBan/data', [PhongBanController::class, 'getPhongBan'])->name('PhongBan.data');
 //Thêm Phòng Ban
-Route::get('PhongBan/addview', [PhongBanController::class,'addview']);
-Route::post('PhongBan/add', [PhongBanController::class,'add']);
+Route::get('PhongBan/addview', [PhongBanController::class,'addview'])->name('PhongBan.addview');
+Route::post('PhongBan/add', [PhongBanController::class,'add'])->name('PhongBan.add');
 //Cập nhật Phòng Ban
-Route::get('PhongBan/updateview/{id}', [PhongBanController::class,'updateview']);
-Route::post('PhongBan/update/{id}', [PhongBanController::class,'update']);
+Route::get('PhongBan/updateview/{id}', [PhongBanController::class,'updateview'])->name('PhongBan.updateview');
+Route::post('PhongBan/update/{id}', [PhongBanController::class,'update'])->name('PhongBan.update');
 // Xóa Phòng Ban
-Route::get('PhongBan/remove/{id}', [PhongBanController::class,'remove']);
+Route::get('PhongBan/remove/{id}', [PhongBanController::class,'remove'])->name('PhongBan.remove');
 
-// Danh sách Tác Vụ
-Route::get('TacVu', [TacVuController::class,'list']);
-Route::get('TacVu/data',[TacVuController::class,'getTacVu']);
-//Thêm Tác Vụ
-Route::get('TacVu/addview', [TacVuController::class,'addview']);
-Route::post('TacVu/add', [TacVuController::class,'add']);
-//Cập nhật Tác Vụ
-Route::get('TacVu/updateview/{id}', [TacVuController::class,'updateview']);
-Route::post('TacVu/update/{id}', [TacVuController::class,'update']);
-// Xóa Tác Vụ
-Route::get('TacVu/remove/{id}', [TacVuController::class,'remove']);
+
+// Danh sách Phòng Ban
+Route::get('TacVu', [TacVuController::class,'list'])->name('TacVu.listTacVu');
+Route::get('TacVu/data', [TacVuController::class, 'getTacVu'])->name('TacVu.data');
+//Thêm Phòng Ban
+Route::get('TacVu/addview', [TacVuController::class,'addview'])->name('TacVu.addview');
+Route::post('TacVu/add', [TacVuController::class,'add'])->name('TacVu.add');
+//Cập nhật Phòng Ban
+Route::get('TacVu/updateview/{id}', [TacVuController::class,'updateview'])->name('TacVu.updateview');
+Route::post('TacVu/update/{id}', [TacVuController::class,'update'])->name('TacVu.update');
+// Xóa Phòng Ban
+Route::get('TacVu/remove/{id}', [TacVuController::class,'remove'])->name('TacVu.remove');
 
 // Danh sách Dự Án
 Route::get('DuAn', [DuAnController::class,'list']);
@@ -140,17 +146,6 @@ Route::post('DuAn/update/{id}', [DuAnController::class,'update']);
 // Xóa Dự Án
 Route::get('DuAn/remove/{id}', [DuAnController::class,'remove']);
 
-// Danh sách Thành Viên
-Route::get('ThanhVien', [ThanhVienController::class,'list']);
-Route::get('ThanhVien/data',[ThanhVienController::class,'getThanhVien']);
-//Thêm Thành Viên
-Route::get('ThanhVien/addview', [ThanhVienController::class,'addview']);
-Route::post('ThanhVien/add', [ThanhVienController::class,'add']);
-//Cập nhật Thành Viên
-Route::get('ThanhVien/updateview/{id}', [ThanhVienController::class,'updateview']);
-Route::post('ThanhVien/update/{id}', [ThanhVienController::class,'update']);
-// Xóa Thành Viên
-Route::get('ThanhVien/remove/{id}', [ThanhVienController::class,'remove']);
 
 // Danh sách Thông Báo
 Route::get('ThongBao', [ThongBaoController::class,'list']);

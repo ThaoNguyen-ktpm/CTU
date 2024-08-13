@@ -1,15 +1,18 @@
 @extends('layouts/layoutAdmin')
 @section('content')
-@php
-session_start();
-// Kiểm tra sessionUserId tồn tại hay không
-$sessionUserId = Session::get('sessionUserId');
-
-if (!$sessionUserId) {
-    header('Location: /Login');
-    exit();
-}
-@endphp   
+        <style>
+            .dataTables_wrapper {
+            padding-top: 0px;
+        }
+        </style>
+        <a href=" /Admin/addviewAdmin"  aria-expanded="false" >
+                <div class="logoutForm">
+                <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
+                <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
+                <div class="text" style=" margin-left: 5px;" >Thêm</div>
+                </button>
+                </div>
+        </a>
         <div class="col">
                 <table id="myTableAdmin">
                     <thead>

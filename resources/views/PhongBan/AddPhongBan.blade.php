@@ -6,18 +6,7 @@
   <h2 class=" text-weight">Thêm Phòng Ban<small></small></h2>
   <form  method="post" class="needs-validation PhongBan-form" action="/PhongBan/add" novalidate>
   @csrf
-    <div class="group">
-    <label>Tên Phòng Ban <span style="color:red;">(*)</span></label>
-      <input  id="usernameInput" name="TenPhongBan" type="text" class="form-control" required>
-      <span class="highlight"></span>
-      <span class="bar"></span>
-      <div class="valid-feedback">
-        Nhập Phòng Ban Thành Công
-      </div>
-      <div class="invalid-feedback">
-        Vui Lòng Nhập Phòng Ban !
-      </div>
-    </div>
+    
     <div class="group">
     <label>Đơn Vị <span style="color:red;">(*)</span></label>
     <select name="MaDonVi" class="form-control" required>
@@ -33,6 +22,25 @@
         Vui Lòng Chọn Đơn Vị!
     </div>
     </div>
+    <div class="group">
+      <label>Người Dùng <span style="color:red;">(*)</span></label>
+      <div  class="GiaoVienGiangDay-list">
+      @foreach($NguoiDung as $NguoiDung1)
+      <div class="form-check">
+          <input class="form-check-input"  type="checkbox" name="MaNguoiDung[]" value="{{$NguoiDung1->id}}">
+          <label class="form-check-label">
+              {{$NguoiDung1->Name}} 
+          </label>
+      </div>
+      @endforeach
+    </div>
+      <div class="valid-feedback">
+          Chọn Người Dùng Thành Công
+      </div>
+      <div class="invalid-feedback">
+          Vui Lòng Chọn Người Dùng!
+      </div>
+  </div>
       <button name="Add" type="submit" class="submit-btn">Thêm Phòng Ban</button>
   </form>
 </div>
@@ -133,13 +141,5 @@
       })
     }
 </script>
-<script>
-  var usernameInput = document.getElementById('usernameInput');
-  usernameInput.addEventListener('input', function(e) {
-    var value = e.target.value;
-    // Loại bỏ khoảng trắng đầu tiên nếu có
-    var sanitizedValue = value.replace(/^\s/, '');
-    e.target.value = sanitizedValue;
-  });
-</script>
+
 @endsection
