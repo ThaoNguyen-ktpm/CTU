@@ -3,13 +3,12 @@
  
 <div class="col">
 <div class="container">
-  <h2 class=" text-weight">Thêm Phòng Ban<small></small></h2>
+  <h2 class=" text-weight">Thêm Đơn Vị Người Dùng<small></small></h2>
   <form  method="post" class="needs-validation PhongBan-form" action="/PhongBan/add" novalidate>
   @csrf
-    
     <div class="group">
     <label>Đơn Vị <span style="color:red;">(*)</span></label>
-    <select name="MaDonVi" class="form-control" required>
+    <select name="MaDonVi" class="form-control" id="selectDonVi" required>
         <option value="" disabled selected>Chọn Đơn Vị</option>
         @foreach($DonVi as $DonVi1)
         <option value="{{$DonVi1->id}}">{{$DonVi1->TenDonVi}}</option>
@@ -41,13 +40,50 @@
           Vui Lòng Chọn Người Dùng!
       </div>
   </div>
-      <button name="Add" type="submit" class="submit-btn">Thêm Phòng Ban</button>
+      <button name="Add" type="submit" class="submit-btn">Thêm Đơn Vị</button>
   </form>
 </div>
 </div>
 <div id="toast1"></div>
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
+$(document).ready(function() {
+    // Gán sự kiện onchange bằng Event Listener
+    $('#selectDonVi').on('change', function() {
+        // Gọi hàm xử lý AJAX khi có sự kiện onchange
+        loadNguoiDungData($(this).val());
+    });
+});
+
+function loadNguoiDungData(maDonVi) {
+    var nguoiDungListContainer = $('.GiaoVienGiangDay-list');
+
+    // Xóa tất cả các người dùng hiện có
+    nguoiDungListContainer.empty();
+
+    // Gửi yêu cầu AJAX để lấy dữ liệu người dùng mới
+    $.ajax({
+        url: '/PhongBan/getNguoiDung/' +maDonVi, // Thay đổi URL này theo yêu cầu của bạn
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            // Thêm các người dùng mới dựa trên dữ liệu nhận được
+            $.each(response, function(key, nguoiDung) {
+                var checkboxHtml = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="MaNguoiDung[]" value="${nguoiDung.id}">
+                        <label class="form-check-label">${nguoiDung.Name}</label>
+                    </div>
+                `;
+                nguoiDungListContainer.append(checkboxHtml);
+            });
+        },
+        error: function(xhr, status, error) {
+            // Xử lý lỗi nếu có
+            console.error(error);
+        }
+    });
+}
 	$(document).ready(function() {
 		$('.PhongBan-form').submit(function(event) {
 			event.preventDefault(); // Ngăn chặn form submit mặc định
@@ -126,7 +162,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: "Đã Tồn Tại Phòng Ban  !",
+          message: "Đã Tồn Tại Đơn Vị !",
           type:"error",
           duration:2000
       })
@@ -135,7 +171,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Thêm Phòng Ban Thành Công !",
+        message: "Thêm Đơn Vị Thành Công !",
         type:"success",
         duration:2000
       })

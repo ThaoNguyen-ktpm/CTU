@@ -3,24 +3,12 @@
  
 <div class="col">
 <div class="container">
-  <h2 class=" text-weight">Thêm Tác Vụ<small></small></h2>
+  <h2 class=" text-weight">Thêm Vai Trò Người Dùng<small></small></h2>
   <form  method="post" class="needs-validation TacVu-form" action="/TacVu/add" novalidate>
   @csrf
-    <div class="group">
-    <label>Tên Tác Vụ <span style="color:red;">(*)</span></label>
-      <input  id="usernameInput" name="TenTacVu" type="text" class="form-control" required>
-      <span class="highlight"></span>
-      <span class="bar"></span>
-      <div class="valid-feedback">
-        Nhập Tác Vụ Thành Công
-      </div>
-      <div class="invalid-feedback">
-        Vui Lòng Nhập Tác Vụ !
-      </div>
-    </div>
-    <div class="group">
+  <div class="group">
     <label>Vai Trò <span style="color:red;">(*)</span></label>
-    <select name="MaVaiTro" class="form-control" required>
+    <select name="MaVaiTro" class="form-control" id="selectVaiTro" required>
         <option value="" disabled selected>Chọn Vai Trò</option>
         @foreach($VaiTro as $VaiTro1)
         <option value="{{$VaiTro1->id}}">{{$VaiTro1->TenVaiTro}}</option>
@@ -30,16 +18,72 @@
         Nhập Vai Trò Thành Công
       </div>
     <div class="invalid-feedback">
-        Vui Lòng Chọn Vai Trò!
+        Vui Lòng Chọn Vai Trò !
     </div>
     </div>
-      <button name="Add" type="submit" class="submit-btn">Thêm Tác Vụ</button>
+    <div class="group">
+      <label>Người Dùng <span style="color:red;">(*)</span></label>
+      <div  class="GiaoVienGiangDay-list">
+      @foreach($NguoiDung as $NguoiDung1)
+      <div class="form-check">
+          <input class="form-check-input"  type="checkbox" name="MaNguoiDung[]" value="{{$NguoiDung1->id}}">
+          <label class="form-check-label">
+              {{$NguoiDung1->Name}} 
+          </label>
+      </div>
+      @endforeach
+    </div>
+      <div class="valid-feedback">
+          Chọn Người Dùng Thành Công
+      </div>
+      <div class="invalid-feedback">
+          Vui Lòng Chọn Người Dùng!
+      </div>
+  </div>
+      <button name="Add" type="submit" class="submit-btn">Thêm Vai Trò</button>
   </form>
 </div>
 </div>
 <div id="toast1"></div>
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
+  $(document).ready(function() {
+    // Gán sự kiện onchange bằng Event Listener
+    $('#selectVaiTro').on('change', function() {
+        // Gọi hàm xử lý AJAX khi có sự kiện onchange
+        loadNguoiDungData($(this).val());
+    });
+});
+
+function loadNguoiDungData(maVaiTro) {
+    var nguoiDungListContainer = $('.GiaoVienGiangDay-list');
+
+    // Xóa tất cả các người dùng hiện có
+    nguoiDungListContainer.empty();
+
+    // Gửi yêu cầu AJAX để lấy dữ liệu người dùng mới
+    $.ajax({
+        url: '/TacVu/getNguoiDung/' +maVaiTro, // Thay đổi URL này theo yêu cầu của bạn
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            // Thêm các người dùng mới dựa trên dữ liệu nhận được
+            $.each(response, function(key, nguoiDung) {
+                var checkboxHtml = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="MaNguoiDung[]" value="${nguoiDung.id}">
+                        <label class="form-check-label">${nguoiDung.Name}</label>
+                    </div>
+                `;
+                nguoiDungListContainer.append(checkboxHtml);
+            });
+        },
+        error: function(xhr, status, error) {
+            // Xử lý lỗi nếu có
+            console.error(error);
+        }
+    });
+}
 	$(document).ready(function() {
 		$('.TacVu-form').submit(function(event) {
 			event.preventDefault(); // Ngăn chặn form submit mặc định
@@ -118,7 +162,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: "Đã Tồn Tại Tác Vụ  !",
+          message: "Đã Tồn Tại Vai Trò !",
           type:"error",
           duration:2000
       })
@@ -127,19 +171,11 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Thêm Tác Vụ Thành Công !",
+        message: "Thêm Vai Trò Thành Công !",
         type:"success",
         duration:2000
       })
     }
 </script>
-<script>
-  var usernameInput = document.getElementById('usernameInput');
-  usernameInput.addEventListener('input', function(e) {
-    var value = e.target.value;
-    // Loại bỏ khoảng trắng đầu tiên nếu có
-    var sanitizedValue = value.replace(/^\s/, '');
-    e.target.value = sanitizedValue;
-  });
-</script>
+
 @endsection

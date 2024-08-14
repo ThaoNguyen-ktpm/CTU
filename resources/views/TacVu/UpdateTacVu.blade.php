@@ -2,34 +2,37 @@
 @section('content')
 <div class="col">
 <div class="container">
-  <h2 class=" text-weight">Cập Nhật Phòng Ban<small></small></h2>
-  <form  method="post" class="needs-validation PhongBan-form" action="/PhongBan/update/{{$PhongBan->id}}" novalidate>
+  <h2 class=" text-weight">Cập Nhật Vai Trò Người Dùng<small></small></h2>
+  <form  method="post" class="needs-validation TacVu-form" action="/TacVu/update/{{$TacVu[0]->id}}" novalidate>
   @csrf
+  <div class="group">
+      <input id="usernameInput" name="MaNguoiDung" value="{{$TacVu[0]->MaNguoiDung}}" type="text" class="form-control" required hidden>
+  </div>
     <div class="group">
-    <label>Tên Phòng Ban <span style="color:red;">(*)</span></label>
-      <input  id="usernameInput" name="TenPhongBan" value="{{ $PhongBan->TenPhongBan }}" type="text" class="form-control" required>
+      <label>Tên Người Dùng <span style="color:red;">(*)</span></label>
+      <input id="usernameInput" name="Name" value="{{$TacVu[0]->Name}}" type="text" class="form-control" required readonly>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Phòng Ban Thành Công
+          Nhập Người Dùng Thành Công
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Phòng Ban !
+          Vui Lòng Nhập Người Dùng !
       </div>
-    </div>
+  </div>
     <div class="group">
-    <label>Tên Đơn Vị <span style="color:red;">(*)</span></label>
-    <select name="MaDonVi" class="form-control" required>
-        <option value="" disabled selected>Chọn Đơn Vị</option>
-        @foreach($DonVi as $DonVi1)
-        <option value="{{$DonVi1->id}}" {{ $PhongBan->MaDonVi == $DonVi1->id ? 'selected' : '' }}>{{$DonVi1->TenDonVi}}</option>
+    <label>Tên Vai Trò <span style="color:red;">(*)</span></label>
+    <select name="MaVaiTro" class="form-control" required>
+        <option value="" disabled selected>Chọn Vai Trò</option>
+        @foreach($VaiTro as $VaiTro1)
+        <option value="{{$VaiTro1->id}}" {{ $TacVu[0]->MaVaiTro == $VaiTro1->id ? 'selected' : '' }}>{{$VaiTro1->TenVaiTro}}</option>
         @endforeach
     </select>
     <div class="valid-feedback">
-        Chọn Đơn Vị Thành Công
+        Chọn Vai Trò Thành Công
       </div>
     <div class="invalid-feedback">
-        Vui lòng chọn Đơn Vị!
+        Vui lòng chọn Vai Trò!
     </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Cập Nhật</button>
@@ -40,7 +43,7 @@
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
 	$(document).ready(function() {
-		$('.PhongBan-form').submit(function(event) {
+		$('.TacVu-form').submit(function(event) {
 			event.preventDefault(); // Ngăn chặn form submit mặc định
 			var form = $(this);
 			var url = form.attr('action');
@@ -62,7 +65,7 @@
 							var message=""			
 							showSuccessToast1();
 							setTimeout(function() {
-								window.location.href = "/PhongBan";
+								window.location.href = "/TacVu";
 							}, 1000);
 						} else {		
 							showErrorToast1();
@@ -117,7 +120,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: "Đã Tồn Tại Phòng Ban  !",
+          message: "Đã Tồn Tại Vai Trò !",
           type:"error",
           duration:2000
       })
@@ -126,7 +129,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Cập Nhật Phòng Ban Thành Công !",
+        message: "Cập Nhật Vai Trò Thành Công !",
         type:"success",
         duration:2000
       })

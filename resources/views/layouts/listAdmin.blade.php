@@ -58,7 +58,7 @@
                 </a>
                 <a href="/PhongBan" class="list-group-item list-group-item-action bg-dark text-white transformY">
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
-                    <span class="menu-collapsed">Thông Tin Phòng Ban</span>
+                    <span class="menu-collapsed">Thông Tin Đơn Vị Người Dùng</span>
                 </a>
                 <a href="/VaiTro" class="list-group-item list-group-item-action bg-dark text-white transformY">
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
@@ -66,7 +66,7 @@
                 </a>
                 <a href="/TacVu" class="list-group-item list-group-item-action bg-dark text-white transformY">
                     <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
-                    <span class="menu-collapsed">Thông Tin Tác Vụ</span>
+                    <span class="menu-collapsed">Thông Tin Vai Trò Người Dùng</span>
                 </a>
             </div>
           

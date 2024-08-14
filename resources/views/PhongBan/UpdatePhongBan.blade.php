@@ -2,7 +2,7 @@
 @section('content')
 <div class="col">
 <div class="container">
-  <h2 class=" text-weight">Cập Nhật Phòng Ban<small></small></h2>
+  <h2 class=" text-weight">Cập Nhật Đơn Vị Người Dùng<small></small></h2>
   <form  method="post" class="needs-validation PhongBan-form" action="/PhongBan/update/{{$PhongBan[0]->id}}" novalidate>
   @csrf
   <div class="group">
@@ -120,7 +120,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: "Đã Tồn Tại Phòng Ban  !",
+          message: "Đã Tồn Tại Đơn Vị !",
           type:"error",
           duration:2000
       })
@@ -129,7 +129,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Cập Nhật Phòng Ban Thành Công !",
+        message: "Cập Nhật Đơn Vị Thành Công !",
         type:"success",
         duration:2000
       })

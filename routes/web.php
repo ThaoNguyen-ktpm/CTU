@@ -121,18 +121,25 @@ Route::post('PhongBan/update/{id}', [PhongBanController::class,'update'])->name(
 // Xóa Phòng Ban
 Route::get('PhongBan/remove/{id}', [PhongBanController::class,'remove'])->name('PhongBan.remove');
 
+// Lấy người dùng theo Phòng Ban 
+Route::get('/PhongBan/getNguoiDung/{id}', [PhongBanController::class,'getNguoiDung']);
+ 
 
-// Danh sách Phòng Ban
+// Danh sách Tác Vụ
 Route::get('TacVu', [TacVuController::class,'list'])->name('TacVu.listTacVu');
 Route::get('TacVu/data', [TacVuController::class, 'getTacVu'])->name('TacVu.data');
-//Thêm Phòng Ban
+//Thêm Tác Vụ
 Route::get('TacVu/addview', [TacVuController::class,'addview'])->name('TacVu.addview');
 Route::post('TacVu/add', [TacVuController::class,'add'])->name('TacVu.add');
-//Cập nhật Phòng Ban
+//Cập nhật Tác Vụ
 Route::get('TacVu/updateview/{id}', [TacVuController::class,'updateview'])->name('TacVu.updateview');
 Route::post('TacVu/update/{id}', [TacVuController::class,'update'])->name('TacVu.update');
-// Xóa Phòng Ban
+// Xóa Tác Vụ
 Route::get('TacVu/remove/{id}', [TacVuController::class,'remove'])->name('TacVu.remove');
+
+// Lấy người dùng theo Tác Vụ 
+Route::get('/TacVu/getNguoiDung/{id}', [TacVuController::class,'getNguoiDung']);
+ 
 
 // Danh sách Dự Án
 Route::get('DuAn', [DuAnController::class,'list']);
@@ -148,13 +155,8 @@ Route::get('DuAn/remove/{id}', [DuAnController::class,'remove']);
 
 
 // Danh sách Thông Báo
-Route::get('ThongBao', [ThongBaoController::class,'list']);
-Route::get('ThongBao/data',[ThongBaoController::class,'getThongBao']);
+Route::get('ThongBao', [ThongBaoController::class,'list'])->name('ThongBao.listThongBao');
+Route::get('ThongBao/data', [ThongBaoController::class, 'getThongBao'])->name('ThongBao.data');
 //Thêm Thông Báo
-Route::get('ThongBao/addview', [ThongBaoController::class,'addview']);
-Route::post('ThongBao/add', [ThongBaoController::class,'add']);
-//Cập nhật Thông Báo
-Route::get('ThongBao/updateview/{id}', [ThongBaoController::class,'updateview']);
-Route::post('ThongBao/update/{id}', [ThongBaoController::class,'update']);
-// Xóa Thông Báo
-Route::get('ThongBao/remove/{id}', [ThongBaoController::class,'remove']);
+Route::get('ThongBao/addview', [ThongBaoController::class,'addview'])->name('ThongBao.addview');
+Route::post('ThongBao/add', [ThongBaoController::class,'add'])->name('ThongBao.add');

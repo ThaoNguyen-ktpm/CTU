@@ -24,7 +24,7 @@ class Test extends Controller
     public function matkhaunew()
     {
         $title = "Mật Khẩu Mới";
-        return view('NguoiDung.ForgotPasswordViewNew', compact('title'));
+        return view('User.ForgotPasswordViewNew', compact('title'));
     }
     public function index()
     {

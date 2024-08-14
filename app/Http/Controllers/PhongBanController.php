@@ -12,7 +12,7 @@ class PhongBanController extends Controller
    
     public function list()
     {
-        $title = "Danh Sách Phòng Ban";
+        $title = "Danh Sách Đơn Vị Người Dùng";
         return view('PhongBan.ListPhongBan', compact('title'));
     }
     public function getPhongBan()
@@ -22,29 +22,36 @@ class PhongBanController extends Controller
         WHERE phongbans.MaNguoiDung = nguoidungs.id and phongbans.MaDonVi = donvis.id and phongbans.IsActive = true');
         return response()->json(['data' => $PhongBan]);
     }
-    //Thêm Phòng Ban
+    //Thêm Đơn Vị Người Dùng
     public function addview()
     {
-        $title = "Thêm Phòng Ban";
+        $title = "Thêm Đơn Vị Người Dùng";
         $DonVi = donvi::where('IsActive', 1)->get();
         $NguoiDung = nguoidung::where('IsActive', 1) ->whereIn('Quyen', [4, 2, 3])->get();
         return view('PhongBan.AddPhongBan', compact('NguoiDung','DonVi','title'));
     }
     public function add(Request $request)
     {
-           // Lấy giá trị từ form
-            $MaDonVi = $request->input('MaDonVi');
-            $MaNguoiDung = $request->input('MaNguoiDung');
-
-            foreach($MaNguoiDung as $nguoiDungId) {
-                // Tạo một bản ghi mới trong bảng PhongBan
-                $PhongBan = new PhongBan;
-                $PhongBan->MaDonVi = $MaDonVi;
-                $PhongBan->MaNguoiDung = $nguoiDungId; // Nếu bảng PhongBan có cột này
-                $PhongBan->IsActive = true; // Nếu bảng PhongBan có cột này
-                $PhongBan->save();
-            }
-                return response()->json(['success' => true]);
+        // Lấy giá trị từ form
+        $MaDonVi = $request->input('MaDonVi');
+        $MaNguoiDung = $request->input('MaNguoiDung');
+        foreach($MaNguoiDung as $nguoiDungId) {
+            // Tạo một bản ghi mới trong bảng PhongBan
+            $KiemTra = DB::select('SELECT *
+                                    FROM  phongbans 
+                                    WHERE phongbans.MaNguoiDung = ?
+                                    and phongbans.MaVaiTro = ? 
+                                    and phongbans.IsActive = true',[$nguoiDungId,$MaDonVi]);
+            if($KiemTra){
+                return response()->json(['success' => false]);
+            }   
+            $PhongBan = new phongban;
+            $PhongBan->MaDonVi = $MaDonVi;
+            $PhongBan->MaNguoiDung = $nguoiDungId; // Nếu bảng PhongBan có cột này
+            $PhongBan->IsActive = true; // Nếu bảng PhongBan có cột này
+            $PhongBan->save();
+        }
+            return response()->json(['success' => true]);
 
     }
     //Cập nhật Khóa học
@@ -56,7 +63,7 @@ class PhongBanController extends Controller
         and phongbans.MaDonVi = donvis.id 
         and phongbans.IsActive = true 
         and phongbans.id =?',[$id]);
-        $title = "Cập Nhật Phòng Ban";
+        $title = "Cập Nhật Đơn Vị Người Dùng";
         $DonVi = donvi::where('IsActive', 1)->get();
         return view('PhongBan.UpdatePhongBan', compact('DonVi','PhongBan', 'title'));
     }
@@ -67,10 +74,9 @@ class PhongBanController extends Controller
             AND MaDonVi = ?
             AND MaNguoiDung = ?
             AND IsActive = true
-            
         ', [$id, $request->MaDonVi, $request->MaNguoiDung]);
         if ($PhongBan) {
-            return response()->json(['success' => false, 'message' => 'Giá trị Phòng Ban đã tồn tại']);
+            return response()->json(['success' => false, 'message' => 'Giá trị Đơn Vị Người Dùng đã tồn tại']);
         } else {
             $getPhongBan = phongban::where('id', '!=', $id)
             ->where('MaDonVi', $request->MaDonVi)
@@ -96,7 +102,7 @@ class PhongBanController extends Controller
       
         }
     }
-    //Xóa Phòng Ban
+    //Xóa Đơn Vị Người Dùng
     public function remove($id)
     {
         $PhongBan= phongban::find($id);
@@ -104,4 +110,32 @@ class PhongBanController extends Controller
         $PhongBan->save();
         return response()->json(['success' => true]);
     }
+
+    public function getNguoiDung($id)
+    {
+        $existingIds = DB::table('phongbans')
+        ->select('MaNguoiDung')
+        ->where('MaDonVi', $id)
+        ->where('IsActive', true)
+        ->pluck('MaNguoiDung');
+    
+         $remainingIds = DB::table('nguoidungs')
+        ->select('id')
+        ->where('IsActive', true)
+        ->where(function($query) {
+            $query->where('Quyen', 2)
+                  ->orWhere('Quyen', 3)
+                  ->orWhere('Quyen', 4);
+        })
+        ->whereNotIn('id', $existingIds)
+        ->pluck('id');  // Lấy ra danh sách các MaNguoiDung còn lại
+    
+        $remainingUsers = DB::table('nguoidungs')
+        ->whereIn('id', $remainingIds)
+        ->where('IsActive', true)
+        ->get();
+    
+        return response()->json($remainingUsers);
+    }
+
 }
