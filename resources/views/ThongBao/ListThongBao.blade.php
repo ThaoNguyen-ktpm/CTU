@@ -6,7 +6,7 @@
             padding-top: 0px;
         }
         </style>
-        <a href=" /DonVi/addview"  aria-expanded="false" >
+        <a href=" /ThongBao/addview"  aria-expanded="false" >
                 <div class="logoutForm">
                 <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
                 <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
@@ -15,12 +15,13 @@
                 </div>
         </a>
         <div class="col">
-                <table id="myTableDonVi">
+                <table id="myTableThongBao">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Đơn Vị</th>
-                            <th>Sửa</th>
+                            <th>Nội Dung</th>
+                            <th>Người Nhận</th>
+                            <th>Thời Gian</th>
                             <th>Xóa</th>
                         </tr>
                     </thead>
@@ -32,41 +33,37 @@
             
         <script>
             $(document).ready(function() {
-            var table = $('#myTableDonVi').DataTable({
+            var table = $('#myTableThongBao').DataTable({
                 ajax: {
-                    url: "{{ route('DonVi.data') }}",
+                    url: "{{ route('ThongBao.data') }}",
                     dataSrc: 'data'
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'TenDonVi' },
+                    { data: 'NoiDung' },
+                    { data: 'Name' },
+                    { data: 'ThoiGian' },
                     {
                         data: null,
                         render: function(data, type, row) {
-                        return '<form method="get" action="/DonVi/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
-                    }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return '<button class="btn btn-danger DeleteDonVi-form" onclick="deleteDonVi(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
+                            return '<button class="btn btn-danger DeleteThongBao-form" onclick="deleteThongBao(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     }
                 ]
             });
         });
 
-        function deleteDonVi(DonViId) {
+        function deleteThongBao(ThongBaoId) {
             if (confirm('Bạn có chắc chắn muốn xóa vai trò này?')) {
                 // Gửi yêu cầu xóa vai trò đến server
                 $.ajax({
-                    url: '/DonVi/remove/' + DonViId,
+                    url: '/ThongBao/remove/' + ThongBaoId,
                     type: 'GET',
                     success: function(response) {
                         if (response.success) {
                             // Cập nhật lại bảng dữ liệu
                             showSuccessToast1()
-                            var table = $('#myTableDonVi').DataTable();
+                            var table = $('#myTableThongBao').DataTable();
                             table.ajax.reload(null, false);
                         }
                     },
@@ -78,7 +75,7 @@
             }
         }
         $(document).ready(function() {
-	$('.DeleteDonVi-form').click(function(event) {
+	$('.DeleteThongBao-form').click(function(event) {
 		event.preventDefault(); // Ngăn chặn hành động mặc định của button
 		var button = $(this);
 		var id = button.attr('data-id');

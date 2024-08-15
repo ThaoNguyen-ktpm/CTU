@@ -52,8 +52,6 @@
   @csrf
   <div class="group">
     <label>Chọn Người Dùng <span style="color:red;">(*)</span></label>
-
-    
   <div class="custom-select">
   <div class="select-selected">Chọn Người Dùng</div>
   <div class="select-items select-hide">
@@ -61,7 +59,12 @@
     <div data-value="{{$NguoiDung1->id}}">{{$NguoiDung1->Name}}</div>
     @endforeach
   </div>
-
+  <select name="MaNguoiDung" class="form-control" required>
+        <option value="" disabled selected>Chọn Chứng Chỉ</option>
+        @foreach($NguoiDung as $NguoiDung1)
+        <option value="{{$NguoiDung1->id}}">{{$NguoiDung1->TenNguoiDung}}</option>
+        @endforeach
+    </select>
 </div>
     <div class="valid-feedback">
         Nhập Người Dùng Thành Công
@@ -111,9 +114,7 @@
 						if (response.success === true) {	
 							var message=""			
 							showSuccessToast1();
-							setTimeout(function() {
-								window.location.href = "/ThongBao";
-							}, 1000);
+						
 						} else {		
 							showErrorToast1();
 						}

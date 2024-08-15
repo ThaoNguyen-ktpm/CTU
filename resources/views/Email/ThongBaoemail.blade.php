@@ -73,7 +73,7 @@
                 color: #1f1f1f;
               "
             >
-              Your OTP
+              Thông Báo Nhắc Nhở 
             </h1>
             <p
               style="
@@ -92,8 +92,8 @@
                 font-weight: 500;
                 letter-spacing: 0.56px;
               "
-            >  Bạn có thể sử dụng mã OTP sau để xác nhận thay đổi địa chỉ email của mình. Lưu ý, mã OTP này sẽ chỉ có hiệu lực trong một khoảng thời gian ngắn, vì vậy hãy sử dụng nó ngay khi có thể. 
-              <span style="font-weight: 600; color: #1f1f1f;">thời hạn 3 phút bất đầu từ lúc gửi!</span>
+            >    {{$OTP}}
+              <!-- <span style="font-weight: 600; color: #1f1f1f;">thời hạn 3 phút bất đầu từ lúc gửi !</span> -->
             </p>
             <p
               style="
@@ -105,10 +105,12 @@
                 color: #ba3d4f;
               "
             >
-           {{$OTP}}
+          
             </p>
           </div>
         </div>
+
+       
       </main>
     </div>
   </body>

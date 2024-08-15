@@ -12,41 +12,52 @@ class ThongBaoController extends Controller
    //Danh sách THông Báo
    public function list()
    {
-       $title = "Danh Sách THông Báo";
+       $title = "Danh Sách Thông Báo";
        return view('ThongBao.ListThongBao', compact('title'));
    }
    public function getThongBao()
    {
-        $ThongBao = ThongBao::where('IsActive', 1)->get();
+        $ThongBao = DB::select('SELECT thongbaos.* , nguoidungs.Name AS Name
+                                FROM thongbaos ,nguoidungs
+                                WHERE thongbaos.MaNguoiDung = nguoidungs.id
+                                AND thongbaos.IsActive = true
+                                ');
        return response()->json(['data' => $ThongBao]);
    }
    //Thêm THông Báo
    public function addview()
    {
-       $title = "Thêm THông Báo";
+       $title = "Thêm Thông Báo";
        $NguoiDung = nguoidung::where('IsActive', 1) ->whereIn('Quyen', [4, 2, 3])->get();
        return view('ThongBao.AddThongBao', compact('NguoiDung','title'));
    }
    public function add(Request $request)
    {    
-            $NoiDung = $request->input('NoiDung');
-            $MaNguoiDung = $request->input('MaNguoiDung');
-
-            $Email = DB::select('SELECT nguoidungs.Email
-            FROM  nguoidungs
-            WHERE nguoidungs.id = ?
-            and nguoidungs.IsActive = true',[$MaNguoiDung]);
-            Mail::send('Email.OTPemail', ['OTP' => $NoiDung,'Email'=>$Email], function ($email) use ($Email, $NoiDung) {
-                $email->to($Email);
-                $email->subject('Your OTP Code');
-            });  
-            $ThongBao = new thongbao;
-            $ThongBao->NoiDung = $NoiDung;
-            $ThongBao->MaNguoiDung =  $MaNguoiDung; // Nếu bảng ThongBao có cột này
-            $ThongBao->IsActive = true; // Nếu bảng ThongBao có cột này
-            $ThongBao->ThoiGian = DB::raw('NOW()'); // Nếu bảng ThongBao có cột này
-            $ThongBao->save();
-            return response()->json(['success' => true]);
+    $NoiDung = $request->input('NoiDung');
+    $MaNguoiDung = $request->input('MaNguoiDung');
+    // Lấy email đầu tiên từ kết quả truy vấn
+    $EmailResult = DB::select('SELECT nguoidungs.Email
+        FROM  nguoidungs
+        WHERE nguoidungs.id = ?
+        and nguoidungs.IsActive = true', [$MaNguoiDung]);
+    
+    if (!empty($EmailResult)) {
+        $Email = $EmailResult[0]->Email;
+        $ThongBao = new thongbao;
+        $ThongBao->NoiDung = $NoiDung;
+        $ThongBao->MaNguoiDung = $MaNguoiDung;
+        $ThongBao->IsActive = true;
+        $ThongBao->ThoiGian = DB::raw('NOW()');
+        $ThongBao->save();
+        Mail::send('Email.ThongBaoemail', ['OTP' => $NoiDung, 'Email' => $Email], function ($email) use ($Email, $NoiDung) {
+            $email->to($Email);
+            $email->subject('Thông Báo');
+        });
+        return response()->json(['success' => true]);
+    } else {
+        return response()->json(['success' => false, 'message' => 'No active user found with the provided ID']);
+    }
+    
    }
   
 }

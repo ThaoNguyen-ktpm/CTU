@@ -142,17 +142,18 @@ Route::get('/TacVu/getNguoiDung/{id}', [TacVuController::class,'getNguoiDung']);
  
 
 // Danh sách Dự Án
-Route::get('DuAn', [DuAnController::class,'list']);
-Route::get('DuAn/data',[DuAnController::class,'getDuAn']);
+Route::get('DuAn', [DuAnController::class,'list'])->name('DuAn.listDuAn');
+Route::get('DuAn/data', [DuAnController::class, 'getDuAn'])->name('DuAn.data');
 //Thêm Dự Án
-Route::get('DuAn/addview', [DuAnController::class,'addview']);
-Route::post('DuAn/add', [DuAnController::class,'add']);
+Route::get('DuAn/addview', [DuAnController::class,'addview'])->name('DuAn.addview');
+Route::post('DuAn/add', [DuAnController::class,'add'])->name('DuAn.add');
 //Cập nhật Dự Án
-Route::get('DuAn/updateview/{id}', [DuAnController::class,'updateview']);
-Route::post('DuAn/update/{id}', [DuAnController::class,'update']);
+Route::get('DuAn/updateview/{id}', [DuAnController::class,'updateview'])->name('DuAn.updateview');
+Route::post('DuAn/update/{id}', [DuAnController::class,'update'])->name('DuAn.update');
 // Xóa Dự Án
-Route::get('DuAn/remove/{id}', [DuAnController::class,'remove']);
-
+Route::get('DuAn/remove/{id}', [DuAnController::class,'remove'])->name('DuAn.remove');
+// Lấy người dùng theo Đơn Vị
+Route::get('/DuAn/DonVi/getNguoiDung/{id}', [DuAnController::class,'getNguoiDung']);
 
 // Danh sách Thông Báo
 Route::get('ThongBao', [ThongBaoController::class,'list'])->name('ThongBao.listThongBao');
