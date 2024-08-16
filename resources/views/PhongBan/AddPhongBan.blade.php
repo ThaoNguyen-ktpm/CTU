@@ -26,7 +26,7 @@
       <div  class="GiaoVienGiangDay-list">
       @foreach($NguoiDung as $NguoiDung1)
       <div class="form-check">
-          <input class="form-check-input"  type="checkbox" name="MaNguoiDung[]" value="{{$NguoiDung1->id}}">
+          <input class="form-check-input"  type="checkbox" name="MaNguoiDung[]" value="{{$NguoiDung1->id}}" required>
           <label class="form-check-label">
               {{$NguoiDung1->Name}} 
           </label>

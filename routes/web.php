@@ -155,6 +155,15 @@ Route::get('DuAn/remove/{id}', [DuAnController::class,'remove'])->name('DuAn.rem
 // Lấy người dùng theo Đơn Vị
 Route::get('/DuAn/DonVi/getNguoiDung/{id}', [DuAnController::class,'getNguoiDung']);
 
+// Danh sách Giai Đoạn Dự Án
+Route::get('DuAn/GiaiDoan', [DuAnController::class,'listGiaiDoan'])->name('DuAn.listDuAnGiaiDoan');
+Route::get('DuAn/GiaiDoan/data', [DuAnController::class, 'getDuAnGiaiDoan'])->name('DuAnGiaiDoan.data');
+
+// Danh sách Thành Viên Dự Án
+Route::get('DuAn/ThanhVien', [DuAnController::class,'listThanhVien'])->name('DuAn.listDuAnThanhVien');
+Route::get('DuAn/ThanhVien/data', [DuAnController::class, 'getDuAnThanhVien'])->name('DuAnThanhVien.data');
+
+
 // Danh sách Thông Báo
 Route::get('ThongBao', [ThongBaoController::class,'list'])->name('ThongBao.listThongBao');
 Route::get('ThongBao/data', [ThongBaoController::class, 'getThongBao'])->name('ThongBao.data');

@@ -79,7 +79,7 @@
                 </div>
             </a>
               <!-- Dự Án -->
-            <a href="DuAn/addview"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="/DuAn"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
                 <i class="fa-solid fa-chalkboard-user" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Quản Lý Dự Án</span>

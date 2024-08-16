@@ -6,6 +6,8 @@
   <h2 class=" text-weight">Thêm Vai Trò Người Dùng<small></small></h2>
   <form  method="post" class="needs-validation TacVu-form" action="/TacVu/add" novalidate>
   @csrf
+
+
   <div class="group">
     <label>Vai Trò <span style="color:red;">(*)</span></label>
     <select name="MaVaiTro" class="form-control" id="selectVaiTro" required>
@@ -26,7 +28,7 @@
       <div  class="GiaoVienGiangDay-list">
       @foreach($NguoiDung as $NguoiDung1)
       <div class="form-check">
-          <input class="form-check-input"  type="checkbox" name="MaNguoiDung[]" value="{{$NguoiDung1->id}}">
+          <input class="form-check-input"  type="checkbox" name="MaNguoiDung[]" value="{{$NguoiDung1->id}}" required>
           <label class="form-check-label">
               {{$NguoiDung1->Name}} 
           </label>

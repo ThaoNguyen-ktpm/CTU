@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\tacvu;
 use App\Models\vaitro;
+
 use App\Models\nguoidung;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -27,6 +28,7 @@ class TacVuController extends Controller
     {
         $title = "Thêm Vai Trò Người Dùng";
         $VaiTro = vaitro::where('IsActive', 1)->get();
+      
         $NguoiDung = nguoidung::where('IsActive', 1) ->whereIn('Quyen', [4, 2, 3])->get();
         return view('TacVu.AddTacVu', compact('NguoiDung','VaiTro','title'));
     }

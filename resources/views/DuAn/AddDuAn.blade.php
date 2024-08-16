@@ -64,7 +64,7 @@
     </div>
     <div class="group">
     <label>Nhập Mô Tả <span style="color:red;">(*)</span></label>
-      <textarea id="NoiDungInput" name="NoiDung" type="text" class="form-control textarea" required></textarea >
+      <textarea id="NoiDungInput" name="MoTa" type="text" class="form-control textarea" required></textarea >
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
@@ -77,7 +77,8 @@
   
  <!-- Phần thêm giai đoạn -->
  <div id="giai_doan_container">
-        <div class="group">
+       <div class="macdinh">
+       <div class="group">
             <h4>Giai Đoạn 1</h4>
             <label>Chọn Giai Đoạn <span style="color:red;">(*)</span></label>
             <select name="MaGiaiDoan[]" class="form-control" id="selectGiaiDoan" required>
@@ -91,35 +92,35 @@
             <div class="valid-feedback">Chọn Giai Đoạn Thành Công</div>
             <div class="invalid-feedback">Vui Lòng Chọn Giai Đoạn!</div>
             </div>
+            
             <div class="group">
-            <label>Ngày Bắt Đầu <span style="color:red;">(*)</span></label>
-            <input name="NgayBatDau[]" type="date" class="form-control" required>
+            <label>Ngày Bắt Đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm) </label></label>
+            <input id="NgayBatDau" name="NgayBatDau" type="date" class="form-control" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <div class="valid-feedback">Chọn Ngày Bắt Đầu Thành Công</div>
-            <div class="invalid-feedback">Vui Lòng Chọn Ngày Bắt Đầu!</div>
+            <div class="invalid-feedback">Vui Lòng Chọn Ngày Bắt Đầu Lớn Hơn Thời Gian Hiện Tại!</div>
             </div>
             <div class="group">
-            <label>Ngày Kết Thúc <span style="color:red;">(*)</span></label>
-            <input name="NgayKetThuc[]" type="date" class="form-control" required>
+            <label>Nhập Số Ngày Thực Hiện <span style="color:red;">(*)</span></label>
+            <input name="SoNgayThucHien[]" type="number"  min="1" max="1000" class="form-control" required>
             <span class="highlight"></span>
             <span class="bar"></span>
-            <div class="valid-feedback">Chọn Ngày Kết Thúc Thành Công</div>
-            <div class="invalid-feedback">Vui Lòng Chọn Ngày Kết Thúc!</div>
+            <div class="valid-feedback">Nhập Ngày Thực Hiện Thành Công</div>
+            <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện!</div>
             </div>
             <div class="group">
             <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="1" readonly hidden>
             <span class="highlight"></span>
             <span class="bar"></span>
             </div>
+       </div>
     </div>
-
     <!-- Nút thêm giai đoạn mới -->
     <button id="themGiaiDoanButton" type="button">Thêm Giai Đoạn</button>
 
     <!-- Nút xóa giai đoạn -->
-    <button id="xoaGiaiDoanButton" type="button" >Xóa Giai Đoạn</button>
-
+    <button id="suaGiaiDoanButton" type="button">Sửa Giai Đoạn</button>
 
     <div class="group" style="margin-top: 20px;">
    <div style="display: flex;">
@@ -137,31 +138,7 @@
    </div>
       <div  class="GiaoVienGiangDay-list">
       @foreach($NguoiDung as $NguoiDung1)
-      <div class="form-check">
-          <input class="form-check-input"  type="checkbox" name="MaNguoiDung[]" value="{{$NguoiDung1->id}}">
-         <div style="display: flex;">
-         <div style="font-weight: 600; color: #1f1f1f;" class="form-check-label">
-              {{$NguoiDung1->user_name}} 
-          </div>
-          <div style="width: 220px;" class="form-check-label">
-               : @if ($NguoiDung1->Quyen == 2)
-                    Trưởng Phòng
-                @elseif ($NguoiDung1->Quyen == 3)
-                    Phó Phòng
-                @elseif ($NguoiDung1->Quyen == 4)
-                    Nhân Viên
-                @else
-                    Không xác định
-                @endif  
-          </div>
-         </div>
-          <label  style="height: 20px;width:100%" class="form-check-label">
-            Vai Trò:  {{ !empty($NguoiDung1->vaitro_names) ? $NguoiDung1->vaitro_names : 'Chưa Có Vai Trò' }}
-          </label>
-          <label  style="height: 20px;width:100%" class="form-check-label">
-          Đơn Vị: {{ !empty($NguoiDung1->donvi_names) ? $NguoiDung1->donvi_names : 'Chưa Có Đơn Vị' }}
-          </label>
-      </div>
+     
       @endforeach
     </div>
       <div class="valid-feedback">
@@ -171,7 +148,7 @@
           Vui Lòng Chọn Thành Viên!
       </div>
   </div>
-
+      
       <button name="Add" type="submit" class="submit-btn">Thêm Dự Án</button>
   </form>
 </div>
@@ -259,7 +236,9 @@ function loadNguoiDungData(maDonVi) {
 							setTimeout(function() {
 								window.location.href = "/DuAn";
 							}, 1000);
-						} else {		
+						} else if(response.success === false) {
+              showErrorToast2();
+            } else {		
 							showErrorToast1();
 						}
 					}
@@ -318,6 +297,14 @@ function loadNguoiDungData(maDonVi) {
       })
     }
 	    
+    function showErrorToast2(){
+      toast1({
+          title: "Error",
+          message: " Thêm Dự Án Thất Bại Do Chưa Có Thành Viên !",
+          type:"error",
+          duration:2000
+      })
+    }
     function showSuccessToast1(){
       toast1({
         title: "Success",
@@ -326,6 +313,7 @@ function loadNguoiDungData(maDonVi) {
         duration:2000
       })
     }
+   
 </script>
 
 <script>
@@ -336,16 +324,17 @@ function loadNguoiDungData(maDonVi) {
     var sanitizedValue = value.replace(/^\s/, '');
     e.target.value = sanitizedValue;
   });
+  var NoiDungInput = document.getElementById('NoiDungInput');
+  NoiDungInput.addEventListener('input', function(e) {
+    var value = e.target.value;
+    // Loại bỏ khoảng trắng đầu tiên nếu có
+    var sanitizedValue = value.replace(/^\s/, '');
+    e.target.value = sanitizedValue;
+  });
 </script>
 
 <script>
- 
-
-
-
-
-
- document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     let soLuongGiaiDoan = 1;
 
     function updateSelectOptions() {
@@ -390,21 +379,16 @@ function loadNguoiDungData(maDonVi) {
             <span class="bar"></span>
             <div class="valid-feedback">Nhập Giai Đoạn Thành Công</div>
             <div class="invalid-feedback">Vui Lòng Chọn Giai Đoạn!</div>
-
-            <label>Ngày Bắt Đầu <span style="color:red;">(*)</span></label>
-            <input name="NgayBatDau[]" type="date" class="form-control" required>
+        </div>
+        <div class="group">
+            <label>Nhập Số Ngày Thực Hiện <span style="color:red;">(*)</span></label>
+            <input name="SoNgayThucHien[]" type="number" min="1" max="1000" class="form-control" required>
             <span class="highlight"></span>
             <span class="bar"></span>
-            <div class="valid-feedback">Chọn Ngày Bắt Đầu Thành Công</div>
-            <div class="invalid-feedback">Vui Lòng Chọn Ngày Bắt Đầu!</div>
-
-            <label>Ngày Kết Thúc <span style="color:red;">(*)</span></label>
-            <input name="NgayKetThuc[]" type="date" class="form-control" required>
-            <span class="highlight"></span>
-            <span class="bar"></span>
-            <div class="valid-feedback">Chọn Ngày Kết Thúc Thành Công</div>
-            <div class="invalid-feedback">Vui Lòng Chọn Ngày Kết Thúc!</div>
-
+            <div class="valid-feedback">Nhập Ngày Thực Hiện Thành Công</div>
+            <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện!</div>
+        </div>
+        <div class="group">
             <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="${soLuongGiaiDoan}" readonly hidden>
             <span class="highlight"></span>
             <span class="bar"></span>
@@ -417,50 +401,60 @@ function loadNguoiDungData(maDonVi) {
 
         // Cập nhật các tùy chọn cho tất cả các select sau khi thêm giai đoạn mới
         updateSelectOptions();
-
-        // Cập nhật trạng thái của nút xóa sau khi thêm giai đoạn mới
-       
     }
 
-    function xoaGiaiDoan() {
+    function suaGiaiDoan() {
         const giaiDoanContainer = document.getElementById('giai_doan_container');
-        const giaiDoanDivs = giaiDoanContainer.getElementsByClassName('group');
+        const giaiDoanDivs = giaiDoanContainer.querySelectorAll('.group');
 
-        // Xóa giai đoạn nếu số lượng giai đoạn lớn hơn 1
-        if (soLuongGiaiDoan > 1) {
-            // Xóa giai đoạn lớn nhất
-            const lastDiv = giaiDoanDivs[giaiDoanDivs.length - 1];
-            if (lastDiv) {
-                const thuTuGiaiDoan = parseInt(lastDiv.querySelector('input[name="ThuTuGiaiDoan[]"]').value);
-
-                lastDiv.remove();
-                soLuongGiaiDoan--;
-
-                // Cập nhật số thứ tự cho các giai đoạn còn lại
-                document.querySelectorAll('#giai_doan_container .group').forEach((div, index) => {
-                    const giaiDoanIndex = index + 1;
-                   
-                   
-                });
-
-                // Cập nhật trạng thái của nút xóa sau khi xóa giai đoạn
-                updateDeleteButtonState();
-
-                // Nếu giai đoạn bị xóa là giai đoạn 2, vô hiệu hóa nút xóa
-                if (thuTuGiaiDoan === 2) {
-                    document.getElementById('xoaGiaiDoanButton').disabled = true;
-                }
+        // Duyệt qua các giai đoạn và xóa các giai đoạn trừ giai đoạn mặc định
+        giaiDoanDivs.forEach(div => {
+            if (!div.closest('.macdinh')) {  // Chỉ xóa các giai đoạn không phải là giai đoạn mặc định
+                div.remove();
             }
-        } else {
-            alert("Không thể xóa giai đoạn đầu tiên!");
-        }
+        });
+
+        // Đặt lại số lượng giai đoạn về 1 sau khi xóa
+        soLuongGiaiDoan = 1;
+
+        
     }
 
-    // Gán các sự kiện click cho các nút sau khi DOM đã được tải
+    // Gán sự kiện click cho các nút sau khi DOM đã được tải
     document.getElementById('themGiaiDoanButton').addEventListener('click', themGiaiDoan);
-    document.getElementById('xoaGiaiDoanButton').addEventListener('click', xoaGiaiDoan);
-
+    document.getElementById('suaGiaiDoanButton').addEventListener('click', suaGiaiDoan);
 });
+
+
+</script>
+
+<script>
+var NgayBatDau = document.getElementById('NgayBatDau');
+NgayBatDau.addEventListener('input', function(e) {
+  var value = e.target.value;
+  
+  // Lấy ngày từ chuỗi ngày tháng
+  var selectedDate = new Date(value);
+  
+  // Lấy thời gian hiện tại
+  var currentDate = new Date();
+  
+  // Thiết lập giờ, phút, giây của currentDate là 00:00:00 để chỉ so sánh ngày tháng
+  currentDate.setHours(0, 0, 0, 0);
+
+  // Kiểm tra điều kiện: ngày được nhập phải lớn hơn ngày hiện tại
+  var isValid = selectedDate > currentDate;
+  
+  if (isValid) {
+    e.target.setCustomValidity('');
+  } else {
+    e.target.setCustomValidity(' ');
+  }
+  
+  // Cập nhật trạng thái của form để hiển thị thông báo lỗi (nếu có)
+  e.target.reportValidity();
+});
+
 
 
 </script>

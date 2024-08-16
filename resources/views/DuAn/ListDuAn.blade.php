@@ -6,7 +6,7 @@
             padding-top: 0px;
         }
         </style>
-        <a href=" /GiaiDoan/addview"  aria-expanded="false" >
+        <a href="/DuAn/addview"  aria-expanded="false" >
                 <div class="logoutForm">
                 <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
                 <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
@@ -15,10 +15,13 @@
                 </div>
         </a>
         <div class="col">
-                <table id="myTableGiaiDoan">
+                <table id="myTableDuAn">
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Tên Dự Án</th>
+                            <th>Mô tả</th>
+                            <th>Thành Viên</th>
                             <th>Giai Đoạn</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
@@ -32,41 +35,56 @@
             
         <script>
             $(document).ready(function() {
-            var table = $('#myTableGiaiDoan').DataTable({
+            var table = $('#myTableDuAn').DataTable({
                 ajax: {
-                    url: "{{ route('GiaiDoan.data') }}",
+                    url: "{{ route('DuAn.data') }}",
                     dataSrc: 'data'
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'TenGiaiDoan' },
+                    { data: 'TenDuAn' },
+                    { data: 'Mota' },
                     {
                         data: null,
                         render: function(data, type, row) {
-                        return '<form method="get" action="/GiaiDoan/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
+                        return '<a href="/DuAn/ThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
+                   
                     }
                     },
                     {
                         data: null,
                         render: function(data, type, row) {
-                            return '<button class="btn btn-danger DeleteGiaiDoan-form" onclick="deleteGiaiDoan(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
+                        return '<a href="/DuAn/GiaiDoan?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-bars-staggered" style="color: #20679d; font-size:25px"></i></a>';                            
+                   
+                    }
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                        return '<form method="get" action="/DuAn/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
+                    }
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return '<button class="btn btn-danger DeleteDuAn-form" onclick="deleteDuAn(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     }
                 ]
             });
         });
 
-        function deleteGiaiDoan(GiaiDoanId) {
+        function deleteDuAn(DuAnId) {
             if (confirm('Bạn có chắc chắn muốn xóa vai trò này?')) {
                 // Gửi yêu cầu xóa vai trò đến server
                 $.ajax({
-                    url: '/GiaiDoan/remove/' + GiaiDoanId,
+                    url: '/DuAn/remove/' + DuAnId,
                     type: 'GET',
                     success: function(response) {
                         if (response.success) {
                             // Cập nhật lại bảng dữ liệu
                             showSuccessToast1()
-                            var table = $('#myTableGiaiDoan').DataTable();
+                            var table = $('#myTableDuAn').DataTable();
                             table.ajax.reload(null, false);
                         }
                     },
@@ -78,7 +96,7 @@
             }
         }
         $(document).ready(function() {
-	$('.DeleteGiaiDoan-form').click(function(event) {
+	$('.DeleteDuAn-form').click(function(event) {
 		event.preventDefault(); // Ngăn chặn hành động mặc định của button
 		var button = $(this);
 		var id = button.attr('data-id');

@@ -3,12 +3,12 @@
  
 <div class="col">
 <div class="container">
-  <h2 class=" text-weight">Cập Nhật Giai Đoạn<small></small></h2>
-  <form  method="post" class="needs-validation GiaiDoan-form" action="/GiaiDoan/update/{{$GiaiDoan->id}}" novalidate>
+  <h2 class=" text-weight">Thông Tin Dự Án<small></small></h2>
+  <form  method="post" class="needs-validation DuAn-form" action="/DuAn/update/{{$DuAn->id}}" novalidate>
   @csrf
     <div class="group">
     <label>Tên Giai Đoạn <span style="color:red;">(*)</span></label>
-      <input  id="usernameInput" name="TenGiaiDoan" value="{{ $GiaiDoan->TenGiaiDoan }}" type="text" class="form-control" required>
+      <input  id="usernameInput" name="TenDuAn" value="{{ $DuAn->TenDuAn }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
@@ -18,6 +18,19 @@
         Vui Lòng Nhập Giai Đoạn !
       </div>
     </div>
+    <div class="group">
+    <label> Mô Tả <span style="color:red;">(*)</span></label>
+    <textarea id="NoiDungInput" name="MoTa" class="form-control textarea" required>{{ $DuAn->Mota }}</textarea>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <div class="valid-feedback">
+        Nhập Mô Tả Thành Công
+    </div>
+    <div class="invalid-feedback">
+        Vui Lòng Nhập Mô Tả!
+    </div>
+</div>
+
 
       <button name="Add" type="submit" class="submit-btn">Cập Nhật</button>
   </form>
@@ -27,7 +40,7 @@
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
 	$(document).ready(function() {
-		$('.GiaiDoan-form').submit(function(event) {
+		$('.DuAn-form').submit(function(event) {
 			event.preventDefault(); // Ngăn chặn form submit mặc định
 			var form = $(this);
 			var url = form.attr('action');
@@ -49,7 +62,7 @@
 							var message=""			
 							showSuccessToast1();
 							setTimeout(function() {
-								window.location.href = "/GiaiDoan";
+								window.location.href = "/DuAn";
 							}, 1000);
 						} else {		
 							showErrorToast1();
@@ -123,6 +136,14 @@
 <script>
   var usernameInput = document.getElementById('usernameInput');
   usernameInput.addEventListener('input', function(e) {
+    var value = e.target.value;
+    // Loại bỏ khoảng trắng đầu tiên nếu có
+    var sanitizedValue = value.replace(/^\s/, '');
+    e.target.value = sanitizedValue;
+  });
+  
+  var NoiDungInput = document.getElementById('NoiDungInput');
+  NoiDungInput.addEventListener('input', function(e) {
     var value = e.target.value;
     // Loại bỏ khoảng trắng đầu tiên nếu có
     var sanitizedValue = value.replace(/^\s/, '');
