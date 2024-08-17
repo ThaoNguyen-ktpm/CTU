@@ -1,5 +1,7 @@
 @extends('layouts/layoutAdmin')
 @section('content')
+
+
 <style>
 .custom-select {
   position: relative;
@@ -63,7 +65,7 @@
       </div>
     </div>
     <div class="group">
-    <label>Nhập Mô Tả <span style="color:red;">(*)</span></label>
+    <label>Mô Tả Dự Án<span style="color:red;">(*)</span></label>
       <textarea id="NoiDungInput" name="MoTa" type="text" class="form-control textarea" required></textarea >
       <span class="highlight"></span>
       <span class="bar"></span>
@@ -155,6 +157,7 @@
 </div>
 <div id="toast1"></div>
 <script src="{{ asset('js/formvalidation.js') }}"></script>
+
 <script>
   $(document).ready(function() {
     // Gán sự kiện onchange bằng Event Listener
@@ -186,16 +189,16 @@ function loadNguoiDungData(maDonVi) {
                           <div style="font-weight: 600; color: #1f1f1f;" class="form-check-label">
                               ${nguoiDung.user_name} 
                           </div>
-                          <div style="width: 220px;" class="form-check-label">
+                          <div style="width: 100%;" class="form-check-label">
                              : ${nguoiDung.Quyen == 2 ? 'Trưởng Phòng' :
                                 nguoiDung.Quyen == 3 ? 'Phó Phòng' :
                                 nguoiDung.Quyen == 4 ? 'Nhân Viên' : 'Không xác định'}
                           </div>
                       </div>
-                      <label style="width: 220px;" class="form-check-label">
+                      <label style="width: 100%;" class="form-check-label">
                           Vai Trò: ${nguoiDung.vaitro_names ? nguoiDung.vaitro_names : 'Chưa Có Vai Trò'}
                       </label>
-                      <label style="width: 220px;" class="form-check-label">
+                      <label style="width: 100%;" class="form-check-label">
                           Đơn Vị: ${nguoiDung.donvi_names ? nguoiDung.donvi_names : 'Chưa Có Đơn Vị'}
                       </label>
                   </div>
@@ -454,7 +457,6 @@ NgayBatDau.addEventListener('input', function(e) {
   // Cập nhật trạng thái của form để hiển thị thông báo lỗi (nếu có)
   e.target.reportValidity();
 });
-
 
 
 </script>

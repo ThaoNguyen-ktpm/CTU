@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 class GiaiDoanController extends Controller
 {
-   //Danh sách Chứng chỉ
+   //Danh sách Giai Đoạn
    public function list()
    {
-       $title = "Danh Sách Chứng chỉ";
+       $title = "Danh Sách Giai Đoạn";
        return view('GiaiDoan.ListGiaiDoan', compact('title'));
    }
    public function getGiaiDoan()
@@ -18,10 +18,10 @@ class GiaiDoanController extends Controller
         $GiaiDoan = giaidoan::where('IsActive', 1)->get();
        return response()->json(['data' => $GiaiDoan]);
    }
-   //Thêm Chứng chỉ
+   //Thêm Giai Đoạn
    public function addview()
    {
-       $title = "Thêm Chứng chỉ";
+       $title = "Thêm Giai Đoạn";
     
        return view('GiaiDoan.AddGiaiDoan', compact('title'));
    }
@@ -54,11 +54,11 @@ class GiaiDoanController extends Controller
     
         }
    }
-   //Cập nhật Chứng chỉ
+   //Cập nhật Giai Đoạn
    public function updateview($id)
    {
        $GiaiDoan = giaidoan::find($id);
-       $title = "Cập Nhật Chứng chỉ";
+       $title = "Cập Nhật Giai Đoạn";
        return view('GiaiDoan.UpdateGiaiDoan', compact('GiaiDoan', 'title'));
    }
    
@@ -97,7 +97,7 @@ class GiaiDoanController extends Controller
            
         }
    }
-   //Xóa Chứng chỉ
+   //Xóa Giai Đoạn
    public function remove($id)
    {
        $GiaiDoan= giaidoan::find($id);

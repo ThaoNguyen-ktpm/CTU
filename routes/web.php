@@ -7,6 +7,7 @@ use App\Http\Controllers\PhongBanController;
 use App\Http\Controllers\TacVuController;
 use App\Http\Controllers\DuAnController;
 use App\Http\Controllers\ThongBaoController;
+use App\Http\Controllers\CongViecController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Test;
@@ -154,7 +155,6 @@ Route::post('DuAn/update/{id}', [DuAnController::class,'update'])->name('DuAn.up
 Route::get('DuAn/remove/{id}', [DuAnController::class,'remove'])->name('DuAn.remove');
 // Lấy người dùng theo Đơn Vị
 Route::get('/DuAn/DonVi/getNguoiDung/{id}', [DuAnController::class,'getNguoiDung']);
-
 // Danh sách Giai Đoạn Dự Án
 Route::get('DuAn/GiaiDoan', [DuAnController::class,'listGiaiDoan'])->name('DuAn.listDuAnGiaiDoan');
 Route::get('DuAn/GiaiDoan/data', [DuAnController::class, 'getDuAnGiaiDoan'])->name('DuAnGiaiDoan.data');
@@ -163,6 +163,24 @@ Route::get('DuAn/GiaiDoan/data', [DuAnController::class, 'getDuAnGiaiDoan'])->na
 Route::get('DuAn/ThanhVien', [DuAnController::class,'listThanhVien'])->name('DuAn.listDuAnThanhVien');
 Route::get('DuAn/ThanhVien/data', [DuAnController::class, 'getDuAnThanhVien'])->name('DuAnThanhVien.data');
 
+// Danh sách Công Việc
+Route::get('CongViec', [CongViecController::class,'list'])->name('CongViec.listCongViec');
+Route::get('CongViec/data',[CongViecController::class,'getCongViec'])->name('CongViec.data');
+//Thêm Công Việc
+Route::get('CongViec/addview', [CongViecController::class,'addview'])->name('CongViec.addview');
+Route::post('CongViec/add', [CongViecController::class,'add'])->name('CongViec.add');
+//Cập nhật Công Việc
+Route::get('CongViec/updateview/{id}', [CongViecController::class,'updateview'])->name('CongViec.updateview');
+Route::post('CongViec/update/{id}', [CongViecController::class,'update'])->name('CongViec.update');
+// Xóa Công Việc
+Route::get('CongViec/remove/{id}', [CongViecController::class,'remove'])->name('CongViec.remove');
+
+// Lấy giai đoạn theo dự án 
+Route::get('/DuAn/GiaiDoan/getGiaiDoan/{id}', [CongViecController::class,'getGiaiDoanDuAn']);
+// Lấy giai đoạn theo dự án 
+Route::get('/DuAn/ThoiGian/getThoiGian/{id}', [CongViecController::class,'getThoiGian']);
+// Lấy người dùng theo Dự Án
+Route::get('/CongViec/getNguoiDung/{id}', [CongViecController::class,'getNguoiDungCongViec']);
 
 // Danh sách Thông Báo
 Route::get('ThongBao', [ThongBaoController::class,'list'])->name('ThongBao.listThongBao');

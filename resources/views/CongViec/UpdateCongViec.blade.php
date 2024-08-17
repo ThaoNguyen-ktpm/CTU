@@ -1,32 +1,24 @@
 @extends('layouts/layoutAdmin')
 @section('content')
-@php
-session_start();
-// Kiểm tra sessionUserId tồn tại hay không
-$sessionUserId = Session::get('sessionUserId');
-
-if (!$sessionUserId) {
-    header('Location: /Login');
-    exit();
-}
-@endphp   
+ 
 <div class="col">
 <div class="container">
-  <h2 class=" text-weight">Cập Nhật Phòng Học<small></small></h2>
-  <form  method="post" class="needs-validation PhongHoc-form" action="/PhongHoc/update/{{$PhongHoc->id}}" novalidate>
+  <h2 class=" text-weight">Cập Nhật Giai Đoạn<small></small></h2>
+  <form  method="post" class="needs-validation GiaiDoan-form" action="/GiaiDoan/update/{{$GiaiDoan->id}}" novalidate>
   @csrf
     <div class="group">
-    <label>Tên Phòng Học <span style="color:red;">(*)</span></label>
-      <input id="phonghocInput" name="TenPhongHoc" value="{{ $PhongHoc->TenPhongHoc }}" type="text" class="form-control" required>
+    <label>Tên Giai Đoạn <span style="color:red;">(*)</span></label>
+      <input  id="usernameInput" name="TenGiaiDoan" value="{{ $GiaiDoan->TenGiaiDoan }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Phòng Học Thành Công
+        Nhập Giai Đoạn Thành Công
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Phòng Học !
+        Vui Lòng Nhập Giai Đoạn !
       </div>
     </div>
+
       <button name="Add" type="submit" class="submit-btn">Cập Nhật</button>
   </form>
 </div>
@@ -35,7 +27,7 @@ if (!$sessionUserId) {
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
 	$(document).ready(function() {
-		$('.PhongHoc-form').submit(function(event) {
+		$('.GiaiDoan-form').submit(function(event) {
 			event.preventDefault(); // Ngăn chặn form submit mặc định
 			var form = $(this);
 			var url = form.attr('action');
@@ -57,7 +49,7 @@ if (!$sessionUserId) {
 							var message=""			
 							showSuccessToast1();
 							setTimeout(function() {
-								window.location.href = "/PhongHoc";
+								window.location.href = "/GiaiDoan";
 							}, 1000);
 						} else {		
 							showErrorToast1();
@@ -112,7 +104,7 @@ if (!$sessionUserId) {
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: "Đã Tồn Tại Phòng Học  !",
+          message: "Đã Tồn Tại Giai Đoạn  !",
           type:"error",
           duration:2000
       })
@@ -121,20 +113,20 @@ if (!$sessionUserId) {
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Cập Nhật Phòng Học Thành Công !",
+        message: "Cập Nhật Giai Đoạn Thành Công !",
         type:"success",
         duration:2000
       })
     }
-    document.addEventListener('DOMContentLoaded', function() {
-    var phonghocInput = document.getElementById('phonghocInput'); // Thay đổi id tương ứng với thẻ input của bạn
-    phonghocInput.addEventListener('input', function(e) {
-        var value = e.target.value;
-        // Kiểm tra và loại bỏ khoảng trắng, dấu chấm và các ký tự đặc biệt
-        var sanitizedValue = value.replace(/[\s\.]/g, '');
-        e.target.value = sanitizedValue;
-    });
-});
-  
+</script>
+
+<script>
+  var usernameInput = document.getElementById('usernameInput');
+  usernameInput.addEventListener('input', function(e) {
+    var value = e.target.value;
+    // Loại bỏ khoảng trắng đầu tiên nếu có
+    var sanitizedValue = value.replace(/^\s/, '');
+    e.target.value = sanitizedValue;
+  });
 </script>
 @endsection

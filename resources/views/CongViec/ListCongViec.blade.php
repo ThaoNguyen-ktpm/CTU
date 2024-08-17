@@ -1,21 +1,12 @@
 @extends('layouts/layoutAdmin')
 @section('content')
-@php
-session_start();
-// Kiểm tra sessionUserId tồn tại hay không
-$sessionUserId = Session::get('sessionUserId');
-
-if (!$sessionUserId) {
-    header('Location: /Login');
-    exit();
-}
-@endphp   
-<style>
-        .dataTables_wrapper {
+ 
+        <style>
+            .dataTables_wrapper {
             padding-top: 0px;
         }
         </style>
-        <a href=" /PhongHoc/addview"  aria-expanded="false" >
+        <a href=" /GiaiDoan/addview"  aria-expanded="false" >
                 <div class="logoutForm">
                 <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
                 <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
@@ -24,11 +15,11 @@ if (!$sessionUserId) {
                 </div>
         </a>
         <div class="col">
-                <table id="myTablePhongHoc">
+                <table id="myTableGiaiDoan">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Tên Phòng Học</th>
+                            <th>Giai Đoạn</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
                         </tr>
@@ -36,44 +27,46 @@ if (!$sessionUserId) {
                     <tbody></tbody>
                 </table>
             </div>
+         
             <div id="toast1"></div>
+            
         <script>
             $(document).ready(function() {
-            var table = $('#myTablePhongHoc').DataTable({
+            var table = $('#myTableGiaiDoan').DataTable({
                 ajax: {
-                    url: "{{ route('PhongHoc.data') }}",
+                    url: "{{ route('GiaiDoan.data') }}",
                     dataSrc: 'data'
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'TenPhongHoc' },
+                    { data: 'TenGiaiDoan' },
                     {
                         data: null,
                         render: function(data, type, row) {
-                        return '<form method="get" action="/PhongHoc/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
+                        return '<form method="get" action="/GiaiDoan/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
                     }
                     },
                     {
                         data: null,
                         render: function(data, type, row) {
-                            return '<button class="btn btn-danger DeletePhongHoc-form" onclick="deletePhongHoc(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
+                            return '<button class="btn btn-danger DeleteGiaiDoan-form" onclick="deleteGiaiDoan(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     }
                 ]
             });
         });
 
-        function deletePhongHoc(PhongHocId) {
+        function deleteGiaiDoan(GiaiDoanId) {
             if (confirm('Bạn có chắc chắn muốn xóa vai trò này?')) {
                 // Gửi yêu cầu xóa vai trò đến server
                 $.ajax({
-                    url: '/PhongHoc/remove/' + PhongHocId,
+                    url: '/GiaiDoan/remove/' + GiaiDoanId,
                     type: 'GET',
                     success: function(response) {
                         if (response.success) {
                             // Cập nhật lại bảng dữ liệu
-                            showSuccessToast1();
-                            var table = $('#myTablePhongHoc').DataTable();
+                            showSuccessToast1()
+                            var table = $('#myTableGiaiDoan').DataTable();
                             table.ajax.reload(null, false);
                         }
                     },
@@ -85,7 +78,7 @@ if (!$sessionUserId) {
             }
         }
         $(document).ready(function() {
-	$('.DeletePhongHoc-form').click(function(event) {
+	$('.DeleteGiaiDoan-form').click(function(event) {
 		event.preventDefault(); // Ngăn chặn hành động mặc định của button
 		var button = $(this);
 		var id = button.attr('data-id');
@@ -149,7 +142,7 @@ function toast1({title='',message='',type='info',duration=2000}){
     function showSuccessToast1() {
         toast1({
             title: "Success",
-            message: "Xóa Phòng Học Thành Công!",
+            message: "Xóa Giai Đoạn Thành Công!",
             type: "success",
             duration: 2000
         })
@@ -163,5 +156,6 @@ function toast1({title='',message='',type='info',duration=2000}){
       })
     }
 
-            </script>
+</script>
+          
 @endsection
