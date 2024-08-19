@@ -27,8 +27,34 @@
                 columns: [
                     { data: 'ThuGiaiDoan' },
                     { data: 'TenGiaiDoan' },
-                    { data: 'NgayBatDau' },
-                    { data: 'NgayKetThuc' },
+                    {
+                        data: 'NgayBatDau',
+                        render: function(data) {
+                            if (data === null || data === '') {
+                            return ' ';
+                            } else {
+                            var ngaySinh = new Date(data);
+                            var ngay = ngaySinh.getDate();
+                            var thang = ngaySinh.getMonth() + 1;
+                            var nam = ngaySinh.getFullYear();
+                            return ngay + '-' + thang + '-' + nam;
+                            }
+                        }
+                },
+                {
+                        data: 'NgayKetThuc',
+                        render: function(data) {
+                            if (data === null || data === '') {
+                            return ' ';
+                            } else {
+                            var ngaySinh = new Date(data);
+                            var ngay = ngaySinh.getDate();
+                            var thang = ngaySinh.getMonth() + 1;
+                            var nam = ngaySinh.getFullYear();
+                            return ngay + '-' + thang + '-' + nam;
+                            }
+                        }
+                },
                 ]
             });
         });

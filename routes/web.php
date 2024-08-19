@@ -181,6 +181,9 @@ Route::get('/DuAn/GiaiDoan/getGiaiDoan/{id}', [CongViecController::class,'getGia
 Route::get('/DuAn/ThoiGian/getThoiGian/{id}', [CongViecController::class,'getThoiGian']);
 // Lấy người dùng theo Dự Án
 Route::get('/CongViec/getNguoiDung/{id}', [CongViecController::class,'getNguoiDungCongViec']);
+// Danh sách Thành Viên Dự Án
+Route::get('CongViec/ThanhVien', [CongViecController::class,'listThanhVien'])->name('CongViec.listCongViecThanhVien');
+Route::get('CongViec/ThanhVien/data', [CongViecController::class, 'getCongViecThanhVien'])->name('CongViecThanhVien.data');
 
 // Danh sách Thông Báo
 Route::get('ThongBao', [ThongBaoController::class,'list'])->name('ThongBao.listThongBao');

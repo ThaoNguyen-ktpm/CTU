@@ -49,8 +49,8 @@
       </div>
     </div>
     <div class="group">
-    <label>Nhập Link Tài Liệu <span style="color:red;">(*)</span></label>
-      <input  id="linkInput" name="LinkTaiLieu" type="text"  class="form-control" required pattern="^\S.*">
+    <label>Nhập Link Tài Liệu <span style="color:red;"></span></label>
+      <input  id="linkInput" name="LinkTaiLieu" type="text"  class="form-control" pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
@@ -74,11 +74,11 @@
     </div>
     <div class="group">
       <label>Nhập Số Ngày Thực Hiện <span style="color:red;">(*)</span></label>
-        <input  id="SoNgayThucHienInput" name="SoNgayThucHien[]" type="number"  min="1" max="1000" class="form-control" required>
+        <input  id="SoNgayThucHienInput" name="SoNgayThucHien" type="number"  min="1" max="1000" class="form-control" required>
         <span class="highlight"></span>
         <span class="bar"></span>
         <div class="valid-feedback">Nhập Ngày Thực Hiện Thành Công</div>
-        <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện!</div>
+        <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện Không Lớn Hơn Số Ngày Của Giai Đoạn!</div>
     </div>
     <div class="group" style="margin-top: 20px;">
         <label>Chọn Người Nhận Việc<span style="color:red;"> (*)</span></label>
@@ -99,39 +99,41 @@
 <div id="toast1"></div>
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
-	$(document).ready(function() {
-		$('.CongViec-form').submit(function(event) {
-			event.preventDefault(); // Ngăn chặn form submit mặc định
-			var form = $(this);
-			var url = form.attr('action');
-			var formData = form.serialize();
-			var isError = false;
-			form.find('input[required]').each(function() {
-            var input = $(this);
-            if (input.val() === '') {
-                isError = true;
-            } 
-        });
-			if (!isError) {
-				$.ajax({
-					type: 'POST',
-					url: url,
-					data: formData,
-					success: function(response) {
-						if (response.success === true) {	
-							var message=""			
-							showSuccessToast1();
-							setTimeout(function() {
-								window.location.href = "/CongViec";
-							}, 1000);
-						} else {		
-							showErrorToast1();
-						}
-					}
-				});
-			}
-		});
-	});
+	
+  $(document).ready(function() {
+      $('.CongViec-form').submit(function(event) {
+        event.preventDefault(); // Ngăn chặn form submit mặc định
+        var form = $(this)[0]; // Lấy form DOM element
+        var $form = $(this); // jQuery đối tượng của form
+        var url = $form.attr('action');
+
+        // Kiểm tra tính hợp lệ của form
+        if (form.checkValidity() === false) {
+          event.stopPropagation();
+          $form.addClass('was-validated');
+        } else {
+          var formData = $form.serialize();
+          $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            success: function(response) {
+              if (response.success === true) {  
+                showSuccessToast1();
+                setTimeout(function() {
+                  window.location.href = "/CongViec";
+                }, 1000);
+              } else {    
+                showErrorToast1();
+              }
+            }
+          });
+        }
+      });
+    });
+
+
+
   function toast1({title='',message='',type='info',duration=2000}){
     const main=document.getElementById('toast1');
     if (main){
@@ -294,7 +296,7 @@ function loadThoiGian(maGiaiDoan) {
             });
 
             // Lắng nghe sự kiện input để kiểm tra giá trị người dùng nhập
-            var inputElements = document.querySelectorAll('input[name="SoNgayThucHien[]"]');
+            var inputElements = document.querySelectorAll('input[name="SoNgayThucHien"]');
             inputElements.forEach(function(input) {
                 input.addEventListener('input', function(e) {
                     var value = e.target.value;
@@ -333,7 +335,7 @@ function loadNguoiDungData(maDonVi) {
                 // Tạo HTML cho từng người dùng
                 var checkboxHtml = `
                   <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="MaNguoiDung[]" value="${nguoiDung.id}" required>
+                      <input class="form-check-input" type="checkbox" name="MaNguoiDung[]" value="${nguoiDung.id}">
                       <div style="display: flex;">
                           <div style="font-weight: 600; color: #1f1f1f;" class="form-check-label">
                               ${nguoiDung.user_name} 

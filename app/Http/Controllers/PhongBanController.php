@@ -40,7 +40,7 @@ class PhongBanController extends Controller
             $KiemTra = DB::select('SELECT *
                                     FROM  phongbans 
                                     WHERE phongbans.MaNguoiDung = ?
-                                    and phongbans.MaVaiTro = ? 
+                                    and phongbans.MaDonVi = ? 
                                     and phongbans.IsActive = true',[$nguoiDungId,$MaDonVi]);
             if($KiemTra){
                 return response()->json(['success' => false]);

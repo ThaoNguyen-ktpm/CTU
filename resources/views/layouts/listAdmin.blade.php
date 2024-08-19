@@ -87,7 +87,7 @@
                 </div>
             </a>
               <!-- Công Việc -->
-            <a href="/CongViec/addview"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="/CongViec"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
                 <i class="fa-solid fa-chalkboard-user" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Quản Lý Công Việc</span>

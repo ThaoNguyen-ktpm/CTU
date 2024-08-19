@@ -84,25 +84,25 @@ if (!$sessionUserId) {
 <div id="toast1"></div>
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
-	$(document).ready(function() {
-		$('.Admin-form').submit(function(event) {
-			event.preventDefault(); // Ngăn chặn form submit mặc định
-			var form = $(this);
-			var url = form.attr('action');
-			var formData = form.serialize();
-			var isError = false;
-			form.find('input[required]').each(function() {
-            var input = $(this);
-            if (input.val() === '') {
-                isError = true;
-            } 
-        });
-			if (!isError) {
-				$.ajax({
-					type: 'POST',
-					url: url,
-					data: formData,
-					success: function(response) {
+
+$(document).ready(function() {
+      $('.Admin-form').submit(function(event) {
+        event.preventDefault(); // Ngăn chặn form submit mặc định
+        var form = $(this)[0]; // Lấy form DOM element
+        var $form = $(this); // jQuery đối tượng của form
+        var url = $form.attr('action');
+
+        // Kiểm tra tính hợp lệ của form
+        if (form.checkValidity() === false) {
+          event.stopPropagation();
+          $form.addClass('was-validated');
+        } else {
+          var formData = $form.serialize();
+          $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            success: function(response) {
             if (response.success === true) {	
 							var message=""			
 							showSuccessToast1();
@@ -117,10 +117,13 @@ if (!$sessionUserId) {
               showErrorToast1();
             } 	
 					}
-				});
-			}
-		});
-	});
+          });
+        }
+      });
+    });
+
+
+	
   function toast1({title='',message='',type='info',duration=2000}){
     const main=document.getElementById('toast1');
     if (main){
