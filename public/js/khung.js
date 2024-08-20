@@ -30,10 +30,10 @@ var swiper = new Swiper(".slide-content", {
 
 
 //Nhận Công Việc
-const wrapper = document.querySelector(".wrapper");
+const wrapper = document.querySelector(".wrapper1");
 const carousel = document.querySelector(".carousel");
 const firstCardWidth = carousel.querySelector(".card").offsetWidth;
-const arrowBtns = document.querySelectorAll(".wrapper i");
+const arrowBtns = document.querySelectorAll(".wrapper1 i");
 const carouselChildrens = [...carousel.children];
 
 let isDragging = false, isAutoPlay = true, startX, startScrollLeft, timeoutId;

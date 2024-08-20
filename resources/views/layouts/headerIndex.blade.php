@@ -29,7 +29,7 @@
             </a>
             </div>
             <div class="notification-container">
-            <i class="thongbao fa-solid fa-bell"></i>
+            <i class="thongbao fa-solid fa-bell" style="display: block;"></i>
                 <div class="notification-panel">
                     <ul>
                         <li class="thethongbao">Thông báo 1</li>

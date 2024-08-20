@@ -76,6 +76,7 @@ class CongViecController extends Controller
            WHERE thuchiens.MaDuAn = ? AND thuchiens.MaGiaiDoan = giaidoans.id 
            AND thuchiens.IsActive = true  
            AND giaidoans.IsActive = true
+            AND thuchiens.IsCongViec = false
             ',[$id]);
    
        return response()->json($GiaiDoan);
@@ -187,6 +188,8 @@ class CongViecController extends Controller
         $CongViec->MoTa = $request->MoTa;
         $CongViec->MaDuAn = $request->MaDuAn;
         $CongViec->MaThucHien = $request->MaGiaiDoan;
+
+
     
         // Chuyển đổi NgayBatDau thành đối tượng Carbon và thêm số ngày thực hiện
         $ThoiGianBatDau = Carbon::parse($ThoiGian[0]->NgayBatDau);
@@ -197,12 +200,15 @@ class CongViecController extends Controller
         $ngayKetThuc = date('Y-m-d', strtotime($ThoiGianBatDau . ' + ' .  $SoNgayThucHien . ' days'));
         $CongViec->NgayKetThuc = $ngayKetThuc;
 
-        $CongViec->LinkTaiLieu = $request->LinkTaiLeiu;
+        $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
         $CongViec->TrangThai = 1;
         $CongViec->MaNguoiTao = 1;
         $CongViec->IsActive = true;
         $CongViec->save();
     
+
+        
+
         // Lưu thông tin giao việc
         $MaNguoiDung = $request->input('MaNguoiDung');
         foreach ($MaNguoiDung as $nguoiDungId) {
@@ -244,10 +250,10 @@ class CongViecController extends Controller
     if (!empty($ThucHien)) {
         $ngayBatDau1 = Carbon::parse($ThucHien[0]->NgayBatDau)->format('d/m/Y'); // Định dạng ngày tháng
         $ngayKetThuc1 = Carbon::parse($ThucHien[0]->NgayKetThuc)->format('d/m/Y'); // Định dạng ngày tháng
-
+        $ngayBatDau2 = Carbon::parse($ThucHien[0]->NgayBatDau)->format('Y-m-d');
     
         // Tính toán số ngày giữa hai ngày, bao gồm cả ngày bắt đầu và ngày kết thúc
-        $soNgayThucHien1 = Carbon::parse($ThucHien[0]->NgayBatDau)->diffInDays(Carbon::parse($ThucHien[0]->NgayKetThuc)) + 1;
+        $soNgayThucHien1 = Carbon::parse($ThucHien[0]->NgayBatDau)->diffInDays(Carbon::parse($ThucHien[0]->NgayKetThuc));
     } else {
         // Xử lý khi không có dữ liệu
         $soNgayThucHien1 = 0; // Hoặc giá trị mặc định khác
@@ -315,7 +321,7 @@ class CongViecController extends Controller
          ',[$MaDuAn[0]->MaDuAn]);
 
 
-        return view('CongViec.UpdateCongViec', compact('ThanhVienCongViec','ThanhVienDuAn','soNgayThucHien1','soNgayThucHien', 'CongViec', 'title', 'ngayBatDau', 'ngayKetThuc', 'ngayBatDau1', 'ngayKetThuc1'));
+        return view('CongViec.UpdateCongViec', compact('ThanhVienCongViec','ThanhVienDuAn','soNgayThucHien1','soNgayThucHien', 'CongViec', 'title', 'ngayBatDau','ngayBatDau2', 'ngayKetThuc', 'ngayBatDau1', 'ngayKetThuc1'));
 
       }
 
@@ -339,13 +345,16 @@ class CongViecController extends Controller
             $CongViec->TenCongViec = $request->TenCongViec;
             $CongViec->MoTa = $request->MoTa;
            
-        
+       
+
+
          // Chuyển đổi $request->SoNgayThucHien thành số nguyên
             $SoNgayThucHien =  $request->SoNgayThucHien;
-            $ngayKetThuc = date('Y-m-d', strtotime($request->NgayBatDau . ' + ' . ($SoNgayThucHien - 1) . ' days'));
+          
+            $ngayKetThuc = date('Y-m-d', strtotime($request->NgayBatDau . ' + ' . ($SoNgayThucHien-1) . ' days'));
             $CongViec->NgayKetThuc = $ngayKetThuc;
     
-            $CongViec->LinkTaiLieu = $request->LinkTaiLeiu;
+            $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
             $CongViec->TrangThai = 1;
             $CongViec->MaNguoiTao = 1;
             $CongViec->IsActive = true;

@@ -55,10 +55,10 @@
         <div class="valid-feedback">Nhập Ngày Thực Hiện Thành Công</div>
         <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện Không Lớn Hơn Số Ngày Của Giai Đoạn!</div>
     </div>
-    <div class="group">
-  <input name="NgayBatDau" value="{{ $ngayBatDau1 }}" type="date"  class="form-control"  hidden>
+    
+  <input name="NgayBatDau" value="{{ $ngayBatDau2 }}" type="date"  class="form-control"  >
   
-</div>
+
 
     <div class="group" style="margin-top: 20px;">
         <label>Chọn Người Nhận Việc<span style="color:red;"> (*)</span></label>

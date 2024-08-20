@@ -37,7 +37,7 @@
 </div>
 <div id="selectThoiGian1"></div>
     <div class="group">
-    <label>Tên Công Việc <span style="color:red;">(*)</span></label>
+    <label>Tên Công Việc <span style="color:red;">(*)</span></label> 
       <input  id="usernameInput" name="TenCongViec" type="text"  class="form-control" required pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>

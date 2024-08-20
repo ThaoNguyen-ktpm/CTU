@@ -8,18 +8,21 @@ use App\Http\Controllers\TacVuController;
 use App\Http\Controllers\DuAnController;
 use App\Http\Controllers\ThongBaoController;
 use App\Http\Controllers\CongViecController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Test;
 
 
 Route::get('/admin', [Test::class,'Welcome']);
-Route::get('/Index', [Test::class,'index']);
+
 Route::get('/chitiet', [Test::class,'chitiet']);
 Route::get('/', [Test::class,'Login']);
 Route::get('/MaOTP', [Test::class,'MaOTP']);
 Route::get('/matkhaunew', [Test::class,'matkhaunew']);
 
+Route::get('/Index', [IndexController::class,'index']);
+Route::post('/NhanCongViec/{id}', [IndexController::class,'NhanCongViec']);
 
 
 //Đăng Nhập Bằng Google

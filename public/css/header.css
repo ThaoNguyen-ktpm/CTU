@@ -19,7 +19,7 @@
   position: fixed; /* Dùng fixed để bảng thông báo không bị ảnh hưởng bởi các phần tử khác */
   top: 32px; /* Điều chỉnh vị trí từ trên xuống */
   right: 20px; /* Điều chỉnh vị trí từ phải vào */
-  z-index: 9999; /* Đảm bảo bảng thông báo nằm trên cùng */
+  z-index: 99; /* Đảm bảo bảng thông báo nằm trên cùng */
   display: inline-block;
 }
 
