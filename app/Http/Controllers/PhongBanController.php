@@ -17,7 +17,7 @@ class PhongBanController extends Controller
     }
     public function getPhongBan()
     {
-        $PhongBan = DB::select('SELECT phongbans.*, donvis.TenDonVi, nguoidungs.Name
+        $PhongBan = DB::select('SELECT phongbans.*, donvis.TenDonVi, nguoidungs.UserName
         FROM donvis, phongbans,nguoidungs
         WHERE phongbans.MaNguoiDung = nguoidungs.id and phongbans.MaDonVi = donvis.id and phongbans.IsActive = true');
         return response()->json(['data' => $PhongBan]);
@@ -57,7 +57,7 @@ class PhongBanController extends Controller
     //Cập nhật Khóa học
     public function updateview($id)
     {
-        $PhongBan = DB::select('SELECT phongbans.*, donvis.TenDonVi, nguoidungs.Name 
+        $PhongBan = DB::select('SELECT phongbans.*, donvis.TenDonVi, nguoidungs.UserName 
         FROM donvis, phongbans,nguoidungs
         WHERE phongbans.MaNguoiDung = nguoidungs.id 
         and phongbans.MaDonVi = donvis.id 

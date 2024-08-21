@@ -17,11 +17,11 @@
                 <table id="myTableUser">
                     <thead>
                         <tr>
+                            <th>Họ và Tên</th>
                             <th>Tài Khoản</th>
                             <th>Số Điện Thoại</th>
                             <th>Email</th>
                             <th>Vai Trò</th>
-                            <th>Loại Tài Khoản</th>
                             <th>Đổi Mật Khẩu</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
@@ -40,6 +40,7 @@
                 },
                 columns: [
                     // { data: 'id' },
+                    { data: 'UserName' }, 
                     { data: 'Name' }, 
                     {
                         data: 'SDT',
@@ -63,16 +64,6 @@
                                 return 'Nhân Viên';
                             } else {
                                 return 'Chưa Cấp Quyền';
-                            }
-                        }
-                    },
-                    {
-                        data: 'google_id',
-                        render: function(data, type, row) {
-                            if (data == null) {
-                                return 'Email';
-                            } else {
-                                return 'Google';
                             }
                         }
                     },

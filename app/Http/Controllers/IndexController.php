@@ -12,23 +12,29 @@ class IndexController extends Controller
     public function index()
     {
         $title = "Trang Chủ";
+
+        // Lấy sessionUserId từ session
+        $userId = Session::get('sessionUserId');
+    
+        // Sử dụng $userId trong truy vấn
         $NhanViec = DB::select('SELECT congviecs.* 
-        FROM giaoviecs,congviecs 
-        WHERE giaoviecs.MaNguoiDung = 5 
-        AND giaoviecs.MaCongViec = congviecs.id 
-        AND congviecs.TrangThai = 1');
-         $DangThucHien = DB::select('SELECT congviecs.* 
-         FROM giaoviecs,congviecs 
-         WHERE giaoviecs.MaNguoiDung = 5 
-         AND giaoviecs.MaCongViec = congviecs.id 
-         AND congviecs.TrangThai = 2');
-        return view('Index.TrangChu', compact('DangThucHien','NhanViec','title'));
+            FROM giaoviecs, congviecs 
+            WHERE giaoviecs.MaNguoiDung = ? 
+            AND giaoviecs.MaCongViec = congviecs.id 
+            AND congviecs.TrangThai = 1', [$userId]);
+    
+        $DangThucHien = DB::select('SELECT congviecs.* 
+            FROM giaoviecs, congviecs 
+            WHERE giaoviecs.MaNguoiDung = ? 
+            AND giaoviecs.MaCongViec = congviecs.id 
+            AND congviecs.TrangThai = 2', [$userId]);
+    
+        return view('Index.TrangChu', compact('DangThucHien', 'NhanViec', 'title'));
     }
-    public function NhanCongViec($id)
+    public function ChiTietCongViec($id)
     {
-        $NhanCongViec = congviec::find($id);
-        $NhanCongViec -> TrangThai = 2 ;
-        $NhanCongViec->save();
-        return response()->json(['success' => true, 'message' => 'Công việc đã được nhận thành công!']);
+        $title = "Chi Tiết";
+       $CongViec = DB::select('SELECT congviecs.* , duans.TenDuAn FROM congviecs , duans WHERE congviecs.id = ? AND congviecs.MaDuAn = duans.id',[$id]);
+        return view('Index.ChiTiet', compact( 'CongViec','title'));
     }
 }

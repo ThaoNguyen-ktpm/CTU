@@ -18,12 +18,13 @@ Route::get('/admin', [Test::class,'Welcome']);
 
 Route::get('/chitiet', [Test::class,'chitiet']);
 Route::get('/', [Test::class,'Login']);
+
 Route::get('/MaOTP', [Test::class,'MaOTP']);
 Route::get('/matkhaunew', [Test::class,'matkhaunew']);
 
 Route::get('/Index', [IndexController::class,'index']);
 Route::post('/NhanCongViec/{id}', [IndexController::class,'NhanCongViec']);
-
+Route::post('ChiTiet/CongViec/{id}', [IndexController::class,'ChiTietCongViec']);
 
 //Đăng Nhập Bằng Google
 Route::get('auth/google', [UserController::class, 'redirectToGoogle'])->name('login-google');
@@ -171,6 +172,8 @@ Route::get('CongViec', [CongViecController::class,'list'])->name('CongViec.listC
 Route::get('CongViec/data',[CongViecController::class,'getCongViec'])->name('CongViec.data');
 //Thêm Công Việc
 Route::get('CongViec/addview', [CongViecController::class,'addview'])->name('CongViec.addview');
+Route::get('CongViec/viewid/{id}', [CongViecController::class,'addviewid'])->name('CongViec.addviewid');
+
 Route::post('CongViec/add', [CongViecController::class,'add'])->name('CongViec.add');
 //Cập nhật Công Việc
 Route::get('CongViec/updateview/{id}', [CongViecController::class,'updateview'])->name('CongViec.updateview');

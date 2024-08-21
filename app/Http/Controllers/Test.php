@@ -15,6 +15,10 @@ class Test extends Controller
     {
         $title = "Đăng Nhập";
         return view('User.Login', compact('title'));
+    } public function login123()
+    {
+        $title = "Đăng Nhập";
+        return view('User.Login', compact('title'));
     }
     public function MaOTP()
     {

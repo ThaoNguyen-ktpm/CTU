@@ -30,7 +30,7 @@ class DuAnController extends Controller
          $DuAn = DB::select('SELECT 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name AS user_name, 
+            nguoidungs.UserName AS user_name, 
             GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
             GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
         FROM 
@@ -52,7 +52,7 @@ class DuAnController extends Controller
         GROUP BY 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name;',[$id]);
+            nguoidungs.UserName;',[$id]);
         return response()->json(['data' => $DuAn]);
     }
     public function listGiaiDoan(Request $request)
@@ -94,7 +94,7 @@ class DuAnController extends Controller
     $NguoiDung = DB::select('SELECT 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name AS user_name, 
+            nguoidungs.UserName AS user_name, 
             GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
             GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
         FROM 
@@ -113,7 +113,7 @@ class DuAnController extends Controller
         GROUP BY 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name;
+            nguoidungs.UserName;
         ');
             $DonVi = donvi::where('IsActive', 1)->get();
             $VaiTro = vaitro::where('IsActive', 1)->get();
@@ -125,7 +125,7 @@ class DuAnController extends Controller
        $NguoiDung = DB::select('SELECT 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name AS user_name, 
+            nguoidungs.UserName AS user_name, 
             GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
             GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
         FROM 
@@ -145,7 +145,7 @@ class DuAnController extends Controller
         GROUP BY 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name;
+            nguoidungs.UserName;
             ',[$id]);
    
        return response()->json($NguoiDung);

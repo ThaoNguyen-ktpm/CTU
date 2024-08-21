@@ -18,7 +18,7 @@ class TacVuController extends Controller
     }
     public function getTacVu()
     {
-        $TacVu = DB::select('SELECT tacvus.*, vaitros.TenVaiTro, nguoidungs.Name
+        $TacVu = DB::select('SELECT tacvus.*, vaitros.TenVaiTro, nguoidungs.UserName
         FROM vaitros, tacvus , nguoidungs 
         WHERE tacvus.MaNguoiDung = nguoidungs.id and tacvus.MaVaiTro = vaitros.id and tacvus.IsActive = true');
         return response()->json(['data' => $TacVu]);
@@ -60,7 +60,7 @@ class TacVuController extends Controller
     //Cập nhật Vai Trò Người Dùng
     public function updateview($id)
     {
-        $TacVu = DB::select('SELECT tacvus.*, vaitros.TenVaiTro, nguoidungs.Name 
+        $TacVu = DB::select('SELECT tacvus.*, vaitros.TenVaiTro, nguoidungs.UserName 
         FROM vaitros, tacvus,nguoidungs
         WHERE tacvus.MaNguoiDung = nguoidungs.id 
         and tacvus.MaVaiTro = vaitros.id 

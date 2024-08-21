@@ -6,7 +6,7 @@
             <!-- Separator with title -->
             @if (Session::has('sessionUser'))
                 <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
-                    <span class="welcome-user-text"><i class="fa-solid fa-user-shield"></i> Welcome {{ Session::get('sessionUser') }} {{ Session::get('IsAdmin') }}</span>
+                    <span class="welcome-user-text"><i class="fa-solid fa-user-shield"></i> Welcome {{ Session::get('sessionUser') }} {{ Session::get('sessionUserId') }}</span>
                 </li>          
             @endif
             <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">

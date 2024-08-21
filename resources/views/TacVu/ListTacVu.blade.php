@@ -39,7 +39,7 @@
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'Name' },
+                    { data: 'UserName' },
                     { data: 'TenVaiTro' },
                     {
                         data: null,

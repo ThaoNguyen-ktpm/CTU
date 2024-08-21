@@ -186,7 +186,7 @@ function loadNguoiDungData(maDonVi) {
                   <div class="form-check">
                       <input class="form-check-input" type="checkbox" name="MaNguoiDung[]" value="${nguoiDung.id}">
                       <div style="display: flex;">
-                          <div style="font-weight: 600; color: #1f1f1f;" class="form-check-label">
+                          <div style="font-weight: 600; color: #1f1f1f;width: 100%;" class="form-check-label">
                               ${nguoiDung.user_name} 
                           </div>
                           <div style="width: 100%;" class="form-check-label">

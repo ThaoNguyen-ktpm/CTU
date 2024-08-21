@@ -13,7 +13,7 @@
             <p class="description"></p>
             <p>{{ \Carbon\Carbon::parse($NhanViec1->NgayBatDau)->format('d-m-Y') }} Đến {{ \Carbon\Carbon::parse($NhanViec1->NgayKetThuc)->format('d-m-Y') }}</p>
 
-           <form class="nhan-cong-viec-form" data-id="{{ $NhanViec1->id }}" method="POST">
+           <form  method="POST" action="/ChiTiet/CongViec/{{ $NhanViec1->id }}" novalidate>
             <!-- <form class="nhan-cong-viec-form" data-id="{{ $NhanViec1->id }}" method="POST"> -->
                 @csrf 
                 <button class="button" type="submit">Xem Chi Tiết</button>
@@ -297,30 +297,6 @@
 
 <script src="{{ asset('js/khung.js') }}"></script>
 
-<script>
- $(document).ready(function() {
-    $('.nhan-cong-viec-form').on('submit', function(e) {
-        e.preventDefault(); // Ngăn chặn việc tải lại trang tự động
-
-        var form = $(this);
-        var id = form.data('id'); // Lấy ID công việc từ data-id trong form
-
-        $.ajax({
-            url: '/NhanCongViec/' + id,
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}', // Thêm CSRF token để bảo mật
-            },
-            success: function(response) {
-                // Tải lại trang sau khi cập nhật thành công
-                location.reload(); 
-            },
-          
-        });
-    });
-});
-
-</script>
 
 @endsection
  

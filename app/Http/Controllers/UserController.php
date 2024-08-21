@@ -102,6 +102,7 @@ class UserController extends Controller
    {
     $User = new nguoidung;
     $User->Name = $request->UserName;
+    $User->UserName = $request->HoTen;
     $User->Password = bcrypt($request->Password);
     $User->Email = $request->Email;
     $User->SDT = $request->SDT;
@@ -187,6 +188,7 @@ class UserController extends Controller
    {
     $User = new nguoidung;
     $User->Name = $request->UserName;
+    $User->UserName = $request->HoTen;
     $User->Password = bcrypt($request->Password);
     $User->Email = $request->Email;
     $User->SDT = $request->SDT;
@@ -239,6 +241,7 @@ class UserController extends Controller
             } else {
             $User = nguoidung::find($id);
             $User->Name = $request->UserName;
+            $User->UserName = $request->HoTen;
             $User->Email = $request->Email;
             $User->SDT = $request->SDT;
                 $User->save();
@@ -414,7 +417,7 @@ class UserController extends Controller
                 // So sánh mật khẩu đã mã hóa trong cơ sở dữ liệu với mật khẩu người dùng nhập vào
                 if (Hash::check($Password, $user->Password) ) {
                     // Đăng nhập thành công
-                    Session::put('sessionUser', $user->Name);
+                    Session::put('sessionUser', $user->UserName);
                     Session::put('sessionUserId', $user->id);
                     Session::put('IsAdmin', $user->Quyen);    
                     
@@ -458,13 +461,13 @@ class UserController extends Controller
                 // Kiểm tra xem email có trong danh sách emailsToCheck không
                 if ($findUser && in_array($findUser->Quyen, [1, 2, 3])) {
                     // Nếu có trong danh sách, tiếp tục kiểm tra hoặc tạo người dùng
-                        Session::put('sessionUser', $findUser->Name);
+                        Session::put('sessionUser', $findUser->UserName);
                         Session::put('sessionUserId', $findUser->id);
                         Session::put('IsAdmin', $findUser->Quyen);
                         return redirect()->intended('/admin');  
                 } else {
 
-                        Session::put('sessionUser', $findUser->Name);
+                        Session::put('sessionUser', $findUser->UserName);
                         Session::put('sessionUserId', $findUser->id);
                         Session::put('IsAdmin', $findUser->Quyen);
                         return redirect()->intended('/Index');

@@ -23,14 +23,16 @@
                             <th>Mô tả</th>
                             <th>Thành Viên</th>
                             <th>Giai Đoạn</th>
+                            <th>Thêm Công Việc</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
                         </tr>
+                       
                     </thead>
                     <tbody></tbody>
                 </table>
+               
             </div>
-         
             <div id="toast1"></div>
             
         <script>
@@ -56,6 +58,12 @@
                         render: function(data, type, row) {
                         return '<a href="/DuAn/GiaiDoan?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-bars-staggered" style="color: #20679d; font-size:25px"></i></a>';                            
                    
+                    }
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                        return '  <form method="get" action="CongViec/viewid/'+row.id+'"> <div class="logoutForm"><button class="Btn"  style="background-color: rgb(13 55 111); z-index: 10;" ><div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div><div class="text" style=" margin-left: 5px;" >Thêm</div></button></div></form>';
                     }
                     },
                     {

@@ -27,10 +27,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
+    <!-- Link to Bootstrap JS and dependencies -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
     <link rel="stylesheet" href="{{ asset('css/adminlist.css') }}">
     <link rel="stylesheet" href="{{ asset('css/stylebutton.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/admininput.css') }}">
     <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
     <link rel="stylesheet" href="{{ asset('css/background.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KhungCongViec.css') }}">
@@ -66,10 +67,9 @@
     </div>
 </div>
 
-<!-- Link to Bootstrap JS and dependencies -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Your custom scripts if any -->
-<script src="scripts.js"></script>
+
+
+
 </body>
 
 </html>

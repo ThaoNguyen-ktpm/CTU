@@ -41,7 +41,7 @@ class CongViecController extends Controller
        $NguoiDung = DB::select('SELECT 
        nguoidungs.id, 
        nguoidungs.Quyen, 
-       nguoidungs.Name AS user_name, 
+       nguoidungs.UserName AS user_name, 
        GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
        GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
    FROM 
@@ -60,12 +60,77 @@ class CongViecController extends Controller
    GROUP BY 
        nguoidungs.id, 
        nguoidungs.Quyen, 
-       nguoidungs.Name;
+       nguoidungs.UserName;
    ');
-       $DuAn = duan::where('IsActive', 1)->get();
+       $duAnList = duan::where('IsActive', 1)->get();
+       // Mảng lưu trữ các dự án chưa đủ công việc
+        $DuAn = [];
+
+        foreach ($duAnList as $duAn) {
+            // Đếm số lượng bảng thực hiện liên quan đến dự án
+            $soLuongThucHien = thuchien::where('MaDuAn', $duAn->id)->count();
+
+            // Đếm số lượng công việc đã tạo theo MaDuAn
+            $soLuongCongViec = congviec::where('MaDuAn', $duAn->id)->count();
+
+            // Kiểm tra nếu số lượng công việc chưa đủ theo bảng thực hiện
+            if ($soLuongCongViec < $soLuongThucHien) {
+                $DuAn[] = $duAn;
+        }
+    }
        $GiaiDoan = giaidoan::where('IsActive', 1)->get();
        $DonVi = donvi::where('IsActive', 1)->get();
        return view('CongViec.AddCongViec', compact('DonVi','NguoiDung','GiaiDoan','DuAn','title'));
+   }
+
+
+   public function addviewid($id)
+   {
+            $title = "Thêm Công Việc 12";
+            $NguoiDung = DB::select('SELECT 
+            nguoidungs.id, 
+            nguoidungs.Quyen, 
+            nguoidungs.UserName AS user_name, 
+            GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
+            GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+        FROM 
+            nguoidungs 
+        LEFT JOIN 
+            tacvus ON nguoidungs.id = tacvus.MaNguoiDung AND tacvus.IsActive = true 
+        LEFT JOIN 
+            vaitros ON vaitros.id = tacvus.MaVaiTro AND vaitros.IsActive = true 
+        LEFT JOIN 
+            phongbans ON nguoidungs.id = phongbans.MaNguoiDung AND phongbans.IsActive = true 
+        LEFT JOIN 
+            donvis ON donvis.id = phongbans.MaDonVi AND donvis.IsActive = true 
+        WHERE 
+            nguoidungs.Quyen IN (2, 3, 4) 
+            AND nguoidungs.IsActive = true 
+        GROUP BY 
+            nguoidungs.id, 
+            nguoidungs.Quyen, 
+            nguoidungs.UserName;
+        ');
+            $duAnList = duan::where('IsActive', 1)->where('duans.id',[$id])->get();
+            // Mảng lưu trữ các dự án chưa đủ công việc
+            $DuAn = [];
+
+            foreach ($duAnList as $duAn) {
+                // Đếm số lượng bảng thực hiện liên quan đến dự án
+                $soLuongThucHien = thuchien::where('MaDuAn', $duAn->id)->count();
+
+                // Đếm số lượng công việc đã tạo theo MaDuAn
+                $soLuongCongViec = congviec::where('MaDuAn', $duAn->id)->count();
+
+                // Kiểm tra nếu số lượng công việc chưa đủ theo bảng thực hiện
+                if ($soLuongCongViec < $soLuongThucHien) {
+                    $DuAn[] = $duAn;
+            }
+        }
+            $GiaiDoan = giaidoan::where('IsActive', 1)->get();
+            $DonVi = donvi::where('IsActive', 1)->get();
+            return view('CongViec.AddCongViec', compact('DonVi','NguoiDung','GiaiDoan','DuAn','title'));
+       
    }
 
 
@@ -96,7 +161,7 @@ class CongViecController extends Controller
        $NguoiDung = DB::select('SELECT 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name AS user_name, 
+            nguoidungs.UserName AS user_name, 
             GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
             GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
         FROM 
@@ -118,7 +183,7 @@ class CongViecController extends Controller
         GROUP BY 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name;
+            nguoidungs.UserName;
             ',[$id]);
    
        return response()->json($NguoiDung);
@@ -135,7 +200,7 @@ class CongViecController extends Controller
        
         $DuAn = DB::select('  SELECT nguoidungs.id, 
            nguoidungs.Quyen, 
-           nguoidungs.Name AS user_name, 
+           nguoidungs.UserName AS user_name, 
            GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
            GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
        FROM 
@@ -159,7 +224,7 @@ class CongViecController extends Controller
        GROUP BY 
            nguoidungs.id, 
            nguoidungs.Quyen, 
-           nguoidungs.Name;',[$id]);
+           nguoidungs.UserName;',[$id]);
        return response()->json(['data' => $DuAn]);
    }
    public function add(Request $request)
@@ -266,7 +331,7 @@ class CongViecController extends Controller
 
             $ThanhVienCongViec = DB::select('  SELECT nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name AS user_name, 
+            nguoidungs.UserName AS user_name, 
             GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
             GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
         FROM 
@@ -290,12 +355,12 @@ class CongViecController extends Controller
         GROUP BY 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.Name;',[$id]);
+            nguoidungs.UserName;',[$id]);
          
          $ThanhVienDuAn = DB::select('SELECT 
          nguoidungs.id, 
          nguoidungs.Quyen, 
-         nguoidungs.Name AS user_name, 
+         nguoidungs.UserName AS user_name, 
          GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
          GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
      FROM 
@@ -317,7 +382,7 @@ class CongViecController extends Controller
      GROUP BY 
          nguoidungs.id, 
          nguoidungs.Quyen, 
-         nguoidungs.Name;
+         nguoidungs.UserName;
          ',[$MaDuAn[0]->MaDuAn]);
 
 

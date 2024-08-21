@@ -7,15 +7,27 @@
   <form action="/Admin/addAdmin" class="needs-validation Admin-form" method="post"   novalidate>
   @csrf
     <div class="group">
-    <label>Admin Name <span style="color:red;">(*)</span></label>
+    <label>Tài Khoản Admin <span style="color:red;">(*)</span></label>
       <input id="usenameInput" name="UserName" type="text" class="form-control text-input" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Admin Name Thành Công
+        Nhập Tài Khoản Admin Thành Công
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Admin Name !
+        Vui Lòng Nhập Tài Khoản Admin !
+      </div>
+    </div>
+    <div class="group">
+    <label> Họ và Tên Admin <span style="color:red;">(*)</span></label>
+    <input id="HoTen" name="HoTen" type="text" class="form-control" required>
+      <span class="highlight"></span>
+      <span class="bar"></span>
+      <div class="valid-feedback">
+        Nhập Tên Họ và Tên Thành Công
+      </div>
+      <div class="invalid-feedback">
+        Vui Lòng Nhập Họ và Tên Admin!
       </div>
     </div>
     <div class="group">
@@ -233,5 +245,14 @@ sdtInput.addEventListener('input', function(e) {
   // Update the input value to be the sanitized value
   e.target.value = sanitizedValue;
 });
+
+
+var HoTen = document.getElementById('HoTen');
+    HoTen.addEventListener('input', function(e) {
+      var value = e.target.value;
+      // Loại bỏ khoảng trắng đầu tiên nếu có
+      var sanitizedValue = value.replace(/^\s/, '');
+      e.target.value = sanitizedValue;
+    });
 </script>
 @endsection

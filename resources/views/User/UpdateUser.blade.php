@@ -7,15 +7,27 @@
   <form  method="post" class="needs-validation User-form" action="/User/update/{{$User->id}}" novalidate>
   @csrf
   <div class="group">
-    <label>Tên Người Dùng <span style="color:red;">(*)</span></label>
+    <label>Tài Khoản Người Dùng <span style="color:red;">(*)</span></label>
       <input id="usenameInput" name="UserName" value="{{ $User->Name }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Tên Người Dùng Thành Công
+        Nhập Tài Khoản Người Dùng Thành Công
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Tên Người Dùng !
+        Vui Lòng Nhập Tài Khoản Người Dùng !
+      </div>
+    </div>
+    <div class="group">
+    <label>Họ và Tên Người Dùng <span style="color:red;">(*)</span></label>
+      <input id="HoTen" name="HoTen" value="{{ $User->UserName }}" type="text" class="form-control" required>
+      <span class="highlight"></span>
+      <span class="bar"></span>
+      <div class="valid-feedback">
+        Nhập Họ và Tên Người Dùng Thành Công
+      </div>
+      <div class="invalid-feedback">
+        Vui Lòng Nhập Họ và Tên Người Dùng !
       </div>
     </div>
     <div class="group">

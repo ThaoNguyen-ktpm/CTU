@@ -9,7 +9,7 @@
 }
 </style>
 <div class="table-title">
-    <h4 style="font-style: italic">Công Việc: Đặt Tả Yêu Cầu</h4>
+    <h3 style="font-style: italic ; font-weight: 600; padding: 20px;">Chi Tiết Công Việc</h3>
 </div>
 <form   method="post" class="needs-validation HocVien-form" action="/HocVien/add" novalidate>
 <table class="table-fill">
@@ -21,24 +21,28 @@
     </thead>
     <tbody class="table-hover">
         <tr>
-            <td class="text-left">Trạng thái báo cáo</td>
-            <td class="text-left">Trang thực hiện</td>
+            <td class="text-left">Tên dự án</td>
+            <td class="text-left">{{$CongViec[0]->TenDuAn}}</td>
         </tr>
         <tr>
-            <td class="text-left">Thời gian còn lại</td>
-            <td class="text-left">1 ngày 1 giờ</td>
+            <td class="text-left">Tên công việc</td>
+            <td class="text-left">{{$CongViec[0]->TenCongViec}}</td>
         </tr>
         <tr>
-            <td class="text-left">Chọn tệp file:</td>
+            <td class="text-left">Thời gian </td>
+            <td class="text-left">{{ \Carbon\Carbon::parse($CongViec[0]->NgayBatDau)->format('d-m-Y') }} Đến {{ \Carbon\Carbon::parse($CongViec[0]->NgayKetThuc)->format('d-m-Y') }}</td>
+        </tr>
+        <tr>
+            <td class="text-left">Link tài liệu</td>
             <td class="text-left">
-                <input type="file" id="fileInput" name="file" class="form-control-file">
+               <a href="{{$CongViec[0]->LinkTaiLieu}}">Link tài liệu</a>
             </td>
         </tr>
         <tr>
-            <td class="text-left"><div class="cmt">Bình luận nội dung</div></td>
+            <td class="text-left"><div class="cmt">Mô tả công việc</div></td>
             <td class="text-left">
                 <div class="group">
-                    <textarea id="ghichuInput" name="GhiChu" class="form-control textarea"></textarea>
+                    <textarea id="ghichuInput" name="GhiChu" class="form-control textarea">{{$CongViec[0]->MoTa}}</textarea>
                     <span class="highlight"></span>
                     <span class="bar"></span>
                 </div>
@@ -46,8 +50,8 @@
         </tr>
     </tbody>
 </table>
-   <div style="width: 100% ;text-align: right;">
-       <button name="Add" type="submit" class="submit-btn">Nộp</button>
+   <div style="width: 100% ;text-align: right; ">
+       <button name="Add" type="submit" style="margin-right: 100px;margin-top: 40px;margin-bottom: 30px" class="button">Xác Nhận Công Việc</button>
     </div>
 </form>
 

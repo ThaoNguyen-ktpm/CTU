@@ -17,7 +17,7 @@
             <div><p style="z-index: 5;margin-left: 20px; margin-bottom:0; color: #474747 ;font-size: 22px;" class=" text-weight">Trung Tâm Công Nghệ Phần Mềm Đại Học Cần Thơ</p></div>
         </div>
         <div style="display: flex;">
-            <p style="margin-bottom:0; color: #474747; margin-right:10px; display:block ; font-size:16px;" class=" text-weight">Nguyen Huynh Dang Khoa</p>
+            <p style="margin-bottom:0; color: #474747; margin-right:10px; display:block ; font-size:16px;" class=" text-weight">{{ Session::get('sessionUser') }}</p>
             <div style="width:160px">
             <a href="/LogoutAction">
                 <div class="logoutForm">

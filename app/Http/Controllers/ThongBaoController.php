@@ -17,7 +17,7 @@ class ThongBaoController extends Controller
    }
    public function getThongBao()
    {
-        $ThongBao = DB::select('SELECT thongbaos.* , nguoidungs.Name AS Name
+        $ThongBao = DB::select('SELECT thongbaos.* , nguoidungs.UserName AS Name
                                 FROM thongbaos ,nguoidungs
                                 WHERE thongbaos.MaNguoiDung = nguoidungs.id
                                 AND thongbaos.IsActive = true
