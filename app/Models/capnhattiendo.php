@@ -10,4 +10,12 @@ class capnhattiendo extends Model
     use HasFactory;
     public $timestamps = false;
     protected $table = 'capnhattiendos';
+    protected $fillable = [
+        'MaGiaoViec',
+        'NoiDung',
+        'TenNguoiNop',
+        'DuongDanFile',
+        'ThoiGian',
+        'IsAcite',
+    ];
 }

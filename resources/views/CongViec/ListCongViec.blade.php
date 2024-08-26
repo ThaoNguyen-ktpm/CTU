@@ -22,6 +22,7 @@
                             <th>Tên Công Việc</th>
                             <th>Dự Án</th>
                             <th>Giai Đoạn</th>
+                            <th>Trạng Thái</th>
                             <th>Ngày Bắt Đầu</th>
                             <th>Ngày Đến Hẹn</th>
                             <th>Người Nhận Việc</th>
@@ -47,6 +48,7 @@
                     { data: 'TenCongViec' },
                     { data: 'TenDuAn' },
                     { data: 'TenGiaiDoan' },
+                    { data: 'TrangThai' },
                     {
                         data: 'NgayBatDau',
                         render: function(data) {

@@ -4,7 +4,7 @@
 <div class="col">
 <div class="container">
   <h2 class="text-weight">Thêm Đơn Vị<small></small></h2>
-  <form  method="post" class="needs-validation DonVi-form" action="/DonVi/add" novalidate>
+  <form  method="post" class="needs-validation DonVi-form"  action="/DonVi/add" novalidate>
   @csrf
     <div class="group">
     <label>Tên Đơn Vị <span style="color:red;">(*)</span></label>

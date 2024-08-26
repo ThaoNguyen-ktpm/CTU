@@ -419,48 +419,71 @@ class CongViecController extends Controller
             $ngayKetThuc = date('Y-m-d', strtotime($request->NgayBatDau . ' + ' . ($SoNgayThucHien-1) . ' days'));
             $CongViec->NgayKetThuc = $ngayKetThuc;
     
+          
+
             $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
             $CongViec->TrangThai = 1;
             $CongViec->MaNguoiTao = 1;
             $CongViec->IsActive = true;
             $CongViec->save();
         
-            // Xử lý thông tin giao việc
+
+            $changeStatus = 1;
+         // Xử lý thông tin giao việc
             $MaNguoiDung = $request->input('MaNguoiDung');
             $MaNguoiDungListDB = giaoviec::where('MaCongViec', $CongViec->id)
+                ->where('IsActive',true)
                 ->pluck('MaNguoiDung')
                 ->toArray();
             $MaNguoiDungListUI = is_array($MaNguoiDung) ? $MaNguoiDung : [$MaNguoiDung];
 
-            // Xóa những người dùng không còn được chọn
+            // Kiểm tra sự thay đổi dữ liệu
             $inDBNotInUI = array_diff($MaNguoiDungListDB, $MaNguoiDungListUI);
-            foreach ($inDBNotInUI as $maNguoiDung) {
-                $GiaoViec = giaoviec::where('MaCongViec', $CongViec->id)
-                    ->where('MaNguoiDung', $maNguoiDung)
-                    ->first();
-                $GiaoViec->IsActive = false;
-                $GiaoViec->save();
-            }
-
-            // Thêm những người dùng mới được chọn
             $inUINotInDB = array_diff($MaNguoiDungListUI, $MaNguoiDungListDB);
-            foreach ($inUINotInDB as $maNguoiDung) {
-                $GiaoViec = giaoviec::where('MaCongViec', $CongViec->id)
-                    ->where('MaNguoiDung', $maNguoiDung)
-                    ->first();
-                if ($GiaoViec) {
-                    $GiaoViec->IsActive = true;
-                   
-                    $GiaoViec->save();
-                } else {
-                    $GiaoViec = new giaoviec;
-                    $GiaoViec->MaCongViec = $CongViec->id;
-                    $GiaoViec->MaNguoiDung = $maNguoiDung;
-                    $GiaoViec->IsActive = true;
-                    $GiaoViec->save();
+
+
+            if (!collect($inDBNotInUI)->isEmpty() || !collect($inUINotInDB)->isEmpty()) {
+                // Xóa những người dùng không còn được chọn
+                $changeStatus = 2;
+
+                // Kiểm tra thời gian sau khi có sự thay đổi
+                $now = Carbon::now()->format('Y-m-d');
+                $ngayKetThuc = Carbon::parse($request->NgayBatDau)->addDays($SoNgayThucHien - 1)->format('Y-m-d');
+
+                if ($changeStatus == 2 && $now >= $request->NgayBatDau && $now <= $ngayKetThuc) {
+                    return response()->json(['time' => false, 'message' => 'Đang Thực hiện']);
                 }
+                
             }
-        
+                foreach ($inDBNotInUI as $maNguoiDung) {
+                    $GiaoViec = giaoviec::where('MaCongViec', $CongViec->id)
+                        ->where('MaNguoiDung', $maNguoiDung)
+                        ->first();
+                    if ($GiaoViec) {
+                        $GiaoViec->IsActive = false;
+                        $GiaoViec->save();
+                    }
+                }
+
+                // Thêm những người dùng mới được chọn
+                foreach ($inUINotInDB as $maNguoiDung) {
+                    $GiaoViec = giaoviec::where('MaCongViec', $CongViec->id)
+                        ->where('MaNguoiDung', $maNguoiDung)
+                        ->first();
+                    if ($GiaoViec) {
+                        $GiaoViec->IsActive = true;
+                        $GiaoViec->save();
+                    } else {
+                        $GiaoViec = new giaoviec;
+                        $GiaoViec->MaCongViec = $CongViec->id;
+                        $GiaoViec->MaNguoiDung = $maNguoiDung;
+                        $GiaoViec->TrangThai = 1;
+                        $GiaoViec->IsActive = true;
+                        $GiaoViec->save();
+                    }
+                }
+
+                
             DB::commit(); // Lưu tất cả thay đổi vào cơ sở dữ liệu
             return response()->json(['success' => true]);
         

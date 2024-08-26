@@ -23,8 +23,10 @@ Route::get('/MaOTP', [Test::class,'MaOTP']);
 Route::get('/matkhaunew', [Test::class,'matkhaunew']);
 
 Route::get('/Index', [IndexController::class,'index']);
-Route::post('/NhanCongViec/{id}', [IndexController::class,'NhanCongViec']);
+Route::post('NhanCongViec/{id}', [IndexController::class,'NhanCongViec']);
+Route::post('NopBaoCao/{id}', [IndexController::class,'NopBaoCao']);
 Route::post('ChiTiet/CongViec/{id}', [IndexController::class,'ChiTietCongViec']);
+Route::post('CapNhatTienDo/CongViec/{id}', [IndexController::class,'CapNhatTienDoView']);
 
 //Đăng Nhập Bằng Google
 Route::get('auth/google', [UserController::class, 'redirectToGoogle'])->name('login-google');

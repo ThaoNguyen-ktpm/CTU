@@ -141,7 +141,9 @@
                 setTimeout(function() {
                   window.location.href = "/CongViec";
                 }, 1000);
-              } else {    
+              } else if (response.time === false){
+                showErrorToast2();
+              } else{    
                 showErrorToast1();
               }
             }
@@ -199,11 +201,18 @@
           duration:2000
       })
     }
-	    
+    function showErrorToast2(){
+      toast1({
+          title: "Error",
+          message: "Công Việc Đang Thực Hiện Không Thể Thay Đổi Người Dùng!",
+          type:"error",
+          duration:2000
+      })
+    }
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Cập Nhật Giai Đoạn Thành Công !",
+        message: "Cập Nhật Công Việc Thành Công !",
         type:"success",
         duration:2000
       })

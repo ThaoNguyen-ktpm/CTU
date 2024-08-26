@@ -14,7 +14,6 @@
             <p>{{ \Carbon\Carbon::parse($NhanViec1->NgayBatDau)->format('d-m-Y') }} Đến {{ \Carbon\Carbon::parse($NhanViec1->NgayKetThuc)->format('d-m-Y') }}</p>
 
            <form  method="POST" action="/ChiTiet/CongViec/{{ $NhanViec1->id }}" novalidate>
-            <!-- <form class="nhan-cong-viec-form" data-id="{{ $NhanViec1->id }}" method="POST"> -->
                 @csrf 
                 <button class="button" type="submit">Xem Chi Tiết</button>
             </form>
@@ -34,7 +33,7 @@
     <div class="slide-content">
       <div class="card-wrapper swiper-wrapper">
         @foreach($DangThucHien as $DangThucHien1)
-        <div class="card swiper-slide">
+        <div class="card swiper-slide" style="    height: 350px;">
           <div class="image-content">
             <span class="overlay"></span>
           </div>
@@ -42,7 +41,10 @@
             <h2 class="name">{{$DangThucHien1->TenCongViec}}</h2>
             <p class="description"></p>
             <p>{{ \Carbon\Carbon::parse($DangThucHien1->NgayBatDau)->format('d-m-Y') }} Đến {{ \Carbon\Carbon::parse($DangThucHien1->NgayKetThuc)->format('d-m-Y') }}</p>
-            <button class="button">Xem Tiến Độ</button>
+            <form  method="POST" action="/CapNhatTienDo/CongViec/{{$DangThucHien1->id }}" novalidate>
+                @csrf 
+                <button class="button" type="submit">Cập Nhật Tiến Độ</button>
+            </form>
           </div>
         </div>
         @endforeach
@@ -61,13 +63,15 @@
     <div id="HoanThanh">
         <div id="formList">
         <div id="list">
+        @foreach($HoanThanh as $HoanThanh1)
+
             <div class="item">
                 <div class="content">
                 <span class="overlay1"></span>
                     <table width="100%" cellspacing="0" style="margin-top: 15px;">
                         <tr>
                             <td>Tên</td>
-                            <td>Nami</td>
+                            <td>{{$HoanThanh1->TenCongViec}}</td>
                         </tr>
                         <tr>
                             <td>Nghề nghiệp</td>
@@ -78,104 +82,13 @@
                             <td>Ăn hiếp đồng đội</td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="nameGroup">Thành viên băng Mũ Rơm</td>
+                            <!-- <td colspan="2" class="nameGroup">Thành viên băng Mũ Rơm</td> -->
                         </tr>
                     </table>
                     <button class="button">View More</button>
                 </div>
             </div>
-            <div class="item">
-                <div class="content">
-                <span class="overlay1"></span>
-                    <table width="100%" cellspacing="0" style="margin-top: 15px;">
-                        <tr>
-                            <td>Tên</td>
-                            <td>Nami</td>
-                        </tr>
-                        <tr>
-                            <td>Nghề nghiệp</td>
-                            <td>Hoa tiêu</td>
-                        </tr>
-                        <tr>
-                            <td>Sức mạnh</td>
-                            <td>Ăn hiếp đồng đội</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="nameGroup">Thành viên băng Mũ Rơm</td>
-                        </tr>
-                    </table>
-                    <button class="button">View More</button>
-                </div>
-            </div>
-            <div class="item">
-                <div class="content">
-                <span class="overlay1"></span>
-                    <table width="100%" cellspacing="0" style="margin-top: 15px;">
-                        <tr>
-                            <td>Tên</td>
-                            <td>Nami</td>
-                        </tr>
-                        <tr>
-                            <td>Nghề nghiệp</td>
-                            <td>Hoa tiêu</td>
-                        </tr>
-                        <tr>
-                            <td>Sức mạnh</td>
-                            <td>Ăn hiếp đồng đội</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="nameGroup">Thành viên băng Mũ Rơm</td>
-                        </tr>
-                    </table>
-                    <button class="button">View More</button>
-                </div>
-            </div>
-            <div class="item">
-                <div class="content">
-                <span class="overlay1"></span>
-                    <table width="100%" cellspacing="0" style="margin-top: 15px;">
-                        <tr>
-                            <td>Tên</td>
-                            <td>Nami</td>
-                        </tr>
-                        <tr>
-                            <td>Nghề nghiệp</td>
-                            <td>Hoa tiêu</td>
-                        </tr>
-                        <tr>
-                            <td>Sức mạnh</td>
-                            <td>Ăn hiếp đồng đội</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="nameGroup">Thành viên băng Mũ Rơm</td>
-                        </tr>
-                    </table>
-                    <button class="button">View More</button>
-                </div>
-            </div>
-            <div class="item">
-                <div class="content">
-                <span class="overlay1"></span>
-                    <table width="100%" cellspacing="0" style="margin-top: 15px;">
-                        <tr>
-                            <td>Tên</td>
-                            <td>Nami</td>
-                        </tr>
-                        <tr>
-                            <td>Nghề nghiệp</td>
-                            <td>Hoa tiêu</td>
-                        </tr>
-                        <tr>
-                            <td>Sức mạnh</td>
-                            <td>Ăn hiếp đồng đội</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="nameGroup">Thành viên băng Mũ Rơm</td>
-                        </tr>
-                    </table>
-                    <button class="button">View More</button>
-                </div>
-            </div>
+        @endforeach
          
         </div>
     </div>
