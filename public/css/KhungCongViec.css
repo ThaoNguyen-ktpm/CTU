@@ -4,29 +4,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 
-#NhanCongViec {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  
-}
-#DangThucHien  {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-#HoanThanh  {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-}
-#TreHen  {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
 
+#TreHen, #HoanThanh ,#NhanCongViec , #DangThucHien {
+  width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    background-color: azure;
+    margin-bottom: 20px;
+    border-radius: 10px; /* Làm cong các góc cạnh */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), /* bóng nhẹ phía dưới */
+                0 6px 20px rgba(0, 0, 0, 0.1); /* bóng đậm hơn cho chiều sâu */
+   /* Khoảng cách giữa nội dung và viền */
+    transition: box-shadow 0.3s ease-in-out; /* Hiệu ứng chuyển đổi mượt mà */
+
+}
+
+#TreHen:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* tăng bóng khi hover */
+              0 12px 40px rgba(0, 0, 0, 0.2);
+}
+#HoanThanh:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* tăng bóng khi hover */
+              0 12px 40px rgba(0, 0, 0, 0.2);
+}
+#DangThucHien:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* tăng bóng khi hover */
+              0 12px 40px rgba(0, 0, 0, 0.2);
+}
+#NhanCongViec:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* tăng bóng khi hover */
+              0 12px 40px rgba(0, 0, 0, 0.2);
 }
 /* Nhận Công Viên*/
 .carousel {
@@ -38,16 +46,17 @@
 }
 
 .slide-container {
-  padding-left: 10px;
+
   text-align: center;
   width: 100%;
-  padding: 20px 0;
+  
 }
 
 .slide-content {
   margin: 0 5px;
   overflow: hidden;
   border-radius: 25px;
+  margin: 13px;
 }
 
 .card {
@@ -61,7 +70,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 14px;
+  padding: 10px 25px;
 }
 
 .image-content {
@@ -74,7 +83,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  height: 100%;
+  height: 85%;
   width: 100%;
   background-color: #6184e5;
   border-radius: 25px 25px 0 25px;
@@ -87,7 +96,7 @@
   right: 0;
   bottom: -40px;
   height: 40px;
-  width: 40px;
+  width: 25px;
   background-color: #6184e5;
 }
 
@@ -114,7 +123,7 @@
   right: 0;
   bottom: -40px;
   height: 40px;
-  width: 30px;
+  width: 25px;
   background-color: #6184e5;
 }
 
@@ -238,10 +247,10 @@
 .wrapper1 .carousel{
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: calc((100% / 3) - 12px);
+  grid-auto-columns: calc(100% / 3);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  gap: 16px;
+  
   border-radius: 25px;
   scroll-behavior: smooth;
   scrollbar-width: none;
@@ -267,7 +276,7 @@
 }
 .carousel .card {
   scroll-snap-align: start;
-  height: 342px;
+  height: 300px;
   list-style: none;
   background: #fff;
   cursor: pointer;
@@ -404,11 +413,13 @@
 .item .content {
   padding: 30px;
   font-family: monospace;
+  padding-bottom: 13px;
 }
 
 .item .content table td {
-  padding: 10px 0;
+ 
   border-bottom: 1px solid #AEC0CE;
+  font-size: 14px;
 }
 
 .item .content table td:nth-child(2) {
@@ -515,7 +526,7 @@
   font-family: monospace;
 }
 .item1 .content1 table td{
-  padding:10px 0;
+
   border-bottom: 1px solid #AEC0CE;
 }
 .item1 .content1 table td:nth-child(2){
@@ -563,3 +574,69 @@ h2 {
   margin-bottom: 15px;
   margin-top: 15px;
 }
+.link-tai-lieu:hover {
+  color: white; /* đổi màu chữ thành trắng khi hover */
+}
+
+
+.card {
+
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f9f9f9; /* Màu nền mặc định */
+   /* Bo góc thẻ */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Di chuyển thẻ lên trên một chút khi hover */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+  background-color: #fffefe; /* Thay đổi màu nền khi hover */
+}
+
+.card .button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px; /* Bo góc nút */
+}
+
+.card .button:hover {
+  background-color: #0056b3; /* Thay đổi màu nền của nút khi hover */
+}
+
+
+
+.item1 {
+  position: relative;
+  background-color: #f9f9f9; /* Màu nền mặc định */
+  /* Bo góc thẻ */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.item1:hover {
+  transform: translateY(-5px); /* Di chuyển thẻ lên trên khi hover */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+  background-color: #e6e6e6; /* Thay đổi màu nền khi hover */
+}
+
+
+
+
+.item {
+  position: relative;
+  background-color: #f9f9f9; /* Màu nền mặc định */
+  /* Bo góc thẻ */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.item:hover {
+  transform: translateY(-5px); /* Di chuyển thẻ lên trên khi hover */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+  background-color: #e6e6e6; /* Thay đổi màu nền khi hover */
+}
+
+

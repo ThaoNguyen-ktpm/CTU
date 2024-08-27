@@ -31,27 +31,43 @@ class IndexController extends Controller
             AND giaoviecs.MaCongViec = congviecs.id 
             AND giaoviecs.TrangThai = 2', [$userId]);
 
-        $HoanThanh= DB::select('SELECT congviecs.* 
-        FROM giaoviecs, congviecs 
-        WHERE giaoviecs.MaNguoiDung = ? 
-        AND giaoviecs.MaCongViec = congviecs.id 
-        AND giaoviecs.TrangThai = 3', [$userId]);
+        $HoanThanh= DB::select('SELECT congviecs.* ,capnhattiendos.TenNguoiNop, capnhattiendos.DuongDanFile ,capnhattiendos.ThoiGian
+            FROM giaoviecs, congviecs ,capnhattiendos
+            WHERE giaoviecs.MaNguoiDung = ?
+            AND giaoviecs.MaCongViec = congviecs.id 
+            AND giaoviecs.TrangThai = 3
+            AND capnhattiendos.MaGiaoViec = giaoviecs.id', [$userId]);
 
         $TreHen= DB::select('SELECT congviecs.* 
-        FROM giaoviecs, congviecs 
-        WHERE giaoviecs.MaNguoiDung = ? 
-        AND giaoviecs.MaCongViec = congviecs.id 
-        AND giaoviecs.TrangThai = 4', [$userId]);
+            FROM giaoviecs, congviecs 
+            WHERE giaoviecs.MaNguoiDung = ? 
+            AND giaoviecs.MaCongViec = congviecs.id 
+            AND giaoviecs.TrangThai = 4', [$userId]);
     
         return view('Index.TrangChu', compact('TreHen','HoanThanh','DangThucHien', 'NhanViec', 'title'));
     }
     public function ChiTietCongViec($id)
     {
-        $title = "Chi Tiết";
+        $title = "Chi Tiết Công Việc";
        $CongViec = DB::select('SELECT congviecs.* , duans.TenDuAn FROM congviecs , duans WHERE congviecs.id = ? AND congviecs.MaDuAn = duans.id',[$id]);
         return view('Index.ChiTiet', compact( 'CongViec','title'));
     }
+    public function ChiTietHoanThanh($id)
+    {
 
+         // Lấy sessionUserId từ session
+         $userId = Session::get('sessionUserId');
+        $title = "Chi Tiết Công Việc";
+       $CongViec = DB::select('SELECT congviecs.* , duans.TenDuAn,capnhattiendos.* 
+       FROM congviecs , duans , capnhattiendos , giaoviecs 
+       WHERE congviecs.id = ? 
+       AND congviecs.MaDuAn = duans.id 
+       AND congviecs.id = giaoviecs.MaCongViec 
+       AND giaoviecs.TrangThai = 3   
+       AND giaoviecs.MaNguoiDung = ?
+       AND giaoviecs.id = capnhattiendos.MaGiaoViec',[$id,$userId]);
+        return view('Index.ChiTietHoanThanh', compact( 'CongViec','title'));
+    }
     public function CapNhatTienDoView($id)
     {
         $title = "Cập Nhật Tiến Độ";

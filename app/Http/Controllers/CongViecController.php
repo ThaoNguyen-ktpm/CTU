@@ -280,6 +280,7 @@ class CongViecController extends Controller
             $GiaoViec = new giaoviec;
             $GiaoViec->MaCongViec = $CongViec->id;
             $GiaoViec->MaNguoiDung = $nguoiDungId;
+            $GiaoViec->TrangThai = 1;
             $GiaoViec->IsActive = true;
             $GiaoViec->save();
         }

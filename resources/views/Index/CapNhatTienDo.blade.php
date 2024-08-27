@@ -51,14 +51,17 @@
                   </div>
               </td>
           </tr>
-        <tr>
+          <tr>
             <td class="text-left">Chọn File Nộp</td>
             <td class="text-left">
-            <div>
-            <input type="file" id="fileInput" name="file_nop" class="form-control-file" required>
-                <p id="fileNameDisplay" style="margin-top: 10px;"></p>
-            </div>
-                
+                <div style="display: flex;">
+                    <!-- Thay thế input bằng icon, liên kết với input qua label -->
+                    <label for="fileInput" class="file-label">
+                        <i class="fa-solid fa-file-import"></i>
+                    </label>
+                    <input type="file" id="fileInput" name="file_nop" class="form-control-file" required style="display: none;">
+                    <p id="fileNameDisplay" style="margin-top: 10px;"></p>
+                </div>
             </td>
         </tr>
         <tr>
@@ -232,6 +235,16 @@ var HoTen = document.getElementById('HoTen');
       // Loại bỏ khoảng trắng đầu tiên nếu có
       var sanitizedValue = value.replace(/^\s/, '');
       e.target.value = sanitizedValue;
+    });
+
+
+
+    
+</script>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+        var fileName = this.files[0].name;
+        document.getElementById('fileNameDisplay').textContent = 'File đã chọn: ' + fileName;
     });
 </script>
 @endsection

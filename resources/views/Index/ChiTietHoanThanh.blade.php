@@ -49,11 +49,46 @@
                 </div>
             </td>
         </tr>
+        <tr>
+          <td class="text-left">File Đã Nộp</td>
+          <td class="text-left">
+          <div>
+                <!-- Hiển thị liên kết tải xuống nếu có tệp tin trước đó -->
+                @if(isset($CongViec[0]->DuongDanFile) && !empty($CongViec[0]->DuongDanFile))
+                    <p>
+                        Tệp hiện tại: 
+                        <a href="{{ url($CongViec[0]->DuongDanFile) }}" download class="link-tai-lieu">
+                            <i class="fa-solid fa-download"  style=" margin-left:10px"></i> Tải xuống tệp
+                        </a>
+                    </p>
+                @endif
+
+               
+            </div>
+          </td>
+      </tr>
+        <tr>
+            <td class="text-left">Tên Người Nộp</td>
+            <td class="text-left">
+            <div>
+              <input id="HoTen" value="{{$CongViec[0]->TenNguoiNop}}" name="TenNguoiNop" type="text" class="form-control" readonly required>   
+            </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td class="text-left"><div class="cmt">Bình Luận Nội Dung</div></td>
+            <td class="text-left">
+                <div class="group">
+                    <textarea id="ghichuInput"  name="NoiDung" class="form-control textarea" readonly required>{{$CongViec[0]->NoiDung}}</textarea>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                </div>
+            </td>
+        </tr>
     </tbody>
 </table>
-   <div style="width: 100% ;text-align: right; ">
-       <button name="Add" type="submit" style="margin-right: 100px;margin-top: 40px;margin-bottom: 30px" class="button">Xác Nhận Công Việc</button>
-    </div>
+  
 </form>
 
 <script>
@@ -147,5 +182,11 @@
         duration:2000
       })
     }
+</script>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+        var fileName = this.files[0].name;
+        document.getElementById('fileNameDisplay').textContent = 'File đã chọn: ' + fileName;
+    });
 </script>
 @endsection

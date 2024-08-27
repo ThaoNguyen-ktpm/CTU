@@ -26,6 +26,7 @@ Route::get('/Index', [IndexController::class,'index']);
 Route::post('NhanCongViec/{id}', [IndexController::class,'NhanCongViec']);
 Route::post('NopBaoCao/{id}', [IndexController::class,'NopBaoCao']);
 Route::post('ChiTiet/CongViec/{id}', [IndexController::class,'ChiTietCongViec']);
+Route::post('ChiTietHoanThanh/CongViec/{id}', [IndexController::class,'ChiTietHoanThanh']);
 Route::post('CapNhatTienDo/CongViec/{id}', [IndexController::class,'CapNhatTienDoView']);
 
 //Đăng Nhập Bằng Google
