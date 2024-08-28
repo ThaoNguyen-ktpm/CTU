@@ -42,8 +42,8 @@ class CongViecController extends Controller
        nguoidungs.id, 
        nguoidungs.Quyen, 
        nguoidungs.UserName AS user_name, 
-       GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-       GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+       GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+       GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
    FROM 
        nguoidungs 
    LEFT JOIN 
@@ -86,13 +86,13 @@ class CongViecController extends Controller
 
    public function addviewid($id)
    {
-            $title = "Thêm Công Việc 12";
+            $title = "Thêm Công Việc";
             $NguoiDung = DB::select('SELECT 
             nguoidungs.id, 
             nguoidungs.Quyen, 
             nguoidungs.UserName AS user_name, 
-            GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-            GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+            GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+            GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
         FROM 
             nguoidungs 
         LEFT JOIN 
@@ -162,8 +162,8 @@ class CongViecController extends Controller
             nguoidungs.id, 
             nguoidungs.Quyen, 
             nguoidungs.UserName AS user_name, 
-            GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-            GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+            GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+            GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
         FROM 
             nguoidungs 
         LEFT JOIN 
@@ -201,8 +201,8 @@ class CongViecController extends Controller
         $DuAn = DB::select('  SELECT nguoidungs.id, 
            nguoidungs.Quyen, 
            nguoidungs.UserName AS user_name, 
-           GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-           GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+           GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+           GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
        FROM 
            nguoidungs 
        LEFT JOIN 
@@ -333,8 +333,8 @@ class CongViecController extends Controller
             $ThanhVienCongViec = DB::select('  SELECT nguoidungs.id, 
             nguoidungs.Quyen, 
             nguoidungs.UserName AS user_name, 
-            GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-            GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+            GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+            GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
         FROM 
             nguoidungs 
         LEFT JOIN 
@@ -362,8 +362,8 @@ class CongViecController extends Controller
          nguoidungs.id, 
          nguoidungs.Quyen, 
          nguoidungs.UserName AS user_name, 
-         GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-         GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+         GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+         GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
      FROM 
          nguoidungs 
      LEFT JOIN 

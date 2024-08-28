@@ -48,7 +48,20 @@
                     { data: 'TenCongViec' },
                     { data: 'TenDuAn' },
                     { data: 'TenGiaiDoan' },
-                    { data: 'TrangThai' },
+                    {
+                        data: 'TrangThai',
+                        render: function(data, type, row) {
+                            if (data == 1) {
+                                return 'Đang Thực Hiện';
+                            } else if (data == 3){
+                                return 'Hoàn Thành';
+                            }else if ( data == 4){
+                                return 'Trễ Hẹn';
+                            } else {
+                                return 'Trống';
+                            }
+                        }
+                    },
                     {
                         data: 'NgayBatDau',
                         render: function(data) {

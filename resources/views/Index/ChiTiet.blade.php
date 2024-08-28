@@ -55,7 +55,10 @@
        <button name="Add" type="submit" style="margin-right: 100px;margin-top: 40px;margin-bottom: 30px" class="button">Xác Nhận Công Việc</button>
     </div>
 </form>
-
+<div id="toast1"></div>
+<div class="modal_login" id="modalLogin">
+    <div class="loading-bar">Loading</div>
+</div>
 <script>
 	 $(document).ready(function() {
       $('.NhanCongViec-form').submit(function(event) {
@@ -69,7 +72,9 @@
           event.stopPropagation();
           $form.addClass('was-validated');
         } else {
+          $('#modalLogin').css('display', 'flex');
           var formData = $form.serialize();
+           // Hiển thị phần loading
           $.ajax({
             type: 'POST',
             url: url,
@@ -83,6 +88,10 @@
               } else {    
                 showErrorToast1();
               }
+            },
+            complete: function() {
+                // Sau khi hoàn thành, ẩn phần loading
+                $('#modalLogin').css('display', 'none');
             }
           });
         }
@@ -142,7 +151,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Thêm Đơn Vị Thành Công !",
+        message: "Nhận Công Việc Thành Công !",
         type:"success",
         duration:2000
       })

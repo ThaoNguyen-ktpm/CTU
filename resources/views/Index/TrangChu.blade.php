@@ -1,5 +1,6 @@
 @extends('layouts/layoutIndex')
 @section('content')
+
 @if(!empty($NhanViec) && count($NhanViec) > 0)
 <div>
     <h2>Nhận Công Việc</h2>
@@ -13,7 +14,8 @@
             <table width="100%" cellspacing="0" style="margin-top: 55px;">
             <tr>
                 <td style="font-size: 14px; text-align: left;font-family: monospace;">Tên Công Việc</td>
-                <td style="font-size: 14px;text-align: right;font-family: monospace;">{{$NhanViec1->TenCongViec}}</td>
+                <td style="font-size: 14px;text-align: right;font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+                    max-width: 180px">{{$NhanViec1->TenCongViec}}</td>
             </tr>
             <tr>
                 <td style="font-size: 14px;text-align: left;">Thời Gian</td>
@@ -38,7 +40,11 @@
             <table width="100%" cellspacing="0" style="margin-top: 55px;">
             <tr>
                 <td style="font-size: 14px; text-align: left;font-family: monospace;">Tên Công Việc</td>
-                <td style="font-size: 14px;text-align: right;font-family: monospace;">1231231</td>
+                <td style="font-size: 14px; text-align: right; font-family: monospace; 
+                    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+                    max-width: 180px;">
+                    123 1231 11111 111 1111 1111 111
+                </td>
             </tr>
             <tr>
                 <td style="font-size: 14px;text-align: left;">Thời Gian</td>
@@ -127,7 +133,8 @@
           <table width="100%" cellspacing="0" >
             <tr>
                 <td style="font-size: 14px; text-align: left;font-family: monospace;">Tên Công Việc</td>
-                <td style="font-size: 14px;text-align: right;font-family: monospace;">{{$DangThucHien1->TenCongViec}}</td>
+                <td style="font-size: 14px;text-align: right;font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+                    max-width: 180px">{{$DangThucHien1->TenCongViec}}</td>
             </tr>
             <tr>
                 <td style="font-size: 14px;text-align: left;">Thời Gian</td>
@@ -255,7 +262,8 @@
                     <table width="100%" cellspacing="0" style="margin-top: 40px;">
                         <tr>
                             <td >Tên Công Việc</td>
-                            <td>{{$HoanThanh1->TenCongViec}}</td>
+                            <td style="  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+                    max-width: 180px">{{$HoanThanh1->TenCongViec}}</td>
                         </tr>
                         <tr>
                             <td>Hoàn Thành</td>
@@ -296,7 +304,8 @@
                     <table width="100%" cellspacing="0" style="margin-top: 40px;">
                     <tr>
                         <td style="font-size: 14px; text-align: left;font-family: monospace;">Tên Công Việc</td>
-                        <td style="font-size: 14px;text-align: right;font-family: monospace;">{{$TreHen1->TenCongViec}}</td>
+                        <td style="font-size: 14px;text-align: right;font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+                    max-width: 180px">{{$TreHen1->TenCongViec}}</td>
                     </tr>
                     <tr>
                         <td style="font-size: 14px;text-align: left;">Hết Hẹn</td>
@@ -312,6 +321,7 @@
                     </div>
                 </div>
                 @endforeach    
+
             </div>
         </div>
         <div class="direction1">

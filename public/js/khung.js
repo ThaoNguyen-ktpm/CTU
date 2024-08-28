@@ -79,7 +79,6 @@ wrapper.addEventListener("mouseenter", () => clearTimeout(timeoutId));
 wrapper.addEventListener("mouseleave", autoPlay);
 
 
-
 // Hoàn Thành
 document.addEventListener('DOMContentLoaded', function() {
     const formList = document.getElementById('formList');
@@ -87,12 +86,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextButton = document.getElementById('next');
     const prevButton = document.getElementById('prev');
 
-    // Disable navigation buttons if there are 2 or fewer items
+    let isDragging = false, startX, startScrollLeft;
+
+    // Disable navigation buttons if there are 3 hoặc fewer items
     if (items.length <= 3) {
         nextButton.style.display = 'none';
         prevButton.style.display = 'none';
     }
 
+    // Sự kiện click cho nút tiến/lùi
     nextButton.onclick = function() {
         const widthItem = document.querySelector('.item').offsetWidth + 26; // Margin + padding
         formList.scrollLeft += widthItem;
@@ -102,30 +104,109 @@ document.addEventListener('DOMContentLoaded', function() {
         const widthItem = document.querySelector('.item').offsetWidth + 26; // Margin + padding
         formList.scrollLeft -= widthItem;
     }
+
+    // Bắt đầu kéo thả
+    const dragStart = (e) => {
+        isDragging = true;
+        startX = e.pageX;
+        startScrollLeft = formList.scrollLeft;
+        formList.classList.add("dragging");
+
+        // Ngăn chặn việc chọn văn bản khi kéo
+        document.addEventListener('selectstart', preventTextSelection);
+    }
+
+    // Kéo thả
+    const dragging = (e) => {
+        if (!isDragging) return;
+        formList.scrollLeft = startScrollLeft - (e.pageX - startX);
+    }
+
+    // Dừng kéo thả
+    const dragStop = () => {
+        isDragging = false;
+        formList.classList.remove("dragging");
+
+        // Cho phép chọn văn bản lại sau khi ngừng kéo
+        document.removeEventListener('selectstart', preventTextSelection);
+    }
+
+    // Hàm ngăn chọn văn bản
+    const preventTextSelection = (e) => {
+        e.preventDefault();
+    }
+
+    // Gắn sự kiện chuột để kéo thả
+    formList.addEventListener("mousedown", dragStart);
+    formList.addEventListener("mousemove", dragging);
+    document.addEventListener("mouseup", dragStop);
 });
 
 
+
+
 //Trễ Hẹn Javacrip
-  
 document.addEventListener('DOMContentLoaded', function() {
-    const widthItem = document.querySelector('.item1').offsetWidth;
+    const formList = document.getElementById('formList1');
     const list = document.getElementById('list1');
+    const items = document.querySelectorAll('.item1');
     const prevButton = document.getElementById('prev1');
     const nextButton = document.getElementById('next1');
-    const formList = document.getElementById('formList1');
-  
+    
+    let isDragging = false, startX, startScrollLeft;
+
     // Kiểm tra số lượng item
-    if (list.children.length <= 3) {
-      prevButton.style.display = 'none';
-      nextButton.style.display = 'none';
-    } else {
-      prevButton.onclick = function() {
-        formList.scrollLeft -= widthItem;
-      };
-  
-      nextButton.onclick = function() {
-        formList.scrollLeft += widthItem;
-      };
+    if (items.length <= 3) {
+        prevButton.style.display = 'none';
+        nextButton.style.display = 'none';
     }
-  });
+
+    // Sự kiện click cho nút tiến/lùi
+    nextButton.onclick = function() {
+        const widthItem = items[0].offsetWidth + 26; // Margin + padding
+        formList.scrollLeft += widthItem;
+    };
+
+    prevButton.onclick = function() {
+        const widthItem = items[0].offsetWidth + 26; // Margin + padding
+        formList.scrollLeft -= widthItem;
+    };
+
+    // Bắt đầu kéo thả
+    const dragStart = (e) => {
+        isDragging = true;
+        startX = e.pageX;
+        startScrollLeft = formList.scrollLeft;
+        formList.classList.add("dragging");
+
+        // Ngăn chặn việc chọn văn bản khi kéo
+        document.addEventListener('selectstart', preventTextSelection);
+    }
+
+    // Kéo thả
+    const dragging = (e) => {
+        if (!isDragging) return;
+        formList.scrollLeft = startScrollLeft - (e.pageX - startX);
+    }
+
+    // Dừng kéo thả
+    const dragStop = () => {
+        isDragging = false;
+        formList.classList.remove("dragging");
+
+        // Cho phép chọn văn bản lại sau khi ngừng kéo
+        document.removeEventListener('selectstart', preventTextSelection);
+    }
+
+    // Hàm ngăn chọn văn bản
+    const preventTextSelection = (e) => {
+        e.preventDefault();
+    }
+
+    // Gắn sự kiện chuột để kéo thả
+    formList.addEventListener("mousedown", dragStart);
+    formList.addEventListener("mousemove", dragging);
+    document.addEventListener("mouseup", dragStop);
+});
+
   

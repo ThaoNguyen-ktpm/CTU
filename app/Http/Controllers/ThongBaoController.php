@@ -60,4 +60,19 @@ class ThongBaoController extends Controller
     
    }
   
+   public function destroy($id)
+   {
+       // Tìm thông báo theo ID và xóa nó
+       $thongbao = Thongbao::find($id);
+       if ($thongbao) {
+           $thongbao->IsActive = false;
+           $thongbao->save();
+           $userId = Session::get('sessionUserId');
+           $ThongBao =DB::select('SELECT * FROM thongbaos WHERE thongbaos.MaNguoiDung = ? AND IsActive = true',[$userId]);
+           Session::put('ThongBao', $ThongBao);
+           return response()->json(['success' => true]);
+       }
+
+       return response()->json(['success' => false, 'message' => 'Thông báo không tồn tại'], 404);
+   }
 }

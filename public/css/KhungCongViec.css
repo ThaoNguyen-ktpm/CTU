@@ -640,3 +640,26 @@ h2 {
 }
 
 
+
+#formList {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    cursor: grab;
+    user-select: none; /* Ngăn chọn văn bản */
+    -webkit-user-drag: none; /* Ngăn kéo văn bản (trên Safari) */
+}
+
+.dragging {
+    cursor: grabbing;
+}
+
+
+#formList1 {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    cursor: grab;
+    user-select: none; /* Ngăn chọn văn bản */
+    -webkit-user-drag: none; /* Ngăn kéo văn bản (trên Safari) */
+}

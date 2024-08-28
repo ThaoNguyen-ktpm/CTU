@@ -34,6 +34,10 @@
             <td class="text-left">{{ \Carbon\Carbon::parse($CongViec[0]->NgayBatDau)->format('d-m-Y') }} Đến {{ \Carbon\Carbon::parse($CongViec[0]->NgayKetThuc)->format('d-m-Y') }}</td>
         </tr>
         <tr>
+            <td class="text-left">Thời gian Nộp</td>
+            <td class="text-left">{{ \Carbon\Carbon::parse($CongViec[0]->ThoiGian)->format('H:i:s d-m-Y') }} </td>
+        </tr>
+        <tr>
             <td class="text-left">Link tài liệu</td>
             <td class="text-left">
                <a href="{{$CongViec[0]->LinkTaiLieu}}" class="link-tai-lieu">Link tài liệu</a>
@@ -56,9 +60,9 @@
                 <!-- Hiển thị liên kết tải xuống nếu có tệp tin trước đó -->
                 @if(isset($CongViec[0]->DuongDanFile) && !empty($CongViec[0]->DuongDanFile))
                     <p>
-                        Tệp hiện tại: 
+                         
                         <a href="{{ url($CongViec[0]->DuongDanFile) }}" download class="link-tai-lieu">
-                            <i class="fa-solid fa-download"  style=" margin-left:10px"></i> Tải xuống tệp
+                             Tải xuống tệp : <i class="fa-solid fa-download"  style=" margin-left:10px"></i>
                         </a>
                     </p>
                 @endif
@@ -77,7 +81,7 @@
             </td>
         </tr>
         <tr>
-            <td class="text-left"><div class="cmt">Bình Luận Nội Dung</div></td>
+            <td class="text-left"><div class="cmt"> Nội Dung Bình Luận</div></td>
             <td class="text-left">
                 <div class="group">
                     <textarea id="ghichuInput"  name="NoiDung" class="form-control textarea" readonly required>{{$CongViec[0]->NoiDung}}</textarea>
@@ -90,7 +94,10 @@
 </table>
   
 </form>
-
+<div id="toast1"></div>
+<div class="modal_login" id="modalLogin">
+    <div class="loading-bar">Loading</div>
+</div>
 <script>
 	 $(document).ready(function() {
       $('.NhanCongViec-form').submit(function(event) {
@@ -104,6 +111,7 @@
           event.stopPropagation();
           $form.addClass('was-validated');
         } else {
+          $('#modalLogin').css('display', 'flex');
           var formData = $form.serialize();
           $.ajax({
             type: 'POST',
@@ -118,6 +126,10 @@
               } else {    
                 showErrorToast1();
               }
+            },
+            complete: function() {
+                // Sau khi hoàn thành, ẩn phần loading
+                $('#modalLogin').css('display', 'none');
             }
           });
         }

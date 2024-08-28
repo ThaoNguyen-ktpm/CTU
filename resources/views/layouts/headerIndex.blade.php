@@ -13,8 +13,15 @@
     </ul> 
     <div style="display:flex;justify-content: space-between;">
         <div style="display: flex;">
-            <div class="logo_header" style="z-index: 5;margin-left: 20px;"><img style="width:70px;z-index:5" src="{{ asset('img/logoCanTho.png') }}"></img></div>  
-            <div><p style="z-index: 5;margin-left: 20px; margin-bottom:0; color: #474747 ;font-size: 22px;" class=" text-weight">Trung Tâm Công Nghệ Phần Mềm Đại Học Cần Thơ</p></div>
+            <a href="/Index"><div class="logo_header" style="z-index: 5;margin-left: 20px;"><img style="width:70px;z-index:5" src="{{ asset('img/logoCanTho.png') }}"></img></div>  
+            </a>
+              
+            <div>
+                <p style="z-index: 5; margin-left: 20px; margin-bottom: 0; color: #474747; font-size: 22px;" class="text-weight">
+                    Trung Tâm Công Nghệ Phần Mềm Đại Học Cần Thơ
+                </p>
+            </div>
+          
         </div>
         <div style="display: flex;">
             <p style="margin-bottom:0; color: #474747; margin-right:10px; display:block ; font-size:16px;" class=" text-weight">{{ Session::get('sessionUser') }}</p>
@@ -31,13 +38,27 @@
             <div class="notification-container">
             <i class="thongbao fa-solid fa-bell" style="display: block;background: aliceblue;"></i>
                 <div class="notification-panel">
-                    <ul>
-                        <li class="thethongbao">Thông báo 1</li>
-                        <li class="thethongbao">Thông báo 2</li>
-                        <li class="thethongbao">Thông báo 3</li>
-                    </ul>
+                @php
+                    $ThongBao = session('ThongBao');
+                @endphp
+
+                @if ($ThongBao)
+                <ul id="notification-list">
+                    @foreach($ThongBao as $ThongBao1)
+                        <li class="thethongbao" draggable="true" data-id="{{ $ThongBao1->id }}"> 
+                            <div>{{ $ThongBao1->ThoiGian }}</div>
+                            <div>{{ $ThongBao1->NoiDung }}</div>
+                        </li>
+                    @endforeach
+                </ul>
+                @else
+                    <p>Không có thông báo !</p>
+                @endif
                 </div>
                 <div id="notification-count" class="notification-count"></div>
+                
+                <p id="no-notification" style="display: none;">Không có thông báo nào.</p>
+                
             </div>
          
         </div>
@@ -68,22 +89,107 @@ document.addEventListener('DOMContentLoaded', (event) => {
         notificationIcon.style.display = 'inline-block'; // Hiển thị lại icon thông báo
     });
 });
+
+
+
+
 document.addEventListener("DOMContentLoaded", function() {
-    // Lấy danh sách các phần tử thông báo
     var notifications = document.querySelectorAll('.thethongbao');
-    
-    // Đếm số lượng thông báo
-    var count = notifications.length;
-    
-    // Lấy phần tử hiển thị số lượng thông báo
     var notificationCount = document.getElementById('notification-count');
-    
-    // Cập nhật số lượng thông báo
-    if (count > 0) {
-        notificationCount.textContent = count;
-    } else {
-        notificationCount.style.display = 'none';
+    var noNotificationMessage = document.getElementById('no-notification');
+
+    function updateNotificationCount() {
+        var count = document.querySelectorAll('.thethongbao').length;
+        if (count > 0) {
+            notificationCount.textContent = count;
+            noNotificationMessage.style.display = 'none';
+        } else {
+            notificationCount.style.display = 'none';
+            noNotificationMessage.style.display = 'block';
+        }
     }
+
+    updateNotificationCount();
+
+    notifications.forEach(function(notification) {
+        notification.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', null);
+            e.target.classList.add('dragging');
+        });
+
+        notification.addEventListener('dragend', function(e) {
+            e.target.classList.remove('dragging');
+        });
+
+        notification.addEventListener('dragover', function(e) {
+            e.preventDefault();
+        });
+
+        notification.addEventListener('drop', function(e) {
+            e.preventDefault();
+            var draggingElement = document.querySelector('.dragging');
+            if (draggingElement) {
+                var notificationId = draggingElement.dataset.id; // Giả sử bạn lưu ID của thông báo trong thuộc tính data-id
+                
+                // Gửi yêu cầu xóa thông báo bằng AJAX
+                fetch(`/thongbao/${notificationId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        draggingElement.remove(); // Xóa phần tử ra khỏi DOM
+                        updateNotificationCount(); // Cập nhật lại số lượng thông báo
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi xóa thông báo.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa thông báo.');
+                });
+            }
+        });
+    });
+
+    document.addEventListener('dragover', function(e) {
+        e.preventDefault();
+    });
+
+    document.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var draggingElement = document.querySelector('.dragging');
+        if (draggingElement && !e.target.closest('#notification-list')) {
+            var notificationId = draggingElement.dataset.id;
+
+            fetch(`/thongbao/${notificationId}`, {
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    draggingElement.remove();
+                    updateNotificationCount();
+                } else {
+                    alert(data.message || 'Có lỗi xảy ra khi xóa thông báo.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi xóa thông báo.11111');
+            });
+        }
+    });
 });
+
+
 
 </script>

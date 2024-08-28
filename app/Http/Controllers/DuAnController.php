@@ -31,8 +31,8 @@ class DuAnController extends Controller
             nguoidungs.id, 
             nguoidungs.Quyen, 
             nguoidungs.UserName AS user_name, 
-            GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-            GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+            GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+            GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
         FROM 
             nguoidungs 
         LEFT JOIN 
@@ -95,8 +95,8 @@ class DuAnController extends Controller
             nguoidungs.id, 
             nguoidungs.Quyen, 
             nguoidungs.UserName AS user_name, 
-            GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-            GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+            GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+            GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
         FROM 
             nguoidungs 
         LEFT JOIN 
@@ -126,8 +126,8 @@ class DuAnController extends Controller
             nguoidungs.id, 
             nguoidungs.Quyen, 
             nguoidungs.UserName AS user_name, 
-            GROUP_CONCAT(vaitros.TenVaiTro) AS vaitro_names, 
-            GROUP_CONCAT(donvis.TenDonVi) AS donvi_names 
+            GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+            GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
         FROM 
             nguoidungs 
         LEFT JOIN 

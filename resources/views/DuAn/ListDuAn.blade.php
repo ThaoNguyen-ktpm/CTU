@@ -20,7 +20,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Tên Dự Án</th>
-                            <th>Mô tả</th>
+                            <!-- <th>Mô tả</th> -->
                             <th>Thành Viên</th>
                             <th>Giai Đoạn</th>
                             <th>Thêm Công Việc</th>
@@ -45,7 +45,7 @@
                 columns: [
                     { data: 'id' },
                     { data: 'TenDuAn' },
-                    { data: 'Mota' },
+                    // { data: 'Mota' },
                     {
                         data: null,
                         render: function(data, type, row) {

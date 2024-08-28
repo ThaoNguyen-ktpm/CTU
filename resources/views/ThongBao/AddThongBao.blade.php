@@ -56,7 +56,7 @@
   <div class="select-selected">Chọn Người Dùng</div>
   <div class="select-items select-hide">
     @foreach($NguoiDung as $NguoiDung1)
-    <div data-value="{{$NguoiDung1->id}}">{{$NguoiDung1->Name}}</div>
+    <div data-value="{{$NguoiDung1->id}}">{{$NguoiDung1->UserName}}</div>
     @endforeach
   </div>
   <select name="MaNguoiDung" class="form-control" required>
@@ -90,6 +90,9 @@
 </div>
 </div>
 <div id="toast1"></div>
+<div class="modal_login" id="modalLogin">
+    <div class="loading-bar">Loading</div>
+</div>
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 <script>
  $(document).ready(function() {
@@ -105,6 +108,7 @@
           $form.addClass('was-validated');
         } else {
           var formData = $form.serialize();
+          $('#modalLogin').css('display', 'flex');
           $.ajax({
             type: 'POST',
             url: url,
@@ -118,6 +122,10 @@
               } else {    
                 showErrorToast1();
               }
+            },
+            complete: function() {
+                // Sau khi hoàn thành, ẩn phần loading
+                $('#modalLogin').css('display', 'none');
             }
           });
         }
@@ -168,7 +176,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: " Thông Báo Đã Tồn Tại !",
+          message: "Thông Báo Đã Tồn Tại !",
           type:"error",
           duration:2000
       })
@@ -177,7 +185,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Thêm Thông Báo Thành Công !",
+        message: "Thông Báo Thành Công !",
         type:"success",
         duration:2000
       })

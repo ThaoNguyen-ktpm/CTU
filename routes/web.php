@@ -200,3 +200,5 @@ Route::get('ThongBao/data', [ThongBaoController::class, 'getThongBao'])->name('T
 //Thêm Thông Báo
 Route::get('ThongBao/addview', [ThongBaoController::class,'addview'])->name('ThongBao.addview');
 Route::post('ThongBao/add', [ThongBaoController::class,'add'])->name('ThongBao.add');
+// routes/web.php
+Route::post('/thongbao/{id}', [ThongBaoController::class, 'destroy'])->name('thongbao.destroy');

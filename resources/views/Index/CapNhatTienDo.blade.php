@@ -30,6 +30,10 @@
             <td class="text-left">{{$CongViec[0]->TenCongViec}}</td>
         </tr>
         <tr>
+            <td class="text-left">Thời gian </td>
+            <td class="text-left">{{ \Carbon\Carbon::parse($CongViec[0]->NgayBatDau)->format('d-m-Y') }} Đến {{ \Carbon\Carbon::parse($CongViec[0]->NgayKetThuc)->format('d-m-Y') }}</td>
+        </tr>
+        <tr>
             <td class="text-left">Thời gian còn lại</td>
             <td class="text-left">
                 <span id="countdown"></span>
@@ -89,7 +93,10 @@
        <button name="Add" type="submit" style="margin-right: 100px;margin-top: 40px;margin-bottom: 30px" class="button">Nộp Báo Cáo</button>
     </div>
 </form>
-
+<div id="toast1"></div>
+<div class="modal_login" id="modalLogin">
+    <div class="loading-bar">Loading</div>
+</div>
 <script>
 		$(document).ready(function() {
     $('.NopBaoCao-form').on('submit', function(e) {
@@ -107,6 +114,7 @@
         });
 
         if (!isError) {
+            $('#modalLogin').css('display', 'flex');
             $.ajax({
                 url: form.attr('action'),
                 type: 'POST',
@@ -126,6 +134,10 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error:', status, error);
+                },
+                complete: function() {
+                    // Sau khi hoàn thành, ẩn phần loading
+                    $('#modalLogin').css('display', 'none');
                 }
             });
         }

@@ -425,6 +425,8 @@ class UserController extends Controller
                         if (in_array($user->Quyen, [1, 2, 3])) {
                             return response()->json(['success' => true]);
                         } else {
+                            $ThongBao =DB::select('SELECT * FROM thongbaos WHERE thongbaos.MaNguoiDung = ? AND IsActive = true',[$user->id]);
+                            Session::put('ThongBao', $ThongBao);
                             return response()->json(['successIndex' => true]);
                         }
 
@@ -459,7 +461,7 @@ class UserController extends Controller
             $user = Socialite::driver('google')->user(); 
                 $findUser = nguoidung::where('Email', $user->email)->where('IsActive', true)->first();
                 // Kiểm tra xem email có trong danh sách emailsToCheck không
-                if ($findUser && in_array($findUser->Quyen, [1, 2, 3])) {
+                if ($findUser && in_array($findUser->Quyen, [1,2,3])) {
                     // Nếu có trong danh sách, tiếp tục kiểm tra hoặc tạo người dùng
                         Session::put('sessionUser', $findUser->UserName);
                         Session::put('sessionUserId', $findUser->id);
