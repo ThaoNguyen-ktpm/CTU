@@ -35,6 +35,8 @@ class ThongBaoController extends Controller
    {    
     $NoiDung = $request->input('NoiDung');
     $MaNguoiDung = $request->input('MaNguoiDung');
+    $SendEmail = $request->input('SendEmail'); // Get the value of the checkbox
+    
     // Lấy email đầu tiên từ kết quả truy vấn
     $EmailResult = DB::select('SELECT nguoidungs.Email
         FROM  nguoidungs
@@ -47,16 +49,23 @@ class ThongBaoController extends Controller
         $ThongBao->NoiDung = $NoiDung;
         $ThongBao->MaNguoiDung = $MaNguoiDung;
         $ThongBao->IsActive = true;
+        $ThongBao->IsSee = false;
         $ThongBao->ThoiGian = DB::raw('NOW()');
         $ThongBao->save();
-        Mail::send('Email.ThongBaoemail', ['OTP' => $NoiDung, 'Email' => $Email], function ($email) use ($Email, $NoiDung) {
-            $email->to($Email);
-            $email->subject('Thông Báo');
-        });
+    
+        // Check if the checkbox is selected before sending the email
+        if ($SendEmail) {
+            Mail::send('Email.ThongBaoemail', ['OTP' => $NoiDung, 'Email' => $Email], function ($email) use ($Email, $NoiDung) {
+                $email->to($Email);
+                $email->subject('Thông Báo');
+            });
+        }
+    
         return response()->json(['success' => true]);
     } else {
         return response()->json(['success' => false, 'message' => 'No active user found with the provided ID']);
     }
+    
     
    }
   
@@ -65,10 +74,10 @@ class ThongBaoController extends Controller
        // Tìm thông báo theo ID và xóa nó
        $thongbao = Thongbao::find($id);
        if ($thongbao) {
-           $thongbao->IsActive = false;
+           $thongbao->IsSee = true;
            $thongbao->save();
            $userId = Session::get('sessionUserId');
-           $ThongBao =DB::select('SELECT * FROM thongbaos WHERE thongbaos.MaNguoiDung = ? AND IsActive = true',[$userId]);
+           $ThongBao =DB::select('SELECT * FROM thongbaos WHERE thongbaos.MaNguoiDung = ? AND  IsSee = false',[$userId]);
            Session::put('ThongBao', $ThongBao);
            return response()->json(['success' => true]);
        }

@@ -44,16 +44,52 @@
 .select-hide {
   display: none;
 }
+#suggest-button {
+    display: inline-block;
+    padding: 10px 10px;
+    margin: 5px;
+    background-color: #3a85d5; /* Màu nền nút */
+    color: white; /* Màu chữ */
+    font-size: 14px; /* Kích thước chữ */
+    font-weight: bold; /* Độ đậm của chữ */
+    text-align: center; /* Căn giữa nội dung */
+    border: none; /* Loại bỏ viền mặc định */
+    border-radius: 5px; /* Bo góc */
+    cursor: pointer; /* Con trỏ chuột khi di chuột qua nút */
+    transition: background-color 0.3s, transform 0.3s; /* Hiệu ứng chuyển đổi */
+}
+
+#suggest-button:hover {
+    background-color: #0056b3; /* Màu nền khi di chuột qua nút */
+}
+
+#suggest-button:active {
+    transform: scale(0.98); /* Hiệu ứng nhấn nút */
+}
+.highlight {
+    color: blue;
+    font-weight: bold;
+}
 </style>
+
 <div class="col">
 <div class="container">
-  <h2 class="text-weight">Gửi Thông Báo<small></small></h2>
+  <h2 class="text-weight">Gửi Thông Báo<small></small></h2>  
   <form  method="post" class="needs-validation ThongBao-form" action="/ThongBao/add" novalidate>
   @csrf
+
+
+ <!-- Checkbox for sending an email -->
+ <div class="group" >
+    <input type="checkbox" id="SendEmailCheckbox" name="SendEmail" value="1" style="    transform: translateY(100%); height: 25px;" >
+    <label for="SendEmailCheckbox"><div style="font-size: 17px;">Gửi Thông Báo Email:</div></label>
+</div>
+
+
   <div class="group">
     <label>Chọn Người Dùng <span style="color:red;">(*)</span></label>
-  <div class="custom-select">
-  <div class="select-selected">Chọn Người Dùng</div>
+  <div class="custom-select"> 
+  <div class="select-selected">Chọn Người Dùng</div> 
   <div class="select-items select-hide">
     @foreach($NguoiDung as $NguoiDung1)
     <div data-value="{{$NguoiDung1->id}}">{{$NguoiDung1->UserName}}</div>
@@ -73,22 +109,31 @@
         Vui Lòng Chọn Người Dùng!
     </div>
     </div>
+  
     <div class="group">
-    <label>Nhập Nội Dung <span style="color:red;">(*)</span></label>
-      <textarea id="NoiDungInput" name="NoiDung" type="text" class="form-control textarea" required></textarea >
-      <span class="highlight"></span>
-      <span class="bar"></span>
-      <div class="valid-feedback">
-        Nhập Nội Dung Thành Công
-      </div>
-      <div class="invalid-feedback">
-        Vui Lòng Nhập Nội Dung !
-      </div>
+    <div style="display: flex;">
+        <div><label style="margin-top: 10px;">Nhập Nội Dung <span style="color:red;">(*)</span></label></div>   
+        <div id="suggest-button">Gợi ý thông báo</div>
+       
     </div>
+    <textarea id="NoiDungInput" name="NoiDung" type="text" class="form-control textarea" required style="height: 200px;"></textarea >
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <div class="valid-feedback">
+        Nhập Nội Dung Thành Công
+    </div>
+    <div class="invalid-feedback">
+        Vui Lòng Nhập Nội Dung !
+    </div>
+    
+</div>
+
       <button name="Add" type="submit" class="submit-btn">Gửi</button>
   </form>
 </div>
 </div>
+
+
 <div id="toast1"></div>
 <div class="modal_login" id="modalLogin">
     <div class="loading-bar">Loading</div>
@@ -233,6 +278,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+document.getElementById('suggest-button').addEventListener('click', function() {
+    // Gán nội dung vào textarea
+    document.getElementById('NoiDungInput').value = 'Chúng tôi xin nhắc nhở về thời hạn hoàn thành [công việc/dự án/cuộc hẹn] đã được lên kế hoạch vào ngày [ngày dự kiến ban đầu]. Để đảm bảo tiến độ và chất lượng công việc, chúng tôi mong muốn quý vị hoàn thành [công việc/dự án] đúng theo kế hoạch. Việc tuân thủ thời hạn không chỉ giúp dự án diễn ra suôn sẻ mà còn đảm bảo sự hài lòng của tất cả các bên liên quan. Chúng tôi rất mong quý vị hợp tác và hoàn tất công việc đúng thời gian đã thỏa thuận. Trân trọng,';
+
+    // Gán nội dung vào div với định dạng màu xanh
+  
+});
+
+
 </script>
 
 

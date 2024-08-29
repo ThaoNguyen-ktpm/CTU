@@ -5,7 +5,31 @@
             .dataTables_wrapper {
             padding-top: 0px;
         }
+        #myTableThongBao th:nth-of-type(2){
+            max-width: 250px !important;
+        }
+        #myTableThongBao td:nth-child(2){
+        font-size: 16px;
+        font-weight: 450;
+        color: var(--text-color);
+        line-height: 1.8rem;
+        margin: 10px 10px 6px;
+        height: 1.6rem;
+        overflow: hidden;
+        display: block;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        text-overflow: ellipsis;
+       
+
+        }
+       
+
+        
         </style>
+
+
         <a href=" /ThongBao/addview"  aria-expanded="false" >
                 <div class="logoutForm">
                 <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >

@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện!</div>
         </div>
         <div class="group">
-            <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="${soLuongGiaiDoan}" readonly hidden>
+            <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="${soLuongGiaiDoan}" readonly >
             <span class="highlight"></span>
             <span class="bar"></span>
         `;
@@ -408,21 +408,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function suaGiaiDoan() {
-        const giaiDoanContainer = document.getElementById('giai_doan_container');
-        const giaiDoanDivs = giaiDoanContainer.querySelectorAll('.group');
+    const giaiDoanContainer = document.getElementById('giai_doan_container');
+    let giaiDoanDivs = giaiDoanContainer.querySelectorAll('.group');
 
-        // Duyệt qua các giai đoạn và xóa các giai đoạn trừ giai đoạn mặc định
-        giaiDoanDivs.forEach(div => {
-            if (!div.closest('.macdinh')) {  // Chỉ xóa các giai đoạn không phải là giai đoạn mặc định
-                div.remove();
-            }
-        });
+    let count = 0; // Biến đếm số giai đoạn đã xóa
+    while (giaiDoanDivs.length > 1 && count < 3) {  // Xóa tối đa 3 giai đoạn, nhưng không xóa giai đoạn mặc định
+        const lastGiaiDoanDiv = giaiDoanDivs[giaiDoanDivs.length - 1];
 
-        // Đặt lại số lượng giai đoạn về 1 sau khi xóa
-        soLuongGiaiDoan = 1;
+        if (!lastGiaiDoanDiv.closest('.macdinh')) {  // Kiểm tra nếu giai đoạn cuối cùng không phải là giai đoạn mặc định
+            lastGiaiDoanDiv.remove();
+            count++;  // Tăng biến đếm số giai đoạn đã xóa
+        }
 
-        
+        // Cập nhật danh sách giai đoạn sau khi xóa
+        giaiDoanDivs = giaiDoanContainer.querySelectorAll('.group');
     }
+
+    if (count > 0) {
+        soLuongGiaiDoan--;  // Giảm số lượng giai đoạn sau khi xóa 3 lần
+    }
+}
+
 
     // Gán sự kiện click cho các nút sau khi DOM đã được tải
     document.getElementById('themGiaiDoanButton').addEventListener('click', themGiaiDoan);

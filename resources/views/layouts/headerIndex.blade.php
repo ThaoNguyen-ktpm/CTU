@@ -1,3 +1,152 @@
+<style>
+ /* Danh sách thông báo */
+ #notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 392px; /* Giới hạn chiều cao để hiển thị 3 thông báo */
+    overflow-y: auto; /* Thêm thanh cuộn dọc khi nội dung vượt quá chiều cao */
+   
+    border-radius: 5px; /* Bo tròn các góc */
+    background-color: #f7e7cf; /* Màu nền */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+#notification-list .thethongbao {
+    height: 120px;
+    overflow: hidden;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #cdcdcd;
+    border-radius: 10px; /* Bo góc thêm để tạo cảm giác mềm mại */
+    background-color: #f3efea; /* Màu nền trắng để tăng độ tương phản */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Tăng độ lớn của shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Thêm hiệu ứng chuyển đổi */
+}
+
+#notification-list .thethongbao:hover {
+    transform: translateY(-5px); /* Di chuyển mục lên trên một chút khi hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Tăng kích thước và độ mờ của shadow khi hover */
+    background-color: #f1f1f1; /* Thay đổi màu nền khi hover để tạo hiệu ứng nổi */
+}
+
+#notification-list .thethongbao > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    white-space: normal;
+    font-style: italic;
+}
+
+#notification-list .thethongbao > div:first-child {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #898989;
+}
+
+.thethongbao div {
+    flex: 1;
+}
+
+.thethongbao div:last-child {
+    text-align: right;
+    color: #007bff;
+    cursor: pointer;
+}
+
+/* Overlay che màn hình khi hiển thị popup */
+#overlay22 {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Popup chứa nội dung */
+#popup22 {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #e9e7e7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 1000;
+}
+
+/* Nút đóng nằm ở góc phải */
+#popup22 #close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff3b3b;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* Hiệu ứng khi hover nút đóng */
+#popup22 #close-popup:hover {
+    background-color: #ff6666;
+}
+
+/* Nội dung bên trong popup */
+#popup22 #popup-content {
+    margin-top: 40px; /* Tạo khoảng cách giữa nội dung và nút đóng */
+    font-size: 16px;
+    color: #333;
+}
+
+
+.div_noidung {
+    border: 1px solid #ddd; /* Viền nhẹ nhàng */
+    border-radius: 8px; /* Bo góc viền */
+    padding: 15px; /* Khoảng cách bên trong */
+    background-color: #f9f9f9; /* Màu nền nhẹ nhàng */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    margin-bottom: 10px; /* Khoảng cách giữa các phần tử */
+    font-size: 14px; /* Kích thước chữ */
+    color: #333; /* Màu chữ */
+    line-height: 1.5; /* Khoảng cách dòng */
+}
+
+
+.delete-icon {
+    position: absolute;
+
+    right: 10px;
+    transform: translateY(-30%);
+    background: none;
+    border: none;
+  
+    color: red; /* Màu sắc của biểu tượng xóa */
+    font-size: 16px;
+}
+
+
+</style>
 <div class="background-container1" style="height: 100px ;">
     <ul class="background12">
         <li></li>
@@ -46,25 +195,31 @@
                 <ul id="notification-list">
                     @foreach($ThongBao as $ThongBao1)
                         <li class="thethongbao" draggable="true" data-id="{{ $ThongBao1->id }}"> 
-                            <div>{{ $ThongBao1->ThoiGian }}</div>
+                            <button class="delete-icon" data-id="{{ $ThongBao1->id }}">&#10006;</button>
+                            <div>{{ \Carbon\Carbon::parse($ThongBao1->ThoiGian)->format(' H:i d-m-Y ') }}</div>
                             <div>{{ $ThongBao1->NoiDung }}</div>
+                            <div class="xem-them" data-id="{{ $ThongBao1->id }}">Xem Thêm</div>
                         </li>
                     @endforeach
                 </ul>
+               
                 @else
                     <p>Không có thông báo !</p>
                 @endif
                 </div>
-                <div id="notification-count" class="notification-count"></div>
-                
-                <p id="no-notification" style="display: none;">Không có thông báo nào.</p>
-                
+                <div id="notification-count" class="notification-count" ></div>
+                <div id="overlay22" ></div>
+                <div id="popup22"  style="  background-color: #f7e7cf;">
+                    <button id="close-popup">Đóng</button>
+                    <div id="popup-content"></div>
+                </div >
             </div>
          
         </div>
     </div>
  
 </div>
+
 
 <script>document.querySelector('.thongbao').addEventListener('mouseenter', function() {
     document.querySelector('.notification-panel').style.display = 'block';
@@ -92,20 +247,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-
 document.addEventListener("DOMContentLoaded", function() {
     var notifications = document.querySelectorAll('.thethongbao');
     var notificationCount = document.getElementById('notification-count');
-    var noNotificationMessage = document.getElementById('no-notification');
 
     function updateNotificationCount() {
         var count = document.querySelectorAll('.thethongbao').length;
         if (count > 0) {
             notificationCount.textContent = count;
-            noNotificationMessage.style.display = 'none';
         } else {
             notificationCount.style.display = 'none';
-            noNotificationMessage.style.display = 'block';
         }
     }
 
@@ -129,11 +280,10 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             var draggingElement = document.querySelector('.dragging');
             if (draggingElement) {
-                var notificationId = draggingElement.dataset.id; // Giả sử bạn lưu ID của thông báo trong thuộc tính data-id
+                var notificationId = draggingElement.dataset.id;
                 
-                // Gửi yêu cầu xóa thông báo bằng AJAX
                 fetch(`/thongbao/${notificationId}`, {
-                    method: 'DELETE',
+                    method: 'post   ',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         'Content-Type': 'application/json'
@@ -142,8 +292,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        draggingElement.remove(); // Xóa phần tử ra khỏi DOM
-                        updateNotificationCount(); // Cập nhật lại số lượng thông báo
+                        draggingElement.remove();
+                        updateNotificationCount();
                     } else {
                         alert(data.message || 'Có lỗi xảy ra khi xóa thông báo.');
                     }
@@ -153,6 +303,33 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert('Có lỗi xảy ra khi xóa thông báo.');
                 });
             }
+        });
+
+        // Sự kiện click cho biểu tượng xóa
+        var deleteIcon = notification.querySelector('.delete-icon');
+        deleteIcon.addEventListener('click', function() {
+            var notificationId = deleteIcon.dataset.id;
+
+            fetch(`/thongbao/${notificationId}`, {
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    notification.remove();
+                    updateNotificationCount();
+                } else {
+                    alert(data.message || 'Có lỗi xảy ra khi xóa thông báo.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi xóa thông báo.');
+            });
         });
     });
 
@@ -184,12 +361,64 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Có lỗi xảy ra khi xóa thông báo.11111');
+                alert('Có lỗi xảy ra khi xóa thông báo.');
             });
         }
     });
 });
 
+
+
+document.querySelectorAll('.xem-them').forEach(function (button) {
+    button.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const thongBaoElement = this.closest('.thethongbao');
+        const id = thongBaoElement.dataset.id;
+        const thoiGian = thongBaoElement.querySelector('div:nth-child(2)').textContent;
+        const noiDung = thongBaoElement.querySelector('div:nth-child(3)').textContent;
+
+        // Ẩn tất cả các thông báo khác
+        document.querySelectorAll('.thethongbao').forEach(function (thongBao) {
+            thongBao.style.display = 'none';
+        });
+
+        // Hiển thị nội dung trong popup
+        const popupContent = document.getElementById('popup-content');
+        popupContent.innerHTML = `
+            <h2>Thông Báo</h2>
+            <div class="div_noidung" style="background-color: #f3efea;">
+            <div  style="font-style: italic;font-size: 16px;  text-indent: 10px; ">${noiDung}</div>
+            </div>
+        `;
+
+        // Hiển thị popup
+        document.getElementById('popup22').style.display = 'block';
+        document.getElementById('overlay22').style.display = 'block';
+     
+        // Xử lý sự kiện click để đóng popup
+        document.getElementById('close-popup').addEventListener('click', function () {
+            document.getElementById('popup22').style.display = 'none';
+            document.getElementById('overlay22').style.display = 'none';
+
+            // Hiển thị lại tất cả các thông báo khác sau khi đóng popup
+            document.querySelectorAll('.thethongbao').forEach(function (thongBao) {
+                thongBao.style.display = 'block';
+            });
+        });
+
+        document.getElementById('overlay22').addEventListener('click', function () {
+            document.getElementById('popup22').style.display = 'none';
+            document.getElementById('overlay22').style.display = 'none';
+
+            // Hiển thị lại tất cả các thông báo khác sau khi đóng popup
+            document.querySelectorAll('.thethongbao').forEach(function (thongBao) {
+                thongBao.style.display = 'block';
+            });
+        });
+
+        console.log('ID thông báo:', id);
+    });
+});
 
 
 </script>

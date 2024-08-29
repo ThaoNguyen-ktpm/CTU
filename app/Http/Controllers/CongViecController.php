@@ -254,7 +254,6 @@ class CongViecController extends Controller
         $CongViec->MaDuAn = $request->MaDuAn;
         $CongViec->MaThucHien = $request->MaGiaiDoan;
 
-
     
         // Chuyển đổi NgayBatDau thành đối tượng Carbon và thêm số ngày thực hiện
         $ThoiGianBatDau = Carbon::parse($ThoiGian[0]->NgayBatDau);
@@ -273,6 +272,9 @@ class CongViecController extends Controller
     
 
         
+        $ThucHien = thuchien::find($request->MaGiaiDoan);
+        $ThucHien->IsCongViec = true;
+        $ThucHien->save();
 
         // Lưu thông tin giao việc
         $MaNguoiDung = $request->input('MaNguoiDung');

@@ -28,8 +28,8 @@ var swiper = new Swiper(".slide-content", {
   },
 });
 
+//Nhận CÔng Việc
 
-//Nhận Công Việc
 const wrapper = document.querySelector(".wrapper1");
 const carousel = document.querySelector(".carousel");
 const firstCardWidth = carousel.querySelector(".card").offsetWidth;
@@ -37,10 +37,25 @@ const arrowBtns = document.querySelectorAll(".wrapper1 i");
 
 let isDragging = false, isAutoPlay = true, startX, startScrollLeft, timeoutId;
 
+// Đếm số lượng thẻ trong carousel
+const updateArrowButtons = () => {
+    const cards = carousel.querySelectorAll(".card");
+    const totalCards = cards.length;
+    
+    // Nếu có ít hơn hoặc bằng 2 thẻ, tắt nút điều hướng
+    arrowBtns.forEach(btn => {
+        btn.style.display = totalCards <= 2 ? "none" : "block";
+    });
+}
+
 // Thêm sự kiện click cho nút tiến lùi để cuộn carousel trái/phải
 arrowBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        carousel.scrollLeft += btn.id === "left" ? -firstCardWidth : firstCardWidth;
+        if (btn.id === "left") {
+            carousel.scrollLeft -= firstCardWidth;
+        } else {
+            carousel.scrollLeft += firstCardWidth;
+        }
     });
 });
 
@@ -66,17 +81,22 @@ const autoPlay = () => {
     timeoutId = setTimeout(() => carousel.scrollLeft += firstCardWidth, 2500);
 }
 
+// Cập nhật nút điều hướng khi trang web tải
+updateArrowButtons();
+
+// Tự động phát khi tải
 autoPlay();
 
 carousel.addEventListener("mousedown", dragStart);
 carousel.addEventListener("mousemove", dragging);
 document.addEventListener("mouseup", dragStop);
 
-// Không cần thiết cho cuộn vô hạn nữa
-// carousel.addEventListener("scroll", infiniteScroll);
-
 wrapper.addEventListener("mouseenter", () => clearTimeout(timeoutId));
 wrapper.addEventListener("mouseleave", autoPlay);
+
+// Cập nhật lại nút điều hướng khi kích thước cửa sổ thay đổi
+window.addEventListener("resize", updateArrowButtons);
+
 
 
 // Hoàn Thành
