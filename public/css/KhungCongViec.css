@@ -1,0 +1,665 @@
+
+
+/* Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+
+
+#TreHen, #HoanThanh ,#NhanCongViec , #DangThucHien {
+  width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    background-color: azure;
+    margin-bottom: 20px;
+    border-radius: 10px; /* Làm cong các góc cạnh */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), /* bóng nhẹ phía dưới */
+                0 6px 20px rgba(0, 0, 0, 0.1); /* bóng đậm hơn cho chiều sâu */
+   /* Khoảng cách giữa nội dung và viền */
+    transition: box-shadow 0.3s ease-in-out; /* Hiệu ứng chuyển đổi mượt mà */
+
+}
+
+#TreHen:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* tăng bóng khi hover */
+              0 12px 40px rgba(0, 0, 0, 0.2);
+}
+#HoanThanh:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* tăng bóng khi hover */
+              0 12px 40px rgba(0, 0, 0, 0.2);
+}
+#DangThucHien:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* tăng bóng khi hover */
+              0 12px 40px rgba(0, 0, 0, 0.2);
+}
+#NhanCongViec:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* tăng bóng khi hover */
+              0 12px 40px rgba(0, 0, 0, 0.2);
+}
+/* Nhận Công Viên*/
+.carousel {
+  position: relative;
+  padding-left: 0px;
+}
+.cloned {
+  opacity: 0; /* Just to distinguish cloned elements */
+}
+
+.slide-container {
+
+  text-align: center;
+  width: 100%;
+  
+}
+
+.slide-content {
+
+  overflow: hidden;
+  border-radius: 25px;
+  margin: 13px;
+}
+
+.card {
+  border-radius: 25px;
+  background-color: #FFF;
+
+}
+
+.image-content,
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 25px;
+}
+
+.image-content {
+  position: relative;
+  row-gap: 5px;
+  padding: 25px 0;
+}
+
+.overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 85%;
+  width: 100%;
+  background-color: #6184e5;
+  border-radius: 25px 25px 0 25px;
+}
+
+.overlay::before,
+.overlay::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -40px;
+  height: 40px;
+  width: 25px;
+  background-color: #6184e5;
+}
+
+.overlay::after {
+  border-radius: 0 25px 0 0;
+  background-color: #FFF;
+}
+
+.overlay1 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 14%;
+  width: 100%;
+  background-color: #6184e5;
+  border-radius: 25px 25px 0 25px;
+ 
+}
+
+.overlay1::before,
+.overlay1::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -40px;
+  height: 40px;
+  width: 25px;
+  background-color: #6184e5;
+}
+
+.overlay1::after {
+  border-radius: 0 25px 0 0;
+  background-color: #FFF;
+}
+
+.name {
+  font-size: 1.56rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.description {
+  font-size: 14px;
+  color: #707070;
+  text-align: center;
+  height: 65px;
+}
+
+.button {
+  border: none;
+  font-size: 16px;
+  color: #FFF;
+  padding: 8px 16px;
+  background-color: #346aff;
+  border-radius: 6px;
+  margin: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background: #0a39b9;
+}
+
+.swiper-navBtn {
+  color: #6E93f7;
+  transition: color 0.3s ease;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  position: absolute;
+  text-align: center;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: transform 0.1s linear;
+  z-index: 2;
+}
+
+.swiper-navBtn:hover {
+  color: #6184e5;
+}
+
+.swiper-navBtn::before,
+.swiper-navBtn::after {
+  font-size: 15px;
+  font-weight: 900;
+
+}
+
+.swiper-button-next {
+  right: 0;
+}
+
+.swiper-button-prev {
+  left: 0;
+}
+
+.swiper-pagination-bullet {
+  background-color: #6E93f7;
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #6184e5;
+}
+
+@media screen and (max-width: 768px) {
+  .slide-content {
+    margin: 0 10px;
+  }
+
+  .swiper-navBtn {
+    display: none;
+  }
+}
+
+/*Nhận Công Việc*/
+.wrapper1 {
+  width: 100%;
+  position: relative;
+}
+.wrapper1 i {
+  top: 50%;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  position: absolute;
+  text-align: center;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+  transform: translateY(-50%);
+  transition: transform 0.1s linear;
+  z-index: 5;
+}
+.wrapper1 i:active{
+  transform: translateY(-50%) scale(0.85);
+}
+.wrapper1 i:first-child{
+  left: -22px;
+}
+.wrapper1 i:last-child{
+  right: -22px;
+}
+.wrapper1 .carousel{
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(100% / 3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  
+  border-radius: 25px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+.carousel.no-transition {
+  scroll-behavior: auto;
+}
+.carousel.dragging {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+.carousel.dragging .card {
+  cursor: grab;
+  user-select: none;
+}
+.carousel :where(.card, .img) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.carousel .card {
+  scroll-snap-align: start;
+  height: 300px;
+  list-style: none;
+  background: #fff;
+  cursor: pointer;
+  padding-bottom: 15px;
+  flex-direction: column;
+  border-radius: 25px;
+  width: 370px;
+}
+.carousel .card .img {
+  background: #8B53FF;
+  height: 148px;
+  width: 148px;
+  border-radius: 50%;
+}
+.card .img img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+}
+.carousel .card h2 {
+  font-weight: 500;
+  font-size: 1.56rem;
+  margin: 30px 0 5px;
+}
+.carousel .card span {
+  color: #6A6D78;
+  font-size: 1.31rem;
+}
+@media screen and (max-width: 900px) {
+  .wrapper1 .carousel {
+    grid-auto-columns: calc((100% / 2) - 9px);
+  }
+}
+@media screen and (max-width: 600px) {
+  .wrapper1 .carousel {
+    grid-auto-columns: 100%;
+  }
+}
+
+/* Nhận Hoàn Thành*/
+
+#prev, #next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 50px;
+  width: 50px;
+  font-size: 1.25rem;
+  background: #ffff;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+  cursor: pointer;
+  color: #6E93f7;
+  transition: color 0.3s ease, transform 0.1s linear;
+  z-index: 3;
+}
+
+#prev {
+  left: -30px; /* Khoảng cách từ bên trái */
+}
+
+#next {
+  right: -30px; /* Khoảng cách từ bên phải */
+}
+
+
+#formList {
+  width: 100%;
+  overflow-x: auto; /* Cho phép cuộn ngang */
+  overflow-y: hidden; /* Ẩn cuộn dọc nếu không cần thiết */
+  white-space: nowrap; /* Ngăn ngừa tự động xuống dòng */
+  scroll-behavior: smooth; /* Thực hiện cuộn mượt mà */
+  display: flex;
+  align-items: center; /* Canh giữa các phần tử bên trong */
+ 
+}
+
+#list {
+  display: flex;
+}
+
+.direction {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.direction button {
+  font-family: cursive;
+  font-weight: bold;
+  background-color: #ffffff44;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transition: 0.5s;
+  margin: 0 10px;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1; /* Đặt lên trên các phần tử khác */
+}
+
+.direction button:hover {
+  background-color: #ffffff;
+}
+
+.item {
+  display: inline-block; /* Đảm bảo các item không xuống dòng */
+  border-radius: 25px;
+  width: 370px;
+  background-image: linear-gradient(to top, #AEC0CE, #ECECF2);
+  overflow: hidden;
+  transition: 0.5s;
+  margin: 13px;
+  scroll-snap-align: start;
+}
+
+.item .avatar {
+  display: block;
+  margin: 50px auto 10px;
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 10px 15px #7e878d;
+}
+
+.item .content {
+  padding: 30px;
+  font-family: monospace;
+  padding-bottom: 13px;
+}
+
+.item .content table td {
+ 
+  border-bottom: 1px solid #AEC0CE;
+  font-size: 14px;
+}
+
+.item .content table td:nth-child(2) {
+  text-align: right;
+}
+
+.item .nameGroup {
+  text-align: center;
+  border-bottom: none !important;
+}
+
+#formList::-webkit-scrollbar {
+  display: none; /* Ẩn thanh cuộn của trình duyệt */
+}
+
+@media screen and (max-width: 1024px) {
+  .item {
+      width: calc(33.3vw - 20px);
+  }
+
+  .direction {
+      display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .item {
+      width: calc(50vw - 20px);
+  }
+
+  .direction {
+      display: none;
+  }
+}
+
+.content {
+  background-color: #ffffff; 
+  border: 1px solid #dfdfdf; /* Viền đen 2px */
+  border-radius: 25px;
+
+}
+
+/* Trễ Hiện*/
+
+#prev1, #next1 {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 50px;
+  width: 50px;
+  font-size: 1.25rem;
+  background: #ffff;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+  cursor: pointer;
+  color: #6E93f7;
+  transition: color 0.3s ease, transform 0.1s linear;
+  z-index: 3;
+}
+
+#prev1 {
+  left: -30px; /* Khoảng cách từ bên trái */
+}
+
+#next1 {
+  right: -30px; /* Khoảng cách từ bên phải */
+}
+
+
+.direction1{
+  text-align: center;
+}
+.direction1 button{
+  font-family: cursive;
+  font-weight: bold;
+  background-color: #ffffff44;
+  border:none;
+  width:50px;
+  height:50px;
+  border-radius: 50%;
+  transition: 0.5s;
+  /* margin:0 10px; */
+}
+.direction1 button:hover{
+  background-color: #ffffff;
+}
+.content1{
+  background-color: #ffffff; 
+  border: 1px solid #dfdfdf; /* Viền đen 2px */
+  border-radius: 25px;
+}
+
+.item1{
+  border-radius: 25px;
+  width:370px;
+  background-image: linear-gradient(to top, #AEC0CE, #ECECF2);
+  overflow: hidden;
+  transition: 0.5s;
+  margin:13px;
+  scroll-snap-align: start;
+}
+.item1 .content1{
+  padding:30px;
+  font-family: monospace;
+}
+.item1 .content1 table td{
+
+  border-bottom: 1px solid #AEC0CE;
+}
+.item1 .content1 table td:nth-child(2){
+  text-align: right;
+}
+.item1 .nameGroup1{
+  text-align: center;
+  border-bottom:none!important;
+}
+#list1{
+  display: flex;
+  width:max-content;
+}
+#formList1{
+  width: 100%;
+  overflow-x: auto; /* Cho phép cuộn ngang */
+  overflow-y: hidden; /* Ẩn cuộn dọc nếu không cần thiết */
+  white-space: nowrap; /* Ngăn ngừa tự động xuống dòng */
+  scroll-behavior: smooth; /* Thực hiện cuộn mượt mà */
+  display: flex;
+  align-items: center;
+}
+#formList1::-webkit-scrollbar{
+  display: none;
+}
+@media screen and (max-width: 1024px){
+  .item1{
+      width: calc(33.3vw - 20px);
+  }
+  .direction1{
+      display: none;
+  }
+}
+@media screen and (max-width: 768px){
+  .item1{
+      width: calc(50vw - 20px);
+  }
+  .direction1{
+      display: none;
+  }
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.link-tai-lieu:hover {
+  color: white; /* đổi màu chữ thành trắng khi hover */
+}
+
+
+.card {
+
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f9f9f9; /* Màu nền mặc định */
+   /* Bo góc thẻ */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Di chuyển thẻ lên trên một chút khi hover */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+  background-color: #fffefe; /* Thay đổi màu nền khi hover */
+}
+
+.card .button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px; /* Bo góc nút */
+}
+
+.card .button:hover {
+  background-color: #0056b3; /* Thay đổi màu nền của nút khi hover */
+}
+
+
+
+.item1 {
+  position: relative;
+  background-color: #f9f9f9; /* Màu nền mặc định */
+  /* Bo góc thẻ */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.item1:hover {
+  transform: translateY(-5px); /* Di chuyển thẻ lên trên khi hover */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+  background-color: #e6e6e6; /* Thay đổi màu nền khi hover */
+}
+
+
+
+
+.item {
+  position: relative;
+  background-color: #f9f9f9; /* Màu nền mặc định */
+  /* Bo góc thẻ */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.item:hover {
+  transform: translateY(-5px); /* Di chuyển thẻ lên trên khi hover */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+  background-color: #e6e6e6; /* Thay đổi màu nền khi hover */
+}
+
+
+
+#formList {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    cursor: grab;
+    user-select: none; /* Ngăn chọn văn bản */
+    -webkit-user-drag: none; /* Ngăn kéo văn bản (trên Safari) */
+}
+
+.dragging {
+    cursor: grabbing;
+}
+
+
+#formList1 {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    cursor: grab;
+    user-select: none; /* Ngăn chọn văn bản */
+    -webkit-user-drag: none; /* Ngăn kéo văn bản (trên Safari) */
+}
