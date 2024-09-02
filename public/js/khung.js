@@ -44,7 +44,7 @@ const updateArrowButtons = () => {
     
     // Nếu có ít hơn hoặc bằng 2 thẻ, tắt nút điều hướng
     arrowBtns.forEach(btn => {
-        btn.style.display = totalCards <= 2 ? "none" : "block";
+        btn.style.display = totalCards <= 3 ? "none" : "block";
     });
 }
 
@@ -106,6 +106,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextButton = document.getElementById('next');
     const prevButton = document.getElementById('prev');
 
+    // Kiểm tra xem các phần tử có tồn tại không trước khi thao tác
+    if (!formList || !items || !nextButton || !prevButton) {
+        return;
+    }
+
     let isDragging = false, startX, startScrollLeft;
 
     // Disable navigation buttons if there are 3 hoặc fewer items
@@ -165,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
 //Trễ Hẹn Javacrip
 document.addEventListener('DOMContentLoaded', function() {
     const formList = document.getElementById('formList1');
@@ -172,7 +178,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const items = document.querySelectorAll('.item1');
     const prevButton = document.getElementById('prev1');
     const nextButton = document.getElementById('next1');
-    
+
+    if (!formList || !list || !prevButton || !nextButton) {
+        // Dừng thực thi nếu bất kỳ phần tử nào không tồn tại
+        return;
+    }
+
     let isDragging = false, startX, startScrollLeft;
 
     // Kiểm tra số lượng item
@@ -228,5 +239,6 @@ document.addEventListener('DOMContentLoaded', function() {
     formList.addEventListener("mousemove", dragging);
     document.addEventListener("mouseup", dragStop);
 });
+
 
   

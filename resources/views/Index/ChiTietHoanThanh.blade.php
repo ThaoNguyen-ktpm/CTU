@@ -72,15 +72,6 @@
           </td>
       </tr>
         <tr>
-            <td class="text-left">Tên Người Nộp</td>
-            <td class="text-left">
-            <div>
-              <input id="HoTen" value="{{$CongViec[0]->TenNguoiNop}}" name="TenNguoiNop" type="text" class="form-control" readonly required>   
-            </div>
-
-            </td>
-        </tr>
-        <tr>
             <td class="text-left"><div class="cmt"> Nội Dung Bình Luận</div></td>
             <td class="text-left">
                 <div class="group">

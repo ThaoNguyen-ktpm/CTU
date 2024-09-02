@@ -6,13 +6,18 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 use Exception;
 class UserController extends Controller
 {
 
+  
+public function Welcome()
+{
+    $title = "Welcome";
+    return view('Welcome', compact('title'));
+}
  //Danh sách User Học Viên
  public function listUserHocVien()
  {
@@ -446,7 +451,7 @@ class UserController extends Controller
         Session::forget('sessionUser'); // Xóa session 'sessionuser'
         Session::forget('sessionUserId'); // Xóa session 'sessionuser'
         Session::forget('IsAdmin'); // Xóa session 'sessionuser'
-        return redirect('/');
+        return redirect('/Login');
     }
    
     // Đăng Nhập google 
@@ -466,7 +471,7 @@ class UserController extends Controller
                         Session::put('sessionUser', $findUser->UserName);
                         Session::put('sessionUserId', $findUser->id);
                         Session::put('IsAdmin', $findUser->Quyen);
-                        return redirect()->intended('/admin');  
+                        return redirect()->intended('/adminWelcome');  
                 } else {
 
                         Session::put('sessionUser', $findUser->UserName);
@@ -480,7 +485,7 @@ class UserController extends Controller
                 
             } catch (\Exception $e) {
                 // Nếu có lỗi, trả về JSON response với 'success' là false
-                return redirect(Session::get('back_url','/'));
+                return redirect(Session::get('back_url','/Login'));
                 // return response()->view('Error.google-access-error');
             }
     } 

@@ -7,13 +7,40 @@
     margin-bottom: 20px;
     margin-right: 100px;
 }
+input[type="range"] {
+    
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 </style>
 <div class="table-title">
     <h3 style="font-style: italic ; font-weight: 600; padding: 20px;">Chi Tiết Công Việc</h3>
 </div>
-<form method="post" class="needs-validation NopBaoCao-form" enctype="multipart/form-data" action="/NopBaoCao/{{$CongViec[0]->id}}" novalidate>
+<form method="post" class="needs-validation NopBaoCao-form" enctype="multipart/form-data" action="/NopBaoCao/{{$CongViec[0]->id}}/{{$CongViec[0]->idcapnhattiendo ?? 'null'}}" novalidate>
 @csrf
-<table class="table-fill">
+<table class="table-fill" id="fileTable">
     <thead>
         <tr>
             <th class="text-left" style="width: 20%"></th>
@@ -56,32 +83,43 @@
               </td>
           </tr>
           <tr>
-            <td class="text-left">Chọn File Nộp</td>
+            <td class="text-left">Phần trăm cập nhật</td>
             <td class="text-left">
-                <div style="display: flex;">
-                    <!-- Thay thế input bằng icon, liên kết với input qua label -->
-                    <label for="fileInput" class="file-label">
-                        <i class="fa-solid fa-file-import"></i>
-                    </label>
-                    <input type="file" id="fileInput" name="file_nop" class="form-control-file" required style="display: none;">
-                    <p id="fileNameDisplay" style="margin-top: 10px;"></p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-left">Tên Người Nộp</td>
-            <td class="text-left">
-            <div>
-              <input id="HoTen" name="TenNguoiNop" type="text" class="form-control" required>   
+            <div style="display: flex; align-items: center;">
+                <input type="range" id="progressSlider" name="TienDo" min="0" max="100" step="1" style="width: 80%;">
+                <span id="progressValue" style="margin-left: 10px;">0%</span>
             </div>
-
+            </td>
+        </tr> 
+        <tr>
+            <td class="text-left">Chọn File Nộp</td>
+            <td class="text-left" id="fileContainer">
+                <div style="display: flex; justify-content: flex-start;" class="file-upload-group">
+                    <label class="file-label" for="fileInput" style="cursor: pointer;">
+                        Thêm File
+                    </label>
+                    <input type="file" id="fileInput" name="files[]" multiple style="display: none;">
+                    <button type="button" id="addDivButton" style="margin-left: 20px; cursor: pointer;">+</button>
+                </div>
+                @if(isset($CongViec[0]->DuongDanFile))
+                @foreach($CongViec as $index => $CongViec1)
+                    <div style="display: flex; justify-content: space-between; margin-top:20px" class="file-upload-group">
+                        <label class="file-label">
+                            <i class="fa-solid fa-file-import"></i> File Đã Nộp 
+                        </label>
+                        <div style="margin-top: 10px;">
+                            {{ $CongViec1->DuongDanFile }}
+                        </div>
+                    </div>
+                @endforeach
+                @endif
             </td>
         </tr>
         <tr>
             <td class="text-left"><div class="cmt">Bình Luận Nội Dung</div></td>
             <td class="text-left">
                 <div class="group">
-                    <textarea id="ghichuInput" name="NoiDung" class="form-control textarea" required></textarea>
+                    <textarea id="ghichuInput" name="NoiDung" class="form-control textarea" required>   @if(isset($CongViec[0]->DuongDanFile)){{ $CongViec[0]->NoiDung }}  @endif</textarea>
                     <span class="highlight"></span>
                     <span class="bar"></span>
                 </div>
@@ -98,51 +136,59 @@
     <div class="loading-bar">Loading</div>
 </div>
 <script>
-		$(document).ready(function() {
-    $('.NopBaoCao-form').on('submit', function(e) {
-        e.preventDefault(); // Ngăn chặn form submit mặc định
-        var form = $(this);
-        var formData = new FormData(form[0]); // Sử dụng FormData để gửi dữ liệu form, bao gồm cả file
+	  $(document).ready(function() {
+        $('.NopBaoCao-form').on('submit', function(e) {
+            e.preventDefault(); // Ngăn chặn form submit mặc định
+            var form = $(this);
+            var formData = new FormData(form[0]); // Sử dụng FormData để gửi dữ liệu form, bao gồm cả file
 
-        // Kiểm tra tính hợp lệ của form
-        var isError = false;
-        form.find('input[required]').each(function() {
-            var input = $(this);
-            if (input.val() === '') {
-                isError = true;
-            }
-        });
-
-        if (!isError) {
-            $('#modalLogin').css('display', 'flex');
-            $.ajax({
-                url: form.attr('action'),
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    if (response.success === true) {
-                        showSuccessToast1();
-                        setTimeout(function() {
-                            window.location.href = "/Index";
-                        }, 1000);
-                    } else {
-                        showErrorToast1();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error:', status, error);
-                },
-                complete: function() {
-                    // Sau khi hoàn thành, ẩn phần loading
-                    $('#modalLogin').css('display', 'none');
+            // Kiểm tra tính hợp lệ của form
+            var isError = false;
+            form.find('input[required]').each(function() {
+                var input = $(this);
+                if (input.val() === '') {
+                    isError = true;
+                    // Thêm thông báo lỗi nếu cần
+                    input.addClass('is-invalid'); // Giả sử bạn sử dụng class này để hiển thị lỗi
+                } else {
+                    input.removeClass('is-invalid');
                 }
             });
-        }
+
+            if (!isError) {
+                $('#modalLogin').css('display', 'flex');
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success === true) {
+                            showSuccessToast1();
+                            setTimeout(function() {
+                                window.location.href = "/Index";
+                            }, 1000);
+                        } else {
+                            showErrorToast1();
+                            // Thay đổi thông báo lỗi nếu có
+                            console.error('Error:', response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', status, error);
+                        // Thay đổi thông báo lỗi nếu cần
+                        showErrorToast1();
+                    },
+                    complete: function() {
+                        // Sau khi hoàn thành, ẩn phần loading
+                        $('#modalLogin').css('display', 'none');
+                    }
+                });
+            }
+        });
     });
-});
   function toast1({title='',message='',type='info',duration=2000}){
     const main=document.getElementById('toast1');
     if (main){
@@ -188,7 +234,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: " Đơn Vị Đã Tồn Tại !",
+          message: " Tệp không hợp lệ !",
           type:"error",
           duration:2000
       })
@@ -197,7 +243,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Thêm Đơn Vị Thành Công !",
+        message: "Báo Cáo Thành Công !",
         type:"success",
         duration:2000
       })
@@ -234,29 +280,113 @@
 
 
 
-      document.getElementById('fileInput').addEventListener('change', function(event) {
-    const fileInput = event.target;
-    const fileName = fileInput.files[0] ? fileInput.files[0].name : "Chưa chọn file nào";
-    
-    // Hiển thị tên file đã chọn
-    document.getElementById('fileNameDisplay').textContent = "Tên file: " + fileName;
-});
-var HoTen = document.getElementById('HoTen');
-    HoTen.addEventListener('input', function(e) {
-      var value = e.target.value;
-      // Loại bỏ khoảng trắng đầu tiên nếu có
-      var sanitizedValue = value.replace(/^\s/, '');
-      e.target.value = sanitizedValue;
+
+      document.addEventListener('DOMContentLoaded', function() {
+    let divCount = 1; // Đếm số lượng div hiện tại
+
+    // Gán sự kiện cho phần tử file input đầu tiên sau khi DOM đã tải xong
+    const fileInput_0 = document.getElementById('fileInput_0');
+    const fileNameDisplay_0 = document.getElementById('fileNameDisplay_0');
+
+    if (fileInput_0 && fileNameDisplay_0) { // Kiểm tra phần tử tồn tại
+        fileInput_0.addEventListener('change', function(event) {
+            const files = Array.from(event.target.files);
+            
+            fileNameDisplay_0.textContent = ''; // Xóa nội dung cũ
+            
+            if (files.length > 0) {
+                const fileList = document.createElement('ul');            
+                files.forEach((file) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = "Tên file: " + file.name;
+                    fileList.appendChild(listItem);
+                });
+                
+                fileNameDisplay_0.appendChild(fileList);
+            } else {
+                fileNameDisplay_0.textContent = "Chưa chọn file nào";
+            }
+        });
+    }
+
+    document.getElementById('addDivButton').addEventListener('click', function() {
+        const fileContainer = document.getElementById('fileContainer');
+        
+        // Tạo div mới
+        const newDiv = document.createElement('div');
+        newDiv.style.display = 'flex';
+        newDiv.style.justifyContent = 'space-between';
+        newDiv.className = 'file-upload-group';
+        newDiv.style.marginTop = '10px';
+        newDiv.innerHTML = `
+            <label for="fileInput_${divCount}" class="file-label" style="cursor: pointer;">
+                <i class="fa-solid fa-file-import"></i> Chọn File
+            </label>
+            <input type="file" id="fileInput_${divCount}" name="file_nop[]" class="form-control-file" multiple required style="display: none;">
+            <div id="fileNameDisplay_${divCount}" style="margin-top: 10px;"></div>
+            <button class="deleteDivButton" style="margin-top: 10px; cursor: pointer;">Xóa</button>
+        `;
+        
+        // Thêm div mới vào fileContainer
+        fileContainer.appendChild(newDiv);
+
+        // Thêm sự kiện lắng nghe cho input file của div mới
+        const fileInput = document.getElementById(`fileInput_${divCount}`);
+        const fileNameDisplay = document.getElementById(`fileNameDisplay_${divCount}`);
+        const deleteDivButton = newDiv.querySelector('.deleteDivButton');
+
+        if (fileInput && fileNameDisplay && deleteDivButton) { // Kiểm tra các phần tử tồn tại
+            fileInput.addEventListener('change', function(event) {
+                const files = Array.from(event.target.files);
+                
+                fileNameDisplay.textContent = ''; // Xóa nội dung cũ
+                
+                if (files.length > 0) {
+                    const fileList = document.createElement('ul');
+                    fileList.style.paddingLeft = '20px';
+                    
+                    files.forEach((file) => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = "Tên file: " + file.name;
+                        fileList.appendChild(listItem);
+                    });
+                    
+                    fileNameDisplay.appendChild(fileList);
+                } else {
+                    fileNameDisplay.textContent = "Chưa chọn file nào";
+                }
+            });
+
+            // Xóa div khi nhấn nút "Xóa"
+            deleteDivButton.addEventListener('click', function() {
+                fileContainer.removeChild(newDiv);
+            });
+        }
+        
+        divCount++; // Tăng giá trị divCount sau khi thêm div mới
     });
+});
 
-
-
-    
 </script>
 <script>
-    document.getElementById('fileInput').addEventListener('change', function() {
-        var fileName = this.files[0].name;
-        document.getElementById('fileNameDisplay').textContent = 'File đã chọn: ' + fileName;
+document.addEventListener('DOMContentLoaded', function() {
+    const progressSlider = document.getElementById('progressSlider');
+    const progressValue = document.getElementById('progressValue');
+
+    // Gán giá trị từ PHP vào thanh trượt khi trang tải
+    const initialProgress = parseInt('{{ $CongViec[0]->TienDo ?? 0 }}', 10);
+    progressSlider.value = initialProgress;
+    progressValue.textContent = `${initialProgress}%`;
+
+    // Cập nhật giá trị hiển thị khi người dùng thay đổi giá trị thanh trượt
+    progressSlider.addEventListener('input', function() {
+        if (parseInt(progressSlider.value, 10) < initialProgress) {
+            progressSlider.value = initialProgress;
+        }
+        progressValue.textContent = `${progressSlider.value}%`;
     });
+});
 </script>
+
+
 @endsection

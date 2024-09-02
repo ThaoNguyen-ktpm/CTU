@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\congviec;
 use App\Models\capnhattiendo;
+use App\Models\duan;
+use App\Models\file;
 use App\Models\giaoviec;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -11,6 +13,90 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
+
+
+
+    public function NhanCongViecDuAn($id)
+    {
+         // Lấy sessionUserId từ session
+         $userId = Session::get('sessionUserId');
+    
+         // Sử dụng $userId trong truy vấn
+         $NhanViec = DB::select('SELECT congviecs.* ,duans.TenDuAn
+             FROM giaoviecs, congviecs ,duans
+             WHERE giaoviecs.MaNguoiDung = ? 
+             AND congviecs.MaDuAn = ?
+            AND duans.id = congviecs.MaDuAn 
+             AND giaoviecs.MaCongViec = congviecs.id 
+             AND giaoviecs.TrangThai = 1', [$userId,$id]);
+    
+        return response()->json($NhanViec);
+    }
+
+    public function DangThucHienDuAn($id)
+    {
+         // Lấy sessionUserId từ session
+         $userId = Session::get('sessionUserId');
+    
+         // Sử dụng $userId trong truy vấn
+         $DangThucHien = DB::select('SELECT 
+                congviecs.*, 
+                capnhattiendos.ThoiGian, 
+                duans.TenDuAn, 
+                capnhattiendos.id AS idcapnhattiendo, 
+                capnhattiendos.TienDo
+            FROM 
+                giaoviecs
+            JOIN 
+                congviecs ON giaoviecs.MaCongViec = congviecs.id 
+            JOIN 
+                duans ON duans.id = congviecs.MaDuAn 
+            LEFT JOIN 
+                capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
+            WHERE 
+                giaoviecs.MaNguoiDung = ? 
+                AND congviecs.MaDuAn = ?
+                AND giaoviecs.TrangThai = 2
+
+            
+            ', [$userId,$id]);
+    
+        return response()->json($DangThucHien);
+    }
+    public function HoanThanhDuAn($id)
+    {
+         // Lấy sessionUserId từ session
+         $userId = Session::get('sessionUserId');
+    
+         // Sử dụng $userId trong truy vấn
+         $HoanThanh= DB::select('SELECT congviecs.*  ,capnhattiendos.ThoiGian ,duans.TenDuAn
+            FROM giaoviecs, congviecs ,capnhattiendos ,duans
+            WHERE giaoviecs.MaNguoiDung = ?
+            AND giaoviecs.MaCongViec = congviecs.id 
+            AND giaoviecs.TrangThai = 3
+            AND duans.id = congviecs.MaDuAn 
+            AND congviecs.MaDuAn = ?
+            AND capnhattiendos.MaGiaoViec = giaoviecs.id', [$userId,$id]);
+
+        return response()->json($HoanThanh);
+    }
+    public function TreHenDuAn($id)
+    {
+         // Lấy sessionUserId từ session
+         $userId = Session::get('sessionUserId');
+    
+         // Sử dụng $userId trong truy vấn
+         $TreHen= DB::select('SELECT congviecs.* ,duans.TenDuAn
+            FROM giaoviecs, congviecs ,duans
+            WHERE giaoviecs.MaNguoiDung = ? 
+            AND congviecs.MaDuAn =  ? 
+            AND duans.id = congviecs.MaDuAn 
+            AND giaoviecs.MaCongViec = congviecs.id 
+            AND giaoviecs.TrangThai = 4', [$userId,$id]);
+
+        return response()->json($TreHen);
+    }
+
     public function index()
     {
         $title = "Trang Chủ";
@@ -19,32 +105,46 @@ class IndexController extends Controller
         $userId = Session::get('sessionUserId');
     
         // Sử dụng $userId trong truy vấn
-        $NhanViec = DB::select('SELECT congviecs.* 
-            FROM giaoviecs, congviecs 
+        $NhanViec = DB::select('SELECT congviecs.* ,duans.TenDuAn
+            FROM giaoviecs, congviecs ,duans
             WHERE giaoviecs.MaNguoiDung = ? 
             AND giaoviecs.MaCongViec = congviecs.id 
+            AND duans.id = congviecs.MaDuAn 
             AND giaoviecs.TrangThai = 1', [$userId]);
     
-        $DangThucHien = DB::select('SELECT congviecs.* 
-            FROM giaoviecs, congviecs 
-            WHERE giaoviecs.MaNguoiDung = ? 
-            AND giaoviecs.MaCongViec = congviecs.id 
-            AND giaoviecs.TrangThai = 2', [$userId]);
+        $DangThucHien = DB::select('SELECT congviecs.*, 
+                capnhattiendos.ThoiGian, 
+                duans.TenDuAn, 
+                capnhattiendos.id AS idcapnhattiendo, 
+                capnhattiendos.TienDo
+            FROM giaoviecs
+            JOIN congviecs ON giaoviecs.MaCongViec = congviecs.id 
+            JOIN duans ON duans.id = congviecs.MaDuAn 
+            LEFT JOIN capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
+            WHERE giaoviecs.MaNguoiDung = ?
+            AND giaoviecs.TrangThai = 2;
+            ', [$userId]);
 
-        $HoanThanh= DB::select('SELECT congviecs.* ,capnhattiendos.TenNguoiNop, capnhattiendos.DuongDanFile ,capnhattiendos.ThoiGian
-            FROM giaoviecs, congviecs ,capnhattiendos
+        $HoanThanh= DB::select('SELECT congviecs.*  ,capnhattiendos.ThoiGian ,duans.TenDuAn
+            FROM giaoviecs, congviecs ,capnhattiendos  ,duans
             WHERE giaoviecs.MaNguoiDung = ?
             AND giaoviecs.MaCongViec = congviecs.id 
+             AND duans.id = congviecs.MaDuAn 
             AND giaoviecs.TrangThai = 3
             AND capnhattiendos.MaGiaoViec = giaoviecs.id', [$userId]);
 
-        $TreHen= DB::select('SELECT congviecs.* 
-            FROM giaoviecs, congviecs 
+        $TreHen= DB::select('SELECT congviecs.*  ,duans.TenDuAn
+            FROM giaoviecs, congviecs  ,duans
             WHERE giaoviecs.MaNguoiDung = ? 
+             AND duans.id = congviecs.MaDuAn
             AND giaoviecs.MaCongViec = congviecs.id 
             AND giaoviecs.TrangThai = 4', [$userId]);
-    
-        return view('Index.TrangChu', compact('TreHen','HoanThanh','DangThucHien', 'NhanViec', 'title'));
+        $DuAn = DB::select('SELECT duans.id 
+            FROM thanhviens , duans 
+            WHERE duans.id = thanhviens.MaDuAn 
+            AND thanhviens.MaNguoiDung = ?',[$userId]);
+        $DuAnAll = duan::where('IsActive', 1)->get();
+        return view('Index.TrangChu', compact('TreHen','HoanThanh','DangThucHien', 'NhanViec','DuAn', 'title','DuAnAll'));
     }
     public function ChiTietCongViec($id)
     {
@@ -68,11 +168,29 @@ class IndexController extends Controller
        AND giaoviecs.id = capnhattiendos.MaGiaoViec',[$id,$userId]);
         return view('Index.ChiTietHoanThanh', compact( 'CongViec','title'));
     }
-    public function CapNhatTienDoView($id)
-    {
-        $title = "Cập Nhật Tiến Độ";
-       $CongViec = DB::select('SELECT congviecs.* , duans.TenDuAn FROM congviecs , duans WHERE congviecs.id = ? AND congviecs.MaDuAn = duans.id',[$id]);
-        return view('Index.CapNhatTienDo', compact( 'CongViec','title'));
+        public function CapNhatTienDoView($id, $idcapnhattiendo )
+        {
+            $title = "Cập Nhật Tiến Độ";
+        
+            if ($idcapnhattiendo  ===  'null') {
+                                        
+                $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn 
+                FROM congviecs 
+                JOIN duans ON congviecs.MaDuAn = duans.id
+                WHERE congviecs.id = ?', [$id]);
+            } else {
+                $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn, capnhattiendos.TienDo, capnhattiendos.ThoiGian, capnhattiendos.NoiDung, files.DuongDanFile ,capnhattiendos.id as idcapnhattiendo
+                                    FROM congviecs 
+                                    JOIN duans ON congviecs.MaDuAn = duans.id
+                                    LEFT JOIN giaoviecs ON giaoviecs.MaCongViec = congviecs.id
+                                    LEFT JOIN capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
+                                    LEFT JOIN files ON files.MaCapNhatTienDo = capnhattiendos.id
+                                    WHERE congviecs.id = ? AND capnhattiendos.id = ?;
+                                    ', [$id, $idcapnhattiendo]);
+
+            }
+    
+        return view('Index.CapNhatTienDo', compact('CongViec', 'title'));
     }
 
 
@@ -83,7 +201,7 @@ class IndexController extends Controller
         
         // Kiểm tra xem kết quả có tồn tại hay không
         if (!empty($CongViecid)) {
-            // Lấy giá trị id từ đối tượng stdClass đầu tiên trong mảng
+            // Lấy giá trị id từ đối tượng stdClass đầu tiên trong mảngs
             $CongViecid = $CongViecid[0]->id;
         
             // Tìm kiếm đối tượng GiaoViec
@@ -102,61 +220,122 @@ class IndexController extends Controller
             return response()->json(['success' => false, 'message' => 'No record found']);
         }  
     }
-    public function NopBaoCao(Request $request, $id)
+    public function NopBaoCao(Request $request, $id, $idcapnhattiendo)
     {
         $userId = Session::get('sessionUserId');
         $CongViecid = DB::select('SELECT giaoviecs.id FROM giaoviecs WHERE MaCongViec = ? AND MaNguoiDung= ?', [$id, $userId]);
-        
-        // Kiểm tra xem kết quả có tồn tại hay không
-        if (!empty($CongViecid)) {
-            // Lấy giá trị id từ đối tượng stdClass đầu tiên trong mảng
-           
-            // Tìm kiếm đối tượng GiaoViec
-            $GiaoViec = giaoviec::find($CongViecid[0]->id);
-            $GiaoViec->TrangThai = 3;
-            $GiaoViec->save();
-        
-        
-            $file = $request->file('file_nop');
-          
-            // Lấy tên file gốc
-            $originalFileName = $file->getClientOriginalName();
-            
-            // Tạo tên file duy nhất để tránh bị trùng lặp
-            $fileName = time() . '_' . $originalFileName;
-            
-            // Lưu file vào thư mục 'uploads'
-            $file->move(public_path('uploads'), $fileName);
     
-            // Lưu thông tin báo cáo vào bảng capnhattiendo
+        try {
+            $validatedData = $request->validate([
+                'file_nop.*' => 'required|mimes:pdf,doc,docx,xlsx,xls,zip', // Chỉ chấp nhận các loại file nhất định với dung lượng tối đa 2MB
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['success' => false, 'message' => 'Tệp không hợp lệ: ' . implode(', ', $e->errors())]);
+        }
 
+
+        if ( $idcapnhattiendo  ===  'null') {
+           // Tạo bản ghi cập nhật tiến độ
             $capnhattiendo = new capnhattiendo();
-            $capnhattiendo ->TenNguoiNop = $request->input('TenNguoiNop');
-            $capnhattiendo ->DuongDanFile= 'uploads/' . $fileName;
-            $capnhattiendo ->NoiDung = $request->input('NoiDung');
-            $capnhattiendo ->MaGiaoViec =  $CongViecid[0]->id;
-            $capnhattiendo ->ThoiGian = now();
-            $capnhattiendo ->IsActive = true;  
+            $capnhattiendo->NoiDung = $request->input('NoiDung');
+            $capnhattiendo->MaGiaoViec = $CongViecid[0]->id;
+            $capnhattiendo->ThoiGian = now();
+            $capnhattiendo->TienDo = $request->input('TienDo');
+            $capnhattiendo->IsActive = true;
             $capnhattiendo->save();
-        
-            // Kiểm tra nếu tất cả các giao việc cho cùng công việc đã hoàn thành
-            
+
+            // Kiểm tra giá trị tiến độ và cập nhật trạng thái công việc
+            if ($capnhattiendo->TienDo == 100) {
+                $GiaoViec = giaoviec::find($CongViecid[0]->id);
+                if ($GiaoViec) {
+                    $GiaoViec->TrangThai = 3;
+                    $GiaoViec->save();
+                }
+            }
+
+            $files = $request->file('file_nop');
+            $fileRecords = [];
+    
+            foreach ($files as $file) {
+                $originalFileName = $file->getClientOriginalName();
+                $fileName = time() . '_' . $originalFileName;
+                $file->move(public_path('uploads'), $fileName);
+    
+                $fileRecords[] = [
+                    'MaCapNhatTienDo' => $capnhattiendo->id,
+                    'DuongDanFile' => 'uploads/' . $fileName,
+                    'IsActive' => true,
+                  
+                ];
+            }
+    
+            // Batch insert file records to reduce database queries
+            DB::table('files')->insert($fileRecords);
+    
             $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                         ->where('TrangThai', '!=', 3)
                                         ->count();
-
+    
             if ($soLuongHoanThanh == 0) {
-                // Nếu tất cả đều hoàn thành, cập nhật trạng thái công việc
-                $congViec = CongViec::find($id);
+                $congViec = congviec::find($id);
                 $congViec->TrangThai = 3;
                 $congViec->save();
             }
-                            
-                return response()->json(['success' => true]);
-           
+    
+            return response()->json(['success' => true]);
         } else {
-            return response()->json(['success' => false, 'message' => 'No record found']);
+              // Tạo bản ghi cập nhật tiến độ
+              $capnhattiendo = capnhattiendo::find($idcapnhattiendo);
+              $capnhattiendo->NoiDung = $request->input('NoiDung');
+              $capnhattiendo->MaGiaoViec = $CongViecid[0]->id;
+              $capnhattiendo->ThoiGian = now();
+              $capnhattiendo->TienDo = $request->input('TienDo');
+              $capnhattiendo->IsActive = true;
+              $capnhattiendo->save();
+  
+              // Kiểm tra giá trị tiến độ và cập nhật trạng thái công việc
+              if ($capnhattiendo->TienDo == 100) {
+                  $GiaoViec = giaoviec::find($CongViecid[0]->id);
+                  if ($GiaoViec) {
+                      $GiaoViec->TrangThai = 3;
+                      $GiaoViec->save();
+                  }
+              }
+  
+              $files = $request->file('file_nop');
+              $fileRecords = [];
+      
+              foreach ($files as $file) {
+                  $originalFileName = $file->getClientOriginalName();
+                  $fileName = time() . '_' . $originalFileName;
+                  $file->move(public_path('uploads'), $fileName);
+      
+                  $fileRecords[] = [
+                      'MaCapNhatTienDo' => $idcapnhattiendo,
+                      'DuongDanFile' => 'uploads/' . $fileName,
+                      'IsActive' => true,
+                    
+                  ];
+              }
+      
+              // Batch insert file records to reduce database queries
+              DB::table('files')->insert($fileRecords);
+      
+              $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
+                                          ->where('TrangThai', '!=', 3)
+                                          ->count();
+      
+              if ($soLuongHoanThanh == 0) {
+                  $congViec = CongViec::find($id);
+                  $congViec->TrangThai = 3;
+                  $congViec->save();
+              }
+            return response()->json(['success' => true]);
         }
+        
 
     }
+
+
+   
 }

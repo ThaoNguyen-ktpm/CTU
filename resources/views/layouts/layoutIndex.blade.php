@@ -56,7 +56,7 @@
         </div>
 
         <div class="row flex-grow-1" id="body-row">
-            <div class="col-12">
+            <div class="col-12" style="   position: relative;">
                 @yield('content')
             </div>
         </div>

@@ -118,7 +118,7 @@
                     var message=""
                     showSuccessToast1();
                     setTimeout(function() {
-                        window.location.href = "/admin";
+                        window.location.href = "/adminWelcome";
                     }, 1000);
                 } else if (response.successIndex === true){
                     var message=""

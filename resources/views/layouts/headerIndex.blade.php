@@ -166,7 +166,7 @@
             </a>
               
             <div>
-                <p style="z-index: 5; margin-left: 20px; margin-bottom: 0; color: #474747; font-size: 22px;" class="text-weight">
+                <p style="z-index: 5; margin-left: 20px; margin-bottom: 0; color: #474747; font-size: 22px;    font-style: oblique;font-family: ui-serif;" class="text-weight">
                     Trung Tâm Công Nghệ Phần Mềm Đại Học Cần Thơ
                 </p>
             </div>
@@ -199,6 +199,7 @@
                             <div>{{ \Carbon\Carbon::parse($ThongBao1->ThoiGian)->format(' H:i d-m-Y ') }}</div>
                             <div>{{ $ThongBao1->NoiDung }}</div>
                             <div class="xem-them" data-id="{{ $ThongBao1->id }}">Xem Thêm</div>
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
                         </li>
                     @endforeach
                 </ul>
@@ -276,34 +277,8 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
         });
 
-        notification.addEventListener('drop', function(e) {
-            e.preventDefault();
-            var draggingElement = document.querySelector('.dragging');
-            if (draggingElement) {
-                var notificationId = draggingElement.dataset.id;
-                
-                fetch(`/thongbao/${notificationId}`, {
-                    method: 'post   ',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        draggingElement.remove();
-                        updateNotificationCount();
-                    } else {
-                        alert(data.message || 'Có lỗi xảy ra khi xóa thông báo.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Có lỗi xảy ra khi xóa thông báo.');
-                });
-            }
-        });
+      
+        
 
         // Sự kiện click cho biểu tượng xóa
         var deleteIcon = notification.querySelector('.delete-icon');
