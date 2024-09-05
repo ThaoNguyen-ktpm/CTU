@@ -7,39 +7,39 @@
   <form  method="post" class="needs-validation User-form" action="/User/update/{{$User->id}}" novalidate>
   @csrf
   <div class="group">
-    <label>Tài Khoản Người Dùng <span style="color:red;">(*)</span></label>
+    <label>Tài khoản người dùng <span style="color:red;">(*)</span></label>
       <input id="usenameInput" name="UserName" value="{{ $User->Name }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Tài Khoản Người Dùng Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Tài Khoản Người Dùng !
+        Vui lòng nhập tài khoản người dùng !
       </div>
     </div>
     <div class="group">
-    <label>Họ và Tên Người Dùng <span style="color:red;">(*)</span></label>
+    <label>Họ và tên người dùng <span style="color:red;">(*)</span></label>
       <input id="HoTen" name="HoTen" value="{{ $User->UserName }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Họ và Tên Người Dùng Thành Công
+       
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Họ và Tên Người Dùng !
+        Vui lòng nhập họ và tên người dùng !
       </div>
     </div>
     <div class="group">
-    <label>Số Điện Thoại <span style="color:red;">(*)</span></label>
+    <label>Số điện thoại <span style="color:red;">(*)</span></label>
       <input id="sdtInput" name="SDT" value="{{ $User->SDT }}" type="number" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Email Thành Công
+       
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Email !
+        Vui lòng nhập số điện thoại !
       </div>
     </div>
     <div class="group">
@@ -48,10 +48,10 @@
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Email Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Email !
+        Vui lòng nhập Email !
       </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Người Dùng</button>

@@ -9,30 +9,30 @@
       <input id="usernameInput" name="MaNguoiDung" value="{{$PhongBan[0]->MaNguoiDung}}" type="text" class="form-control" required hidden>
   </div>
     <div class="group">
-      <label>Tên Người Dùng <span style="color:red;">(*)</span></label>
+      <label>Tên người dùng <span style="color:red;">(*)</span></label>
       <input id="usernameInput" name="Name" value="{{$PhongBan[0]->Name}}" type="text" class="form-control" required readonly>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-          Nhập Người Dùng Thành Công
+      
       </div>
       <div class="invalid-feedback">
-          Vui Lòng Nhập Người Dùng !
+          Vui lòng nhập người dùng !
       </div>
   </div>
     <div class="group">
-    <label>Tên Đơn Vị <span style="color:red;">(*)</span></label>
+    <label>Tên đơn vị <span style="color:red;">(*)</span></label>
     <select name="MaDonVi" class="form-control" required>
-        <option value="" disabled selected>Chọn Đơn Vị</option>
+        <option value="" disabled selected>Chọn đơn vị</option>
         @foreach($DonVi as $DonVi1)
         <option value="{{$DonVi1->id}}" {{ $PhongBan[0]->MaDonVi == $DonVi1->id ? 'selected' : '' }}>{{$DonVi1->TenDonVi}}</option>
         @endforeach
     </select>
     <div class="valid-feedback">
-        Chọn Đơn Vị Thành Công
+        
       </div>
     <div class="invalid-feedback">
-        Vui lòng chọn Đơn Vị!
+        Vui lòng chọn đơn vị!
     </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Cập Nhật</button>

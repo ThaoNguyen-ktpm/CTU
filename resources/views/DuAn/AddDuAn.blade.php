@@ -53,27 +53,28 @@
   <form  method="post" class="needs-validation DuAn-form" action="/DuAn/add" novalidate>
   @csrf
     <div class="group">
-    <label>Tên Dự Án <span style="color:red;">(*)</span></label>
+    <label>Tên dự án <span style="color:red;">(*)</span></label>
       <input  id="usernameInput" name="TenDuAn" type="text"  class="form-control" required pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Dự Án Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Dự Án !
+        Vui lòng nhập tên dự án !
       </div>
     </div>
+    
     <div class="group">
-    <label>Mô Tả Dự Án<span style="color:red;">(*)</span></label>
+    <label>Mô tả<span style="color:red;">(*)</span></label>
       <textarea id="NoiDungInput" name="MoTa" type="text" class="form-control textarea" required></textarea >
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Mô Tả Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Mô Tả !
+        Vui lòng nhập mô tả !
       </div>
     </div>
   
@@ -82,34 +83,34 @@
        <div class="macdinh">
        <div class="group">
             <h4>Giai Đoạn 1</h4>
-            <label>Chọn Giai Đoạn <span style="color:red;">(*)</span></label>
+            <label>Chọn giai đoạn <span style="color:red;">(*)</span></label>
             <select name="MaGiaiDoan[]" class="form-control" id="selectGiaiDoan" required>
-                <option value="" disabled selected>Chọn Đơn Vị</option>
+                <option value="" disabled selected>Chọn giai đoạn</option>
                 @foreach($GiaiDoan as $GiaiDoan1)
                 <option value="{{$GiaiDoan1->id}}">{{$GiaiDoan1->TenGiaiDoan}}</option>
                 @endforeach
             </select>
             <span class="highlight"></span>
             <span class="bar"></span>
-            <div class="valid-feedback">Chọn Giai Đoạn Thành Công</div>
-            <div class="invalid-feedback">Vui Lòng Chọn Giai Đoạn!</div>
+            <div class="valid-feedback"></div>
+            <div class="invalid-feedback">Vui lòng chọn giai đoạn!</div>
             </div>
             
             <div class="group">
-            <label>Ngày Bắt Đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm) </label></label>
+            <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm) </label></label>
             <input id="NgayBatDau" name="NgayBatDau" type="date" class="form-control" required>
             <span class="highlight"></span>
             <span class="bar"></span>
-            <div class="valid-feedback">Chọn Ngày Bắt Đầu Thành Công</div>
-            <div class="invalid-feedback">Vui Lòng Chọn Ngày Bắt Đầu Lớn Hơn Thời Gian Hiện Tại!</div>
+            <div class="valid-feedback"></div>
+            <div class="invalid-feedback">Vui lòng chọn số ngày bằng hoặc lớn hơn ngày hiện tại!</div>
             </div>
             <div class="group">
-            <label>Nhập Số Ngày Thực Hiện <span style="color:red;">(*)</span></label>
+            <label>Nhập số ngày thực hiện <span style="color:red;">(*)</span></label>
             <input name="SoNgayThucHien[]" type="number"  min="1" max="1000" class="form-control" required>
             <span class="highlight"></span>
             <span class="bar"></span>
-            <div class="valid-feedback">Nhập Ngày Thực Hiện Thành Công</div>
-            <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện!</div>
+            <div class="valid-feedback"></div>
+            <div class="invalid-feedback">Nhập số ngày thực hiện hoặc không lớn 1000 ngày !</div>
             </div>
             <div class="group">
             <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="1" readonly hidden>
@@ -127,11 +128,11 @@
     <div class="group" style="margin-top: 20px;">
    <div style="display: flex;">
       <div style="padding-right: 20px;">
-        <label>Thành Viên<span style="color:red;">(*)</span></label>
+        <label>Thành viên<span style="color:red;">(*)</span></label>
       </div>
       <div>
       <select name="MaDonVi" class="form-control" id="selectDonVi"  style="  margin-bottom: 10px;" required>
-              <option value="" disabled selected>Chọn Đơn Vị</option>
+              <option value="" disabled selected>Chọn đơn vị</option>
               @foreach($DonVi as $DonVi1)
               <option value="{{$DonVi1->id}}">{{$DonVi1->TenDonVi}}</option>
               @endforeach
@@ -143,12 +144,7 @@
      
       @endforeach
     </div>
-      <div class="valid-feedback">
-          Chọn Thành Viên Thành Công
-      </div>
-      <div class="invalid-feedback">
-          Vui Lòng Chọn Thành Viên!
-      </div>
+     
   </div>
       
       <button name="Add" type="submit" class="submit-btn">Thêm Dự Án</button>
@@ -381,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </select>
             <span class="highlight"></span>
             <span class="bar"></span>
-            <div class="valid-feedback">Nhập Giai Đoạn Thành Công</div>
+            <div class="valid-feedback"></div>
             <div class="invalid-feedback">Vui Lòng Chọn Giai Đoạn!</div>
         </div>
         <div class="group">
@@ -389,11 +385,11 @@ document.addEventListener('DOMContentLoaded', function () {
             <input name="SoNgayThucHien[]" type="number" min="1" max="1000" class="form-control" required>
             <span class="highlight"></span>
             <span class="bar"></span>
-            <div class="valid-feedback">Nhập Ngày Thực Hiện Thành Công</div>
+            <div class="valid-feedback"></div>
             <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện!</div>
         </div>
         <div class="group">
-            <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="${soLuongGiaiDoan}" readonly >
+            <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="${soLuongGiaiDoan}" readonly hidden>
             <span class="highlight"></span>
             <span class="bar"></span>
         `;
@@ -439,30 +435,35 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script>
-var NgayBatDau = document.getElementById('NgayBatDau');
-NgayBatDau.addEventListener('input', function(e) {
-  var value = e.target.value;
-  
-  // Lấy ngày từ chuỗi ngày tháng
-  var selectedDate = new Date(value);
-  
-  // Lấy thời gian hiện tại
-  var currentDate = new Date();
-  
-  // Thiết lập giờ, phút, giây của currentDate là 00:00:00 để chỉ so sánh ngày tháng
-  currentDate.setHours(0, 0, 0, 0);
+document.addEventListener('DOMContentLoaded', function() {
+    var NgayBatDau = document.getElementById('NgayBatDau');
+    var invalidFeedback = document.querySelector('.invalid-feedback');
 
-  // Kiểm tra điều kiện: ngày được nhập phải lớn hơn ngày hiện tại
-  var isValid = selectedDate > currentDate;
-  
-  if (isValid) {
-    e.target.setCustomValidity('');
-  } else {
-    e.target.setCustomValidity(' ');
-  }
-  
-  // Cập nhật trạng thái của form để hiển thị thông báo lỗi (nếu có)
-  e.target.reportValidity();
+    NgayBatDau.addEventListener('input', function(e) {
+        var value = e.target.value;
+
+        // Lấy ngày từ chuỗi ngày tháng
+        var selectedDate = new Date(value);
+
+        // Lấy thời gian hiện tại
+        var currentDate = new Date();
+        
+        // Thiết lập giờ, phút, giây của currentDate là 00:00:00 để chỉ so sánh ngày tháng
+        currentDate.setHours(0, 0, 0, 0);
+
+        // Kiểm tra điều kiện: ngày được nhập phải lớn hơn ngày hiện tại
+        var isValid = selectedDate > currentDate;
+        
+        if (isValid) {
+            // Xóa thông báo lỗi nếu ngày hợp lệ
+            invalidFeedback.style.display = 'none';
+            NgayBatDau.classList.remove('is-invalid');
+        } else {
+            // Hiển thị thông báo lỗi nếu ngày không hợp lệ
+            invalidFeedback.style.display = 'block';
+            NgayBatDau.classList.add('is-invalid');
+        }
+    });
 });
 
 

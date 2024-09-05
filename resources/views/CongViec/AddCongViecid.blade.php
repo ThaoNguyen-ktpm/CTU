@@ -7,88 +7,88 @@
   <form  method="post" class="needs-validation CongViec-form" action="/CongViec/add" novalidate>
   @csrf
   <div class="group">
-    <label>Dự Án <span style="color:red;">(*)</span></label>
+    <label>Dự án <span style="color:red;">(*)</span></label>
     <select name="MaDuAn" class="form-control" id="selectDuAn" required>
-        <option value="" disabled selected>Chọn Dự Án</option>
+        <option value="" disabled selected>Chọn dự án</option>
         @foreach($DuAn as $DuAn1)
         <option value="{{$DuAn1->id}}">{{$DuAn1->TenDuAn}}</option>
         @endforeach
     </select>
     <div class="valid-feedback">
-        Nhập Dự Án Thành Công
+       
     </div>
     <div class="invalid-feedback">
-        Vui Lòng Chọn Dự Án!
+        Vui lòng chọn dự án!
     </div>
 </div>
 
 <div class="group">
-    <label>Giai Đoạn <span style="color:red;">(*)</span></label>
+    <label>Giai đoạn <span style="color:red;">(*)</span></label>
     <select name="MaGiaiDoan" class="form-control selectThoiGian" id="selectGiaiDoan" required>
-        <option value="" disabled selected>Chọn Giai Đoạn</option>
+        <option value="" disabled selected>Chọn giai đoạn</option>
         <!-- Các option sẽ được thêm động tại đây -->
     </select>
     <div class="valid-feedback">
-        Nhập Giai Đoạn Thành Công
+      
     </div>
     <div class="invalid-feedback">
-        Vui Lòng Chọn Giai Đoạn!
+        Vui lòng chọn giai đoạn!
     </div>
 </div>
 <div id="selectThoiGian1"></div>
     <div class="group">
-    <label>Tên Công Việc <span style="color:red;">(*)</span></label> 
+    <label>Tên công việc <span style="color:red;">(*)</span></label> 
       <input  id="usernameInput" name="TenCongViec" type="text"  class="form-control" required pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Công Việc Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Công Việc !
+        Vui lòng nhập công việc !
       </div>
     </div>
     <div class="group">
-    <label>Nhập Link Tài Liệu <span style="color:red;"></span></label>
+    <label>Nhập link tài liệu <span style="color:red;"></span></label>
       <input  id="linkInput" name="LinkTaiLieu" type="text"  class="form-control" pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Link Tài Liệu Thành Công
+       
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Link Tài Liệu !
+        Vui lòng nhập link tài liệu !
       </div>
     </div>
     <div class="group">
-    <label>Mô Tả Công Việc<span style="color:red;">(*)</span></label>
+    <label>Mô tả công việc<span style="color:red;">(*)</span></label>
       <textarea id="NoiDungInput" name="MoTa" type="text" class="form-control textarea" required></textarea >
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Mô Tả Thành Công
+   
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Mô Tả !
+        Vui lòng nhập mô tả !
       </div>
     </div>
     <div class="group">
-      <label>Nhập Số Ngày Thực Hiện <span style="color:red;">(*)</span></label>
+      <label>Nhập số ngày thực hiện <span style="color:red;">(*)</span></label>
         <input  id="SoNgayThucHienInput" name="SoNgayThucHien" type="number"  min="1" max="1000" class="form-control" required>
         <span class="highlight"></span>
         <span class="bar"></span>
-        <div class="valid-feedback">Nhập Ngày Thực Hiện Thành Công</div>
-        <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện Không Lớn Hơn Số Ngày Của Giai Đoạn!</div>
+        <div class="valid-feedback"></div>
+        <div class="invalid-feedback">Vui lòng nhập số ngày thực hiện không lớn hơn số ngày của giai đoạn!</div>
     </div>
     <div class="group" style="margin-top: 20px;">
-        <label>Chọn Người Nhận Việc<span style="color:red;"> (*)</span></label>
+        <label>Chọn người nhận việc<span style="color:red;"> (*)</span></label>
       <div  class="GiaoVienGiangDay-list">
     </div>
       <div class="valid-feedback">
-          Chọn Thành Viên Thành Công
+          
       </div>
       <div class="invalid-feedback">
-          Vui Lòng Chọn Thành Viên!
+          Vui lòng chọn thành viên!
       </div>
   </div>
   <p class="validation-message" style="color: red; display: none;">Phải chọn ít nhất 1 Người Nhận Việc!</p>

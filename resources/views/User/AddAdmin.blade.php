@@ -7,63 +7,63 @@
   <form action="/Admin/addAdmin" class="needs-validation Admin-form" method="post"   novalidate>
   @csrf
     <div class="group">
-    <label>Tài Khoản Admin <span style="color:red;">(*)</span></label>
+    <label>Tài khoản Admin <span style="color:red;">(*)</span></label>
       <input id="usenameInput" name="UserName" type="text" class="form-control text-input" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Tài Khoản Admin Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Tài Khoản Admin !
+        Vui lòng nhập tài khoản Admin !
       </div>
     </div>
     <div class="group">
-    <label> Họ và Tên Admin <span style="color:red;">(*)</span></label>
+    <label> Họ và tên Admin <span style="color:red;">(*)</span></label>
     <input id="HoTen" name="HoTen" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Tên Họ và Tên Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Họ và Tên Admin!
+        Vui lòng nhập họ và tên Admin!
       </div>
     </div>
     <div class="group">
-    <label>Mật Khẩu <span style="color:red;">(*)</span></label>
+    <label>Mật khẩu <span style="color:red;">(*)</span></label>
       <input id="passwordInput" name="Password" type="Password" class="form-control text-input showpassword" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback passwordcheck">
-        Nhập Mật Khẩu Thành Công
+     
       </div>
       <div class="invalid-feedback passwordcheck">
-        Vui Lòng Nhập Mật Khẩu !
+        Vui lòng nhập mật khẩu !
       </div>
     </div>
     <div class="group">
-    <label>Nhập Mật Khẩu <span style="color:red;">(*)</span></label>
+    <label>Nhập lại mật khẩu <span style="color:red;">(*)</span></label>
       <input id="passwordInput1"  name="Password1" type="Password" class="form-control text-input showpassword1" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback passwordcheck1">
-        Nhập Mật Khẩu Thành Công
+       
       </div>
       <div class="invalid-feedback passwordcheck1">
-        Vui Lòng Nhập Mật Khẩu !
+        Vui lòng nhập lại mật khẩu !
       </div>
     </div>
     <div class="group">
-    <label>Số Điện Thoại <span style="color:red;">(*)</span></label>
+    <label>Số điện thoại <span style="color:red;">(*)</span></label>
       <input id="sdtInput" name="SDT" type="number" class="form-control text-input" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Số Điện Thoại Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Số Điện Thoại!
+        Vui lòng nhập số điện thoại!
       </div>
     </div>
     <div class="group">
@@ -71,10 +71,10 @@
     <input id="emailInput" name="Email" type="email" class="form-control text-input" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
       <span class="bar"></span>
       <div class="valid-feedback emailcheck">
-        Nhập Email Thành Công
+       
       </div>
       <div class="invalid-feedback emailcheck">
-        Vui Lòng Nhập Email !
+        Vui lòng nhập email !
       </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Thêm Admin</button>

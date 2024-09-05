@@ -9,22 +9,22 @@
 
 
   <div class="group">
-    <label>Vai Trò <span style="color:red;">(*)</span></label>
+    <label>Vai trò <span style="color:red;">(*)</span></label>
     <select name="MaVaiTro" class="form-control" id="selectVaiTro" required>
-        <option value="" disabled selected>Chọn Vai Trò</option>
+        <option value="" disabled selected>Chọn vai trò</option>
         @foreach($VaiTro as $VaiTro1)
         <option value="{{$VaiTro1->id}}">{{$VaiTro1->TenVaiTro}}</option>
         @endforeach
     </select>
     <div class="valid-feedback">
-        Nhập Vai Trò Thành Công
+     
       </div>
     <div class="invalid-feedback">
-        Vui Lòng Chọn Vai Trò !
+        Vui lòng chọn vai trò !
     </div>
     </div>
     <div class="group">
-      <label>Người Dùng <span style="color:red;">(*)</span></label>
+      <label>Người dùng <span style="color:red;">(*)</span></label>
       <div  class="GiaoVienGiangDay-list">
       @foreach($NguoiDung as $NguoiDung1)
       <div class="form-check">
@@ -36,10 +36,10 @@
       @endforeach
     </div>
       <div class="valid-feedback">
-          Chọn Người Dùng Thành Công
+         
       </div>
       <div class="invalid-feedback">
-          Vui Lòng Chọn Người Dùng!
+          Vui lòng chọn người dùng!
       </div>
   </div>
       <button name="Add" type="submit" class="submit-btn">Thêm Vai Trò</button>

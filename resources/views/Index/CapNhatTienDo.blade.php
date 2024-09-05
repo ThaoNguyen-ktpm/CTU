@@ -33,7 +33,22 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 50%;
     cursor: pointer;
 }
-
+.file-upload-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.file-label {
+    cursor: pointer;
+}
+.delete-file-button {
+    cursor: pointer;
+    color: red;
+    margin-left: 10px;
+}
+.delete-file-button:hover {
+    text-decoration: underline;
+}
 </style>
 <div class="table-title">
     <h3 style="font-style: italic ; font-weight: 600; padding: 20px;">Chi Tiết Công Việc</h3>
@@ -94,22 +109,24 @@ input[type="range"]::-moz-range-thumb {
         <tr>
             <td class="text-left">Chọn File Nộp</td>
             <td class="text-left" id="fileContainer">
-                <div style="display: flex; justify-content: flex-start;" class="file-upload-group">
-                    <label class="file-label" for="fileInput" style="cursor: pointer;">
-                        Thêm File
-                    </label>
-                    <input type="file" id="fileInput" name="files[]" multiple style="display: none;">
-                    <button type="button" id="addDivButton" style="margin-left: 20px; cursor: pointer;">+</button>
-                </div>
+            <div class="file-upload-group">
+                <label for="fileInput" class="file-label">
+                    <i class="fa-solid fa-file-import"></i> Chọn File
+                </label>
+                <input type="file" id="fileInput" name="file_nop[]" class="form-control-file" multiple required style="display: none;">
+                <div id="fileNameDisplay" style="margin-top: 10px;"></div>
+            </div>
                 @if(isset($CongViec[0]->DuongDanFile))
                 @foreach($CongViec as $index => $CongViec1)
-                    <div style="display: flex; justify-content: space-between; margin-top:20px" class="file-upload-group">
+                    <div style="display: flex; justify-content: flex-end; margin-top:10px" class="file-upload-group">
                         <label class="file-label">
-                            <i class="fa-solid fa-file-import"></i> File Đã Nộp 
                         </label>
                         <div style="margin-top: 10px;">
                             {{ $CongViec1->DuongDanFile }}
                         </div>
+                        <a href="{{ asset($CongViec1->DuongDanFile) }}" download style="margin-left: 10px;">
+                            <i class="fas fa-download" style="font-size: 16px;"></i> <!-- Font Awesome icon -->
+                        </a>
                     </div>
                 @endforeach
                 @endif
@@ -280,74 +297,31 @@ input[type="range"]::-moz-range-thumb {
 
 
 
-
       document.addEventListener('DOMContentLoaded', function() {
-    let divCount = 1; // Đếm số lượng div hiện tại
+            const fileInput = document.getElementById('fileInput');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            let selectedFiles = []; // Lưu trữ các file đã chọn
 
-    // Gán sự kiện cho phần tử file input đầu tiên sau khi DOM đã tải xong
-    const fileInput_0 = document.getElementById('fileInput_0');
-    const fileNameDisplay_0 = document.getElementById('fileNameDisplay_0');
+            const updateFileList = () => {
+                fileNameDisplay.innerHTML = ''; // Xóa nội dung cũ
 
-    if (fileInput_0 && fileNameDisplay_0) { // Kiểm tra phần tử tồn tại
-        fileInput_0.addEventListener('change', function(event) {
-            const files = Array.from(event.target.files);
-            
-            fileNameDisplay_0.textContent = ''; // Xóa nội dung cũ
-            
-            if (files.length > 0) {
-                const fileList = document.createElement('ul');            
-                files.forEach((file) => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = "Tên file: " + file.name;
-                    fileList.appendChild(listItem);
-                });
-                
-                fileNameDisplay_0.appendChild(fileList);
-            } else {
-                fileNameDisplay_0.textContent = "Chưa chọn file nào";
-            }
-        });
-    }
-
-    document.getElementById('addDivButton').addEventListener('click', function() {
-        const fileContainer = document.getElementById('fileContainer');
-        
-        // Tạo div mới
-        const newDiv = document.createElement('div');
-        newDiv.style.display = 'flex';
-        newDiv.style.justifyContent = 'space-between';
-        newDiv.className = 'file-upload-group';
-        newDiv.style.marginTop = '10px';
-        newDiv.innerHTML = `
-            <label for="fileInput_${divCount}" class="file-label" style="cursor: pointer;">
-                <i class="fa-solid fa-file-import"></i> Chọn File
-            </label>
-            <input type="file" id="fileInput_${divCount}" name="file_nop[]" class="form-control-file" multiple required style="display: none;">
-            <div id="fileNameDisplay_${divCount}" style="margin-top: 10px;"></div>
-            <button class="deleteDivButton" style="margin-top: 10px; cursor: pointer;">Xóa</button>
-        `;
-        
-        // Thêm div mới vào fileContainer
-        fileContainer.appendChild(newDiv);
-
-        // Thêm sự kiện lắng nghe cho input file của div mới
-        const fileInput = document.getElementById(`fileInput_${divCount}`);
-        const fileNameDisplay = document.getElementById(`fileNameDisplay_${divCount}`);
-        const deleteDivButton = newDiv.querySelector('.deleteDivButton');
-
-        if (fileInput && fileNameDisplay && deleteDivButton) { // Kiểm tra các phần tử tồn tại
-            fileInput.addEventListener('change', function(event) {
-                const files = Array.from(event.target.files);
-                
-                fileNameDisplay.textContent = ''; // Xóa nội dung cũ
-                
-                if (files.length > 0) {
+                if (selectedFiles.length > 0) {
                     const fileList = document.createElement('ul');
-                    fileList.style.paddingLeft = '20px';
                     
-                    files.forEach((file) => {
+                    selectedFiles.forEach((file, index) => {
                         const listItem = document.createElement('li');
                         listItem.textContent = "Tên file: " + file.name;
+                        
+                        const deleteButton = document.createElement('span');
+                        deleteButton.textContent = 'Xóa';
+                        deleteButton.className = 'delete-file-button';
+                        deleteButton.addEventListener('click', function() {
+                            selectedFiles.splice(index, 1); // Xóa file khỏi mảng đã chọn
+                            updateFileList(); // Cập nhật danh sách hiển thị
+                            updateFileInput(); // Cập nhật input file
+                        });
+                        
+                        listItem.appendChild(deleteButton);
                         fileList.appendChild(listItem);
                     });
                     
@@ -355,17 +329,29 @@ input[type="range"]::-moz-range-thumb {
                 } else {
                     fileNameDisplay.textContent = "Chưa chọn file nào";
                 }
-            });
+            };
 
-            // Xóa div khi nhấn nút "Xóa"
-            deleteDivButton.addEventListener('click', function() {
-                fileContainer.removeChild(newDiv);
-            });
-        }
-        
-        divCount++; // Tăng giá trị divCount sau khi thêm div mới
-    });
-});
+            const updateFileInput = () => {
+                // Tạo một đối tượng DataTransfer để lưu trữ các file đã chọn
+                const dataTransfer = new DataTransfer();
+                selectedFiles.forEach(file => {
+                    dataTransfer.items.add(file);
+                });
+                fileInput.files = dataTransfer.files;
+            };
+
+            if (fileInput && fileNameDisplay) {
+                fileInput.addEventListener('change', function(event) {
+                    const files = Array.from(event.target.files);
+                    
+                    // Thêm các file mới vào danh sách đã chọn
+                    selectedFiles = selectedFiles.concat(files);
+                    
+                    updateFileList(); // Cập nhật danh sách hiển thị
+                    updateFileInput(); // Cập nhật input file
+                });
+            }
+        });
 
 </script>
 <script>

@@ -43,10 +43,10 @@
 			<span class="highlight"></span>
 			<span class="bar"></span>
 			<div class="valid-feedback passwordcheck1">
-				Nhập Tài Khoản Thành Công
+				
 			</div>
 			<div class="invalid-feedback passwordcheck1">
-				Vui Lòng Nhập Tài Khoản !
+				Vui lòng nhập tài khoản !
 			</div>
 			</div>
 			<div class="group" style="margin: 20px;">
@@ -54,10 +54,10 @@
 			<span class="highlight"></span>
 			<span class="bar"></span>
 			<div class="valid-feedback passwordcheck">
-				Nhập Mật Khẩu Thành Công
+				
 			</div>
 			<div class="invalid-feedback passwordcheck">
-				Vui Lòng Nhập Mật Khẩu !
+				Vui lòng nhập mật khẩu !
 			</div>
 			</div>
 			</div>

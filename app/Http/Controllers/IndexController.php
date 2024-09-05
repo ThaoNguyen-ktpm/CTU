@@ -158,11 +158,12 @@ class IndexController extends Controller
          // Lấy sessionUserId từ session
          $userId = Session::get('sessionUserId');
         $title = "Chi Tiết Công Việc";
-       $CongViec = DB::select('SELECT congviecs.* , duans.TenDuAn,capnhattiendos.* 
-       FROM congviecs , duans , capnhattiendos , giaoviecs 
-       WHERE congviecs.id = ? 
+       $CongViec = DB::select('SELECT congviecs.* , duans.TenDuAn,capnhattiendos.* ,files.*
+       FROM congviecs , duans , capnhattiendos , giaoviecs ,files
+       WHERE congviecs.id = ?
        AND congviecs.MaDuAn = duans.id 
        AND congviecs.id = giaoviecs.MaCongViec 
+       AND capnhattiendos.id = files.MaCapNhatTienDo 
        AND giaoviecs.TrangThai = 3   
        AND giaoviecs.MaNguoiDung = ?
        AND giaoviecs.id = capnhattiendos.MaGiaoViec',[$id,$userId]);
@@ -224,16 +225,7 @@ class IndexController extends Controller
     {
         $userId = Session::get('sessionUserId');
         $CongViecid = DB::select('SELECT giaoviecs.id FROM giaoviecs WHERE MaCongViec = ? AND MaNguoiDung= ?', [$id, $userId]);
-    
-        try {
-            $validatedData = $request->validate([
-                'file_nop.*' => 'required|mimes:pdf,doc,docx,xlsx,xls,zip', // Chỉ chấp nhận các loại file nhất định với dung lượng tối đa 2MB
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['success' => false, 'message' => 'Tệp không hợp lệ: ' . implode(', ', $e->errors())]);
-        }
-
-
+       
         if ( $idcapnhattiendo  ===  'null') {
            // Tạo bản ghi cập nhật tiến độ
             $capnhattiendo = new capnhattiendo();
@@ -254,6 +246,7 @@ class IndexController extends Controller
             }
 
             $files = $request->file('file_nop');
+              dd($files);
             $fileRecords = [];
     
             foreach ($files as $file) {
@@ -301,25 +294,27 @@ class IndexController extends Controller
                       $GiaoViec->save();
                   }
               }
-  
               $files = $request->file('file_nop');
-              $fileRecords = [];
-      
-              foreach ($files as $file) {
-                  $originalFileName = $file->getClientOriginalName();
-                  $fileName = time() . '_' . $originalFileName;
-                  $file->move(public_path('uploads'), $fileName);
-      
-                  $fileRecords[] = [
-                      'MaCapNhatTienDo' => $idcapnhattiendo,
-                      'DuongDanFile' => 'uploads/' . $fileName,
-                      'IsActive' => true,
-                    
-                  ];
-              }
-      
-              // Batch insert file records to reduce database queries
-              DB::table('files')->insert($fileRecords);
+              if ($files && is_array($files)) {
+                  $fileRecords = [];
+              
+                  foreach ($files as $file) {
+                      if ($file) {
+                          $originalFileName = $file->getClientOriginalName();
+                          $fileName = time() . '_' . $originalFileName;
+                          $file->move(public_path('uploads'), $fileName);
+              
+                          $fileRecords[] = [
+                              'MaCapNhatTienDo' => $capnhattiendo->id,
+                              'DuongDanFile' => 'uploads/' . $fileName,
+                              'IsActive' => true,
+                          ];
+                      }
+                  }
+              
+                  // Batch insert file records to reduce database queries
+                  DB::table('files')->insert($fileRecords);
+                }
       
               $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                           ->where('TrangThai', '!=', 3)

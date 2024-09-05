@@ -7,15 +7,15 @@
   <form  method="post" class="needs-validation DonVi-form"  action="/DonVi/add" novalidate>
   @csrf
     <div class="group">
-    <label>Tên Đơn Vị <span style="color:red;">(*)</span></label>
+    <label>Tên đơn vị <span style="color:red;">(*)</span></label>
       <input  id="usernameInput" name="TenDonVi" type="text"  class="form-control" required pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Đơn Vị Thành Công
+       
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Đơn Vị !
+        Vui lòng nhập tên đơn vị !
       </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Thêm Đơn Vị</button>

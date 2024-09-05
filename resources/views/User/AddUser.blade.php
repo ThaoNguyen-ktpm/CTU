@@ -7,64 +7,64 @@
   <form action="/User/add" class="needs-validation User-form" method="post"   novalidate>
   @csrf
     <div class="group">
-    <label>Tài Khoản Người Dùng <span style="color:red;">(*)</span></label>
+    <label>Tài khoản người dùng <span style="color:red;">(*)</span></label>
       <input id="usenameInput" name="UserName" type="text" class="form-control text-input" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Tài Khoản Người Dùng Thành Công
+     
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Tài Khoản Người Dùng !
+        Vui lòng nhập tài khoản người dùng !
       </div>
     </div>
     <div class="group">
-    <label> Họ và Tên Người Dùng <span style="color:red;">(*)</span></label>
+    <label> Họ và tên người dùng <span style="color:red;">(*)</span></label>
     <input id="HoTen" name="HoTen" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Tên Họ và Tên Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Họ và Tên Người Dùng!
+        Vui lòng nhập họ và tên người dùng!
       </div>
     </div>
     <div class="group">
-    <label>Mật Khẩu <span style="color:red;">(*)</span></label>
+    <label>Mật khẩu <span style="color:red;">(*)</span></label>
       <input id="passwordInput" name="Password" type="Password" class="form-control text-input showpassword" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback passwordcheck">
-        Nhập Mật Khẩu Thành Công
+    
       </div>
       <div class="invalid-feedback passwordcheck">
-        Vui Lòng Nhập Mật Khẩu !
+        Vui lòng nhập mật khẩu !
       </div>
     </div>
     <div class="group">
-    <label>Nhập Mật Khẩu <span style="color:red;">(*)</span></label>
+    <label>Nhập lại mật khẩu <span style="color:red;">(*)</span></label>
       <input id="passwordInput1"  name="Password1" type="Password" class="form-control text-input showpassword1" required>
    
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback passwordcheck1">
-        Nhập Mật Khẩu Thành Công
+    
       </div>
       <div class="invalid-feedback passwordcheck1">
-        Vui Lòng Nhập Mật Khẩu !
+        Vui lòng nhập mật khẩu !
       </div>
     </div>
     <div class="group">
-    <label>Số Điện Thoại <span style="color:red;">(*)</span></label>
+    <label>Số điện thoại <span style="color:red;">(*)</span></label>
       <input id="sdtInput" name="SDT" type="number" class="form-control text-input" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Số Điện Thoại Thành Công
+     
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Số Điện Thoại!
+        Vui lòng nhập số điện thoại !
       </div>
     </div>
     <div class="group">
@@ -73,25 +73,25 @@
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback emailcheck">
-        Nhập Email Thành Công
+     
       </div>
       <div class="invalid-feedback emailcheck">
-        Vui Lòng Nhập Email !
+        Vui lòng nhập Email !
       </div>
     </div>
     <div class="group">
     <label>Quyền <span style="color:red;">(*)</span></label>
     <select name="Quyen" class="form-control" required>
-        <option value="" disabled selected>Chọn Quyền</option>
+        <option value="" disabled selected>Chọn quyền</option>
         <option value="2">Trưởng Phòng</option>
         <option value="3">Phó Phòng</option>
         <option value="4">Nhân Viên</option>
     </select>
     <div class="valid-feedback">
-        Nhập Đơn Vị Thành Công
+     
     </div>
     <div class="invalid-feedback">
-        Vui Lòng Chọn Đơn Vị!
+        Vui lòng chọn đơn vị!
     </div>
 </div>
       <button name="Add" type="submit" class="submit-btn">Thêm Người Dùng</button>

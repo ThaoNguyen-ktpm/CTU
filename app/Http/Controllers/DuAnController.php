@@ -16,6 +16,36 @@ use function Laravel\Prompts\select;
 
 class DuAnController extends Controller
 {
+
+     //Danh sách Dự Án
+     public function SoDoCongViec($id)
+     {
+         $title = "Sơ Đồ Công Việc";
+         $SoDo = DB::select('SELECT thuchiens.* FROM thuchiens WHERE thuchiens.MaDuAn= ?',[$id]);
+         return view('TienDoCongViec.SoDoCongViec', compact('title','SoDo'));
+     }
+     //Danh sách Dự Án
+     public function SoDoCongViecData($id)
+     {
+      
+         $SoDo = DB::select('SELECT congviecs.*, giaidoans.TenGiaiDoan 
+         FROM giaidoans,thuchiens, congviecs 
+         WHERE congviecs.MaDuAn = ?
+         AND congviecs.MaThucHien = thuchiens.id  
+         AND thuchiens.MaGiaiDoan = giaidoans.id',[$id]);
+         return response()->json(['data' => $SoDo]);
+     }
+   public function listTienDoCongViec()
+   {
+       $title = "Danh Sách Dự Án";
+       return view('TienDoCongViec.ListTienDoCongViec', compact('title'));
+   }
+   public function getTienDoCongViec()
+   {
+        $DuAn = duan::where('IsActive', 1)->get();
+       return response()->json(['data' => $DuAn]);
+   }
+
     public function listThanhVien(Request $request)
     {
         $title = "Danh Sách Giai Đoạn Dự Án";
@@ -184,6 +214,7 @@ class DuAnController extends Controller
                 $giaiDoan = new thuchien();
                 $giaiDoan->MaDuAn = $duAn->id; // Liên kết với dự án vừa tạo
                 $giaiDoan->MaGiaiDoan = $maGiaiDoan; // Mã giai đoạn từ form
+                $giaiDoan->IsCongViec = false; // Mã giai đoạn từ form
         
                 // Gán ngày bắt đầu và ngày kết thúc cho giai đoạn
                 if ($index == 0) {

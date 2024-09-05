@@ -7,53 +7,53 @@
   <form  method="post" class="needs-validation CongViec-form" action="/CongViec/update/{{$CongViec->id}}" novalidate>
   @csrf
     <div class="group">
-    <label>Tên Công Việc <span style="color:red;">(*)</span></label>
+    <label>Tên công việc <span style="color:red;">(*)</span></label>
       <input  id="usernameInput" name="TenCongViec" value="{{ $CongViec->TenCongViec }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Công Việc Thành Công
+       
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Công Việc !
+        Vui lòng nhập công việc !
       </div>
     </div>
     <div class="group">
-    <label>Link Tài Liệu <span style="color:red;"></span></label>
+    <label>Link tài liệu <span style="color:red;"></span></label>
       <input  id="linkInput" name="LinkTaiLieu" value="{{ $CongViec->LinkTaiLieu }}" type="text"  class="form-control" pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Link Tài Liệu Thành Công
+       
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Link Tài Liệu !
+        Vui lòng nhập link tài liệu !
       </div>
     </div>
     <div class="group">
-    <label> Mô Tả <span style="color:red;">(*)</span></label>
+    <label> Mô tả <span style="color:red;">(*)</span></label>
     <textarea id="NoiDungInput" name="MoTa" class="form-control textarea" required>{{ $CongViec->MoTa }}</textarea>
     <span class="highlight"></span>
     <span class="bar"></span>
     <div class="valid-feedback">
-        Nhập Mô Tả Thành Công
+     
     </div>
     <div class="invalid-feedback">
-        Vui Lòng Nhập Mô Tả!
+        Vui lòng nhập mô tả !
     </div>
 </div>
   <div style="background-color: darkgreen; color: white; padding: 10px; margin-top: 10px;">
         <span>Số Ngày Thực Hiện: {{ $soNgayThucHien1 }} ngày</span><br>
-        <span>Thời Gian Thực Hiện: {{ $ngayBatDau1 }} Đến {{ $ngayKetThuc1}}</span>
+        <span>Thời Gian Thực Hiện: {{ $ngayBatDau1 }} đến {{ $ngayKetThuc1}}</span>
     </div>
     
     <div class="group">
-      <label>Số Ngày Thực Hiện <span style="color:red;">(*)</span></label>
+      <label>Số ngày thực hiện <span style="color:red;">(*)</span></label>
       <input id="SoNgayThucHienInput" name="SoNgayThucHien" value="{{ $soNgayThucHien }}" type="number" min="1" max="1000" class="form-control" required>
         <span class="highlight"></span>
         <span class="bar"></span>
-        <div class="valid-feedback">Nhập Ngày Thực Hiện Thành Công</div>
-        <div class="invalid-feedback">Vui Lòng Nhập Số Ngày Thực Hiện Không Lớn Hơn Số Ngày Của Giai Đoạn!</div>
+        <div class="valid-feedback"></div>
+        <div class="invalid-feedback">Vui lòng nhập số ngày thực hiện không lớn hơn số ngày giai đoạn!</div>
     </div>
     
   <input name="NgayBatDau" value="{{ $ngayBatDau2 }}" type="date"  class="form-control"  >
@@ -61,7 +61,7 @@
 
 
     <div class="group" style="margin-top: 20px;">
-        <label>Chọn Người Nhận Việc<span style="color:red;"> (*)</span></label>
+        <label>Chọn người nhận việc<span style="color:red;"> (*)</span></label>
       <div  class="GiaoVienGiangDay-list">
       @foreach($ThanhVienDuAn as $NguoiDung1)
     <div class="form-check">
@@ -78,13 +78,13 @@
 
     </div>
       <div class="valid-feedback">
-          Chọn Thành Viên Thành Công
+         
       </div>
       <div class="invalid-feedback">
-          Vui Lòng Chọn Thành Viên!
+          Vui lòng chọn thành viên!
       </div>
   </div>
-  <p class="validation-message" style="color: red; display: none;">Phải chọn ít nhất 1 Người Nhận Việc!</p>
+  <p class="validation-message" style="color: red; display: none;">Phải chọn ít nhất 1 Người Nhận việc!</p>
       <button name="Add" type="submit" class="submit-btn">Cập Nhật</button>
   </form>
 </div>

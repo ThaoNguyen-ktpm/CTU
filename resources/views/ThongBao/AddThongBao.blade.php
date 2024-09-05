@@ -87,7 +87,7 @@
 
 
   <div class="group">
-    <label>Chọn Người Dùng <span style="color:red;">(*)</span></label>
+    <label>Chọn người dùng <span style="color:red;">(*)</span></label>
   <div class="custom-select"> 
   <div class="select-selected">Chọn Người Dùng</div> 
   <div class="select-items select-hide">
@@ -103,10 +103,10 @@
     </select>
 </div>
     <div class="valid-feedback">
-        Nhập Người Dùng Thành Công
+       
       </div>
     <div class="invalid-feedback">
-        Vui Lòng Chọn Người Dùng!
+        Vui lòng chọn người dùng!
     </div>
     </div>
   

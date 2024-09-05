@@ -9,30 +9,30 @@
       <input id="usernameInput" name="MaNguoiDung" value="{{$TacVu[0]->MaNguoiDung}}" type="text" class="form-control" required hidden>
   </div>
     <div class="group">
-      <label>Tên Người Dùng <span style="color:red;">(*)</span></label>
+      <label>Tên người dùng <span style="color:red;">(*)</span></label>
       <input id="usernameInput" name="Name" value="{{$TacVu[0]->Name}}" type="text" class="form-control" required readonly>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-          Nhập Người Dùng Thành Công
+         
       </div>
       <div class="invalid-feedback">
-          Vui Lòng Nhập Người Dùng !
+          Vui lòng nhập người dùng !
       </div>
   </div>
     <div class="group">
-    <label>Tên Vai Trò <span style="color:red;">(*)</span></label>
+    <label>Tên vai trò <span style="color:red;">(*)</span></label>
     <select name="MaVaiTro" class="form-control" required>
-        <option value="" disabled selected>Chọn Vai Trò</option>
+        <option value="" disabled selected>Chọn vai trò</option>
         @foreach($VaiTro as $VaiTro1)
         <option value="{{$VaiTro1->id}}" {{ $TacVu[0]->MaVaiTro == $VaiTro1->id ? 'selected' : '' }}>{{$VaiTro1->TenVaiTro}}</option>
         @endforeach
     </select>
     <div class="valid-feedback">
-        Chọn Vai Trò Thành Công
+        
       </div>
     <div class="invalid-feedback">
-        Vui lòng chọn Vai Trò!
+        Vui lòng chọn vai trò!
     </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Cập Nhật</button>

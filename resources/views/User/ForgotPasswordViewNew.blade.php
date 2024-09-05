@@ -39,19 +39,19 @@
 			<div class="group" style="margin: 20px;">
 			<input id="PasswordInput" type="Password" class="input form-control text-input" placeholder="Mật Khẩu" name="Password" required/>
                 <div class="valid-feedback text-valid" >
-					Nhập Password Thành Công
+			
 				</div>
 				<div class="invalid-feedback text-valid" >
-					Vui Lòng Nhập Password !
+					Vui lòng nhập mật khẩu !
 				</div>
 			</div>
 			<div class="group" style="margin: 20px;">
             <input id="PasswordInput1" type="Password" class="input form-control text-input" placeholder="Nhập Lại Mật Khẩu" name="Password1" required/>
                 <div class="valid-feedback text-valid" >
-					Nhập Password Thành Công
+		
 				</div>
 				<div class="invalid-feedback text-valid" >
-					Vui Lòng Nhập Password !
+					Vui lòng nhập mật khẩu !
 				</div>
 			</div>
 			</div>

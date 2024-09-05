@@ -58,15 +58,21 @@
           <td class="text-left">
           <div>
                 <!-- Hiển thị liên kết tải xuống nếu có tệp tin trước đó -->
-                @if(isset($CongViec[0]->DuongDanFile) && !empty($CongViec[0]->DuongDanFile))
-                    <p>
-                         
-                        <a href="{{ url($CongViec[0]->DuongDanFile) }}" download class="link-tai-lieu">
-                             Tải xuống tệp : <i class="fa-solid fa-download"  style=" margin-left:10px"></i>
+             
+                @if(isset($CongViec[0]->DuongDanFile))
+                @foreach($CongViec as $index => $CongViec1)
+                    <div style="display: flex; justify-content: flex-end; margin-top:10px" class="file-upload-group">
+                        <label class="file-label">
+                        </label>
+                        <div style="margin-top: 10px;">
+                            {{ $CongViec1->DuongDanFile }}
+                        </div>
+                        <a href="{{ asset($CongViec1->DuongDanFile) }}" download style="margin-left: 10px;">
+                            <i class="fas fa-download" style="font-size: 16px;"></i> <!-- Font Awesome icon -->
                         </a>
-                    </p>
+                    </div>
+                @endforeach
                 @endif
-
                
             </div>
           </td>

@@ -7,27 +7,27 @@
   <form  method="post" class="needs-validation DuAn-form" action="/DuAn/update/{{$DuAn->id}}" novalidate>
   @csrf
     <div class="group">
-    <label>Tên Giai Đoạn <span style="color:red;">(*)</span></label>
+    <label>Tên dự án <span style="color:red;">(*)</span></label>
       <input  id="usernameInput" name="TenDuAn" value="{{ $DuAn->TenDuAn }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Giai Đoạn Thành Công
+    
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Giai Đoạn !
+        Vui lòng nhập tên dự án !
       </div>
     </div>
     <div class="group">
-    <label> Mô Tả <span style="color:red;">(*)</span></label>
+    <label> Mô tả <span style="color:red;">(*)</span></label>
     <textarea id="NoiDungInput" name="MoTa" class="form-control textarea" required>{{ $DuAn->Mota }}</textarea>
     <span class="highlight"></span>
     <span class="bar"></span>
     <div class="valid-feedback">
-        Nhập Mô Tả Thành Công
+      
     </div>
     <div class="invalid-feedback">
-        Vui Lòng Nhập Mô Tả!
+        Vui lòng nhập mô tả!
     </div>
 </div>
 

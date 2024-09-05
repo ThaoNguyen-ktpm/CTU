@@ -38,8 +38,6 @@ Route::get('auth/google/callback', [UserController::class, 'handleGoogleCallback
 Route::get('/adminWelcome', [UserController::class,'Welcome'])->middleware('checkUserSession');
 
 Route::get('/', [UserController::class,'login'])->name('Login');
-Route::get('/Login', [UserController::class,'login'])->name('Login');
-
 
 Route::get('LogoutAction', [UserController::class,'logoutAction'])->name('LogoutAction');
 Route::post('LoginAction', [UserController::class,'loginAction'])->name('LoginAction');
@@ -154,6 +152,12 @@ Route::get('TacVu/remove/{id}', [TacVuController::class,'remove'])->name('TacVu.
 // Lấy người dùng theo Tác Vụ 
 Route::get('/TacVu/getNguoiDung/{id}', [TacVuController::class,'getNguoiDung'])->middleware('checkUserSession');
  
+
+
+Route::get('TienDoCongViec', [DuAnController::class,'listTienDoCongViec'])->name('TienDoCongViec.listTienDoCongViec')->middleware('checkUserSession');
+Route::get('TienDoCongViec/data', [DuAnController::class, 'getTienDoCongViec'])->name('TienDoCongViec.data')->middleware('checkUserSession');
+Route::get('DuAn/SoDoCongViec/{id}', [DuAnController::class,'SoDoCongViec'])->name('DuAn.listSoDoCongViec')->middleware('checkUserSession');
+Route::get('SoDoCongViec/data/{id}', [DuAnController::class, 'SoDoCongViecData'])->name('SoDoCongViecData')->middleware('checkUserSession');
 
 // Danh sách Dự Án
 Route::get('DuAn', [DuAnController::class,'list'])->name('DuAn.listDuAn')->middleware('checkUserSession');

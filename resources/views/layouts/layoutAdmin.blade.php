@@ -25,6 +25,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
  
+    <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.15.0/css/anychart.min.css">
+    <script src="https://cdn.anychart.com/releases/8.15.0/js/anychart-bundle.min.js"></script>
+
+
     <link rel="stylesheet" href="{{ asset('css/adminlist.css') }}">
     <link rel="stylesheet" href="{{ asset('css/stylebutton.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admininput.css') }}">

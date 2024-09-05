@@ -7,22 +7,22 @@
   <form  method="post" class="needs-validation PhongBan-form" action="/PhongBan/add" novalidate>
   @csrf
     <div class="group">
-    <label>Đơn Vị <span style="color:red;">(*)</span></label>
+    <label>Đơn vị <span style="color:red;">(*)</span></label>
     <select name="MaDonVi" class="form-control" id="selectDonVi" required>
-        <option value="" disabled selected>Chọn Đơn Vị</option>
+        <option value="" disabled selected>Chọn đơn vị</option>
         @foreach($DonVi as $DonVi1)
         <option value="{{$DonVi1->id}}">{{$DonVi1->TenDonVi}}</option>
         @endforeach
     </select>
     <div class="valid-feedback">
-        Nhập Đơn Vị Thành Công
+       
       </div>
     <div class="invalid-feedback">
-        Vui Lòng Chọn Đơn Vị!
+        Vui lòng chọn đơn vị!
     </div>
     </div>
     <div class="group">
-      <label>Người Dùng <span style="color:red;">(*)</span></label>
+      <label>Người dùng <span style="color:red;">(*)</span></label>
       <div  class="GiaoVienGiangDay-list">
       @foreach($NguoiDung as $NguoiDung1)
       <div class="form-check">
@@ -34,10 +34,10 @@
       @endforeach
     </div>
       <div class="valid-feedback">
-          Chọn Người Dùng Thành Công
+        
       </div>
       <div class="invalid-feedback">
-          Vui Lòng Chọn Người Dùng!
+          Vui lòng chọn người dùng!
       </div>
   </div>
       <button name="Add" type="submit" class="submit-btn">Thêm Đơn Vị</button>

@@ -359,7 +359,7 @@ public function Welcome()
         $Email = session('Email');
         if (empty($Email)) {
             // Xử lý trường hợp $Email không hợp lệ hoặc rỗng
-            return redirect('/Login')->with('error', 'Email address is required.');
+            return redirect('/')->with('error', 'Email address is required.');
         } 
         $request->session()->put('otp', [
             'code' => $otp, 
@@ -451,7 +451,7 @@ public function Welcome()
         Session::forget('sessionUser'); // Xóa session 'sessionuser'
         Session::forget('sessionUserId'); // Xóa session 'sessionuser'
         Session::forget('IsAdmin'); // Xóa session 'sessionuser'
-        return redirect('/Login');
+        return redirect('/');
     }
    
     // Đăng Nhập google 
@@ -485,7 +485,7 @@ public function Welcome()
                 
             } catch (\Exception $e) {
                 // Nếu có lỗi, trả về JSON response với 'success' là false
-                return redirect(Session::get('back_url','/Login'));
+                return redirect(Session::get('back_url','/'));
                 // return response()->view('Error.google-access-error');
             }
     } 

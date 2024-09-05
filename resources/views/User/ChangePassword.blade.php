@@ -13,27 +13,27 @@
   <form action="/User/ChangePasswordAdmin/{{$User->id}}" class="needs-validation Admin-form-Change" method="post"   novalidate>
   @csrf
     <div class="group">
-    <label>Mật Khẩu Mới <span style="color:red;">(*)</span></label>
+    <label>Mật khẩu mới <span style="color:red;">(*)</span></label>
       <input id="passwordInput" name="Password" type="Password" class="form-control text-input showpassword" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback passwordcheck">
-        Nhập Mật Khẩu Thành Công
+   
       </div>
       <div class="invalid-feedback passwordcheck">
-        Vui Lòng Nhập Mật Khẩu !
+        Vui lòng nhập mật khẩu !
       </div>
     </div>
     <div class="group">
-    <label>Nhập Lại Mật Khẩu <span style="color:red;">(*)</span></label>
+    <label>Nhập lại mật khẩu <span style="color:red;">(*)</span></label>
       <input id="passwordInput1"  name="Password1" type="Password" class="form-control text-input showpassword1" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback passwordcheck1">
-        Nhập Mật Khẩu Thành Công
+    
       </div>
       <div class="invalid-feedback passwordcheck1">
-        Vui Lòng Nhập Mật Khẩu !
+        Vui lòng nhập mật khẩu !
       </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Cập Nhật</button>

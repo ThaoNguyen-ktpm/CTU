@@ -16,53 +16,28 @@ if (!$sessionUserId) {
   <form  method="post" class="needs-validation Admin-form" action="/Admin/update/{{$User->id}}" novalidate>
   @csrf
   <div class="group">
-    <label>Admin Name <span style="color:red;">(*)</span></label>
+    <label>Họ và tên Admin <span style="color:red;">(*)</span></label>
       <input id="usenameInput" name="UserName" value="{{ $User->Name }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Admin Name Thành Công
+      
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Admin Name !
+        Vui lòng nhập họ và tên Admin  !
       </div>
     </div>
-    <!-- <div class="group">
-    <label>Mật Khẩu <span style="color:red;">(*)</span></label>
-      <input id="passwordInput"  name="Password" value="{{ $User->Password }}" type="Password" class="form-control text-input showpassword" required>
-     
-      <span class="highlight"></span>
-      <span class="bar"></span>
-      <div class="valid-feedback">
-        Nhập Mật Khẩu Thành Công
-      </div>
-      <div class="invalid-feedback">
-        Vui Lòng Nhập Mật Khẩu !
-      </div>
-    </div>
+
     <div class="group">
-    <label>Nhập Mật Khẩu <span style="color:red;">(*)</span></label>
-      <input id="passwordInput1" name="Password1" value="{{ $User->Password }}" type="Password" class="form-control text-input showpassword1" required>
- 
-      <span class="highlight"></span>
-      <span class="bar"></span>
-      <div class="valid-feedback">
-        Nhập Mật Khẩu Thành Công
-      </div>
-      <div class="invalid-feedback">
-        Vui Lòng Nhập Mật Khẩu !
-      </div>
-    </div> -->
-    <div class="group">
-    <label>Số Điện Thoại <span style="color:red;">(*)</span></label>
+    <label>Số điện thoại <span style="color:red;">(*)</span></label>
       <input id="sdtInput" name="SDT" value="{{ $User->SDT }}" type="number" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Email Thành Công
+       
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Email !
+        Vui lòng nhập số điện thoại !
       </div>
     </div>
     <div class="group">
@@ -71,7 +46,7 @@ if (!$sessionUserId) {
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Email Thành Công
+      
       </div>
       <div class="invalid-feedback">
         Vui Lòng Nhập Email !

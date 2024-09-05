@@ -7,15 +7,15 @@
   <form  method="post" class="needs-validation GiaiDoan-form" action="/GiaiDoan/add" novalidate>
   @csrf
     <div class="group">
-    <label>Tên Giai Đoạn <span style="color:red;">(*)</span></label>
+    <label>Tên giai đoạn <span style="color:red;">(*)</span></label>
       <input  id="usernameInput" name="TenGiaiDoan" type="text"  class="form-control" required pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-        Nhập Giai Đoạn Thành Công
+    
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Giai Đoạn !
+        Vui lòng nhập giai đoạn !
       </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Thêm Giai Đoạn</button>
