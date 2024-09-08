@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DonViController;
 use App\Http\Controllers\GiaiDoanController;
+use App\Http\Controllers\LoaiDuAnController;
 use App\Http\Controllers\VaiTroController;
 use App\Http\Controllers\PhongBanController;
 use App\Http\Controllers\TacVuController;
@@ -11,10 +12,16 @@ use App\Http\Controllers\CongViecController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 
 
 
+Route::get('/run-scheduler', function () {
+    Artisan::call('tasks:update-overdue');
+    return response()->json(['message' => 'Thành công'], 200);
+});
 
 //Index
 Route::get('/Index', [IndexController::class,'index'])->middleware('checkUserSession');
@@ -108,18 +115,30 @@ Route::post('VaiTro/update/{id}', [VaiTroController::class,'update'])->name('Vai
 Route::get('VaiTro/remove/{id}', [VaiTroController::class,'remove'])->name('VaiTro.remove')->middleware('checkUserSession');
 
 
-// Danh sách Đơn Vị
+// Danh sách Giai Đoạn
 Route::get('GiaiDoan', [GiaiDoanController::class,'list'])->name('GiaiDoan.listGiaiDoan')->middleware('checkUserSession');
 Route::get('GiaiDoan/data',[GiaiDoanController::class,'getGiaiDoan'])->name('GiaiDoan.data')->middleware('checkUserSession');
-//Thêm Đơn Vị
+//Thêm Giai Đoạn
 Route::get('GiaiDoan/addview', [GiaiDoanController::class,'addview'])->name('GiaiDoan.addview')->middleware('checkUserSession');
 Route::post('GiaiDoan/add', [GiaiDoanController::class,'add'])->name('GiaiDoan.add')->middleware('checkUserSession');
-//Cập nhật Đơn vị
+//Cập nhật Giai Đoạn
 Route::get('GiaiDoan/updateview/{id}', [GiaiDoanController::class,'updateview'])->name('GiaiDoan.updateview')->middleware('checkUserSession');
 Route::post('GiaiDoan/update/{id}', [GiaiDoanController::class,'update'])->name('GiaiDoan.update')->middleware('checkUserSession');
-// Xóa Đơn Vị
+// Xóa Giai Đoạn
 Route::get('GiaiDoan/remove/{id}', [GiaiDoanController::class,'remove'])->name('GiaiDoan.remove')->middleware('checkUserSession');
 
+
+// Danh sách Loại Dự Án
+Route::get('LoaiDuAn', [LoaiDuAnController::class,'list'])->name('LoaiDuAn.listLoaiDuAn')->middleware('checkUserSession');
+Route::get('LoaiDuAn/data',[LoaiDuAnController::class,'getLoaiDuAn'])->name('LoaiDuAn.data')->middleware('checkUserSession');
+//Thêm Loại Dự Án
+Route::get('LoaiDuAn/addview', [LoaiDuAnController::class,'addview'])->name('LoaiDuAn.addview')->middleware('checkUserSession');
+Route::post('LoaiDuAn/add', [LoaiDuAnController::class,'add'])->name('LoaiDuAn.add')->middleware('checkUserSession');
+//Cập nhật Loại Dự Án
+Route::get('LoaiDuAn/updateview/{id}', [LoaiDuAnController::class,'updateview'])->name('LoaiDuAn.updateview')->middleware('checkUserSession');
+Route::post('LoaiDuAn/update/{id}', [LoaiDuAnController::class,'update'])->name('LoaiDuAn.update')->middleware('checkUserSession');
+// Xóa Loại Dự Án
+Route::get('LoaiDuAn/remove/{id}', [LoaiDuAnController::class,'remove'])->name('LoaiDuAn.remove')->middleware('checkUserSession');
 
 // Danh sách Phòng Ban
 Route::get('PhongBan', [PhongBanController::class,'list'])->name('PhongBan.listPhongBan')->middleware('checkUserSession');

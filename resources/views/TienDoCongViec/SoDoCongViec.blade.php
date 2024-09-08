@@ -212,8 +212,6 @@ document.addEventListener('DOMContentLoaded', function () {
             timeContainer.className = 'time-container';
             timeContainer.innerHTML = `
                 <div class="time-details">
-                    ${formatDateVN(stage.NgayBatDau)} - ${formatDateVN(stage.NgayKetThuc)}
-                    <br>
                     ${stageDuration} ngày
                 </div>
             `;
@@ -236,8 +234,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const stages = response.data; // Điều chỉnh theo cấu trúc dữ liệu trả về từ server
 
             if (stages.length > 0) {
-                const firstStageStartDate = new Date(stages[0].NgayBatDau);
-                const lastStageEndDate = new Date(stages[stages.length - 1].NgayKetThuc);
+                const firstStageStartDate = new Date(stages[0].NgayBatDauDuAn);
+                const lastStageEndDate = new Date(stages[0].NgayKetThucDuAn);
 
                 // Cập nhật ngày bắt đầu và ngày kết thúc dự án
                 projectStartDate = firstStageStartDate;

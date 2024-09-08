@@ -6,7 +6,7 @@
             padding-top: 0px;
         }
         </style>
-        <a href="/DuAn/addview"  aria-expanded="false" >
+        <a href=" /LoaiDuAn/addview"  aria-expanded="false" >
                 <div class="logoutForm">
                 <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
                 <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
@@ -15,113 +15,58 @@
                 </div>
         </a>
         <div class="col">
-                <table id="myTableDuAn">
+                <table id="myTableLoaiDuAn">
                     <thead>
                         <tr>
-                            <!-- <th>ID</th> -->
-                            <th>Tên Dự Án</th>
+                            <th>ID</th>
                             <th>Loại Dự Án</th>
-                            <th>Quy Mô</th>
-                            <th>Thời Gian</th>
-                            <th>Thành Viên</th>
-                            <th>Giai Đoạn</th>
-                            <th>Thêm Công Việc</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
                         </tr>
-                       
                     </thead>
                     <tbody></tbody>
                 </table>
-               
             </div>
+         
             <div id="toast1"></div>
             
         <script>
             $(document).ready(function() {
-            var table = $('#myTableDuAn').DataTable({
+            var table = $('#myTableLoaiDuAn').DataTable({
                 ajax: {
-                    url: "{{ route('DuAn.data') }}",
+                    url: "{{ route('LoaiDuAn.data') }}",
                     dataSrc: 'data'
                 },
                 columns: [
-                    // { data: 'id' },
-                    { data: 'TenDuAn' },
+                    { data: 'id' },
                     { data: 'TenLoaiDuAn' },
                     {
-                        data: 'QuyMo',
-                        render: function(data, type, row) {
-                            if (data == 1) {
-                                return 'Nhỏ';
-                            } else if (data == 2){
-                                return 'Vừa';
-                            }else if ( data == 3){
-                                return 'Lớn';
-                            } else if ( data == 4){
-                                return 'Rất Lớn';
-                            }else {
-                                return 'Trống';
-                            }
-                        }
-                    },
-                    {
-                        data: null, // Chỉ định một cột dữ liệu trống để render
-                        render: function (data, type, row) {
-                            // Định dạng ngày bắt đầu và ngày kết thúc
-                            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-                            const ngayBatDau = new Date(row.NgayBatDau).toLocaleDateString('vi-VN', options);
-                            const ngayKetThuc = new Date(row.NgayKetThuc).toLocaleDateString('vi-VN', options);
-                            return `${ngayBatDau} đến ${ngayKetThuc}`;
-                        }
-                    },
-                    // { data: 'Mota' },
-                    {
                         data: null,
                         render: function(data, type, row) {
-                        return '<a href="/DuAn/ThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
-                   
+                        return '<form method="get" action="/LoaiDuAn/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
                     }
                     },
                     {
                         data: null,
                         render: function(data, type, row) {
-                        return '<a href="/DuAn/GiaiDoan?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-bars-staggered" style="color: #20679d; font-size:25px"></i></a>';                            
-                   
-                    }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '  <form method="get" action="CongViec/viewid/'+row.id+'"> <div class="logoutForm"><button class="Btn"  style="background-color: rgb(13 55 111); z-index: 10;" ><div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div><div class="text" style=" margin-left: 5px;" >Thêm</div></button></div></form>';
-                    }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '<form method="get" action="/DuAn/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
-                    }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return '<button class="btn btn-danger DeleteDuAn-form" onclick="deleteDuAn(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
+                            return '<button class="btn btn-danger DeleteLoaiDuAn-form" onclick="deleteLoaiDuAn(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     }
                 ]
             });
         });
 
-        function deleteDuAn(DuAnId) {
+        function deleteLoaiDuAn(LoaiDuAnId) {
             if (confirm('Bạn có chắc chắn muốn xóa vai trò này?')) {
                 // Gửi yêu cầu xóa vai trò đến server
                 $.ajax({
-                    url: '/DuAn/remove/' + DuAnId,
+                    url: '/LoaiDuAn/remove/' + LoaiDuAnId,
                     type: 'GET',
                     success: function(response) {
                         if (response.success) {
                             // Cập nhật lại bảng dữ liệu
                             showSuccessToast1()
-                            var table = $('#myTableDuAn').DataTable();
+                            var table = $('#myTableLoaiDuAn').DataTable();
                             table.ajax.reload(null, false);
                         }
                     },
@@ -133,7 +78,7 @@
             }
         }
         $(document).ready(function() {
-	$('.DeleteDuAn-form').click(function(event) {
+	$('.DeleteLoaiDuAn-form').click(function(event) {
 		event.preventDefault(); // Ngăn chặn hành động mặc định của button
 		var button = $(this);
 		var id = button.attr('data-id');
@@ -197,7 +142,7 @@ function toast1({title='',message='',type='info',duration=2000}){
     function showSuccessToast1() {
         toast1({
             title: "Success",
-            message: "Xóa Chứng Chỉ Thành Công!",
+            message: "Xóa Loại Dự Án Thành Công!",
             type: "success",
             duration: 2000
         })

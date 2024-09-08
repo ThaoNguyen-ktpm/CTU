@@ -62,22 +62,22 @@ class CongViecController extends Controller
        nguoidungs.Quyen, 
        nguoidungs.UserName;
    ');
-       $duAnList = duan::where('IsActive', 1)->get();
+       $DuAn = duan::where('IsActive', 1)->get();
        // Mảng lưu trữ các dự án chưa đủ công việc
-        $DuAn = [];
+    //     $DuAn = [];
 
-        foreach ($duAnList as $duAn) {
-            // Đếm số lượng bảng thực hiện liên quan đến dự án
-            $soLuongThucHien = thuchien::where('MaDuAn', $duAn->id)->count();
+    //     foreach ($duAnList as $duAn) {
+    //         // Đếm số lượng bảng thực hiện liên quan đến dự án
+    //         $soLuongThucHien = thuchien::where('MaDuAn', $duAn->id)->count();
 
-            // Đếm số lượng công việc đã tạo theo MaDuAn
-            $soLuongCongViec = congviec::where('MaDuAn', $duAn->id)->count();
+    //         // Đếm số lượng công việc đã tạo theo MaDuAn
+    //         $soLuongCongViec = congviec::where('MaDuAn', $duAn->id)->count();
 
-            // Kiểm tra nếu số lượng công việc chưa đủ theo bảng thực hiện
-            if ($soLuongCongViec < $soLuongThucHien) {
-                $DuAn[] = $duAn;
-        }
-    }
+    //         // Kiểm tra nếu số lượng công việc chưa đủ theo bảng thực hiện
+    //         if ($soLuongCongViec < $soLuongThucHien) {
+    //             $DuAn[] = $duAn;
+    //     }
+    // }
        $GiaiDoan = giaidoan::where('IsActive', 1)->get();
        $DonVi = donvi::where('IsActive', 1)->get();
        return view('CongViec.AddCongViec', compact('DonVi','NguoiDung','GiaiDoan','DuAn','title'));
@@ -111,22 +111,22 @@ class CongViecController extends Controller
             nguoidungs.Quyen, 
             nguoidungs.UserName;
         ');
-            $duAnList = duan::where('IsActive', 1)->where('duans.id',[$id])->get();
+            $DuAn = duan::where('IsActive', 1)->where('duans.id',[$id])->get();
             // Mảng lưu trữ các dự án chưa đủ công việc
-            $DuAn = [];
+        //     $DuAn = [];
 
-            foreach ($duAnList as $duAn) {
-                // Đếm số lượng bảng thực hiện liên quan đến dự án
-                $soLuongThucHien = thuchien::where('MaDuAn', $duAn->id)->count();
+        //     foreach ($duAnList as $duAn) {
+        //         // Đếm số lượng bảng thực hiện liên quan đến dự án
+        //         $soLuongThucHien = thuchien::where('MaDuAn', $duAn->id)->count();
 
-                // Đếm số lượng công việc đã tạo theo MaDuAn
-                $soLuongCongViec = congviec::where('MaDuAn', $duAn->id)->count();
+        //         // Đếm số lượng công việc đã tạo theo MaDuAn
+        //         $soLuongCongViec = congviec::where('MaDuAn', $duAn->id)->count();
 
-                // Kiểm tra nếu số lượng công việc chưa đủ theo bảng thực hiện
-                if ($soLuongCongViec < $soLuongThucHien) {
-                    $DuAn[] = $duAn;
-            }
-        }
+        //         // Kiểm tra nếu số lượng công việc chưa đủ theo bảng thực hiện
+        //         if ($soLuongCongViec < $soLuongThucHien) {
+        //             $DuAn[] = $duAn;
+        //     }
+        // }
             $GiaiDoan = giaidoan::where('IsActive', 1)->get();
             $DonVi = donvi::where('IsActive', 1)->get();
             return view('CongViec.AddCongViec', compact('DonVi','NguoiDung','GiaiDoan','DuAn','title'));
@@ -141,7 +141,7 @@ class CongViecController extends Controller
            WHERE thuchiens.MaDuAn = ? AND thuchiens.MaGiaiDoan = giaidoans.id 
            AND thuchiens.IsActive = true  
            AND giaidoans.IsActive = true
-            AND thuchiens.IsCongViec = false
+          
             ',[$id]);
    
        return response()->json($GiaiDoan);
@@ -149,9 +149,10 @@ class CongViecController extends Controller
    public function getThoiGian($id)
    {
        $GiaiDoan = DB::select('
-           SELECT thuchiens.*  FROM thuchiens 
-           WHERE thuchiens.id = ? 
-           AND thuchiens.IsActive = true  
+           SELECT thuchiens.* ,duans.NgayBatDau AS NgayBatDauDuAn , duans.NgayKetThuc AS NgayKetThucDuAn FROM thuchiens ,duans
+           WHERE thuchiens.id = ?
+           AND thuchiens.IsActive = true 
+           AND thuchiens.MaDuAn = duans.id 
             ',[$id]);
    
        return response()->json($GiaiDoan);
@@ -254,15 +255,10 @@ class CongViecController extends Controller
         $CongViec->MaDuAn = $request->MaDuAn;
         $CongViec->MaThucHien = $request->MaGiaiDoan;
 
-    
-        // Chuyển đổi NgayBatDau thành đối tượng Carbon và thêm số ngày thực hiện
-        $ThoiGianBatDau = Carbon::parse($ThoiGian[0]->NgayBatDau);
-     // Chuyển đổi $request->SoNgayThucHien thành số nguyên
-        $SoNgayThucHien = (int) $request->SoNgayThucHien;
+        $CongViec->NgayBatDau = $request->NgayBatDau;
+        $CongViec->NgayKetThuc = $request->NgayKetThuc;
 
-        $CongViec->NgayBatDau = $ThoiGianBatDau;
-        $ngayKetThuc = date('Y-m-d', strtotime($ThoiGianBatDau . ' + ' .  $SoNgayThucHien . ' days'));
-        $CongViec->NgayKetThuc = $ngayKetThuc;
+       
 
         $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
         $CongViec->TrangThai = 1;
@@ -299,14 +295,16 @@ class CongViecController extends Controller
       //Cập nhật Công Việc
       public function updateview($id)
       {
-        $CongViec = congviec::find($id);
+        $CongViec = DB::select('SELECT  congviecs.*,duans.NgayBatDau AS NgayBatDauDuAn, duans.NgayKetThuc AS NgayKetThucDuAn 
+        FROM congviecs , duans  
+        WHERE congviecs.MaDuAn = duans.id 
+        AND congviecs.id = ?',[$id]);
         $title = "Cập Nhật Công Việc";
            // Parse ngày bắt đầu và ngày kết thúc
-        $ngayBatDau = Carbon::parse($CongViec->NgayBatDau);
-        $ngayKetThuc = Carbon::parse($CongViec->NgayKetThuc);
+        $ngayBatDau = Carbon::parse($CongViec[0]->NgayBatDau);
+        $ngayKetThuc = Carbon::parse($CongViec[0]->NgayKetThuc);
 
-        // Tính toán số ngày giữa hai ngày, bao gồm cả ngày bắt đầu và ngày kết thúc
-        $soNgayThucHien = $ngayBatDau->diffInDays($ngayKetThuc) + 1;
+      
         $ThucHien= DB::select('SELECT thuchiens.* 
         FROM congviecs, thuchiens 
         WHERE congviecs.id = ? 
@@ -320,8 +318,7 @@ class CongViecController extends Controller
         $ngayKetThuc1 = Carbon::parse($ThucHien[0]->NgayKetThuc)->format('d/m/Y'); // Định dạng ngày tháng
         $ngayBatDau2 = Carbon::parse($ThucHien[0]->NgayBatDau)->format('Y-m-d');
     
-        // Tính toán số ngày giữa hai ngày, bao gồm cả ngày bắt đầu và ngày kết thúc
-        $soNgayThucHien1 = Carbon::parse($ThucHien[0]->NgayBatDau)->diffInDays(Carbon::parse($ThucHien[0]->NgayKetThuc));
+       
     } else {
         // Xử lý khi không có dữ liệu
         $soNgayThucHien1 = 0; // Hoặc giá trị mặc định khác
@@ -389,7 +386,7 @@ class CongViecController extends Controller
          ',[$MaDuAn[0]->MaDuAn]);
 
 
-        return view('CongViec.UpdateCongViec', compact('ThanhVienCongViec','ThanhVienDuAn','soNgayThucHien1','soNgayThucHien', 'CongViec', 'title', 'ngayBatDau','ngayBatDau2', 'ngayKetThuc', 'ngayBatDau1', 'ngayKetThuc1'));
+        return view('CongViec.UpdateCongViec', compact('ThanhVienCongViec','ThanhVienDuAn', 'CongViec', 'title', 'ngayBatDau', 'ngayKetThuc', 'ngayBatDau1', 'ngayKetThuc1'));
 
       }
 
@@ -406,24 +403,13 @@ class CongViecController extends Controller
             if ($existingCongViec > 0) {
                 return response()->json(['success' => false, 'message' => 'Giá trị Tên Công Việc đã tồn tại']);
             }
-        
-
             // Tạo công việc mới
             $CongViec = congviec::find($id);
             $CongViec->TenCongViec = $request->TenCongViec;
             $CongViec->MoTa = $request->MoTa;
-           
-       
-
-
-         // Chuyển đổi $request->SoNgayThucHien thành số nguyên
-            $SoNgayThucHien =  $request->SoNgayThucHien;
-          
-            $ngayKetThuc = date('Y-m-d', strtotime($request->NgayBatDau . ' + ' . ($SoNgayThucHien-1) . ' days'));
-            $CongViec->NgayKetThuc = $ngayKetThuc;
-    
-          
-
+        
+            $CongViec->NgayBatDau = $request->NgayBatDau;
+            $CongViec->NgayKetThuc = $request->NgayKetThuc;
             $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
             $CongViec->TrangThai = 1;
             $CongViec->MaNguoiTao = 1;
@@ -451,7 +437,7 @@ class CongViecController extends Controller
 
                 // Kiểm tra thời gian sau khi có sự thay đổi
                 $now = Carbon::now()->format('Y-m-d');
-                $ngayKetThuc = Carbon::parse($request->NgayBatDau)->addDays($SoNgayThucHien - 1)->format('Y-m-d');
+                $ngayKetThuc = Carbon::parse($request->NgayKetThuc)->format('Y-m-d');
 
                 if ($changeStatus == 2 && $now >= $request->NgayBatDau && $now <= $ngayKetThuc) {
                     return response()->json(['time' => false, 'message' => 'Đang Thực hiện']);

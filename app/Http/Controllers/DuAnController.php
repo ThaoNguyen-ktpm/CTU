@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\duan;
 use App\Models\donvi;
 use App\Models\giaidoan;
+use App\Models\loaiduan;
 use App\Models\vaitro;
 use App\Models\thanhvien;
 use App\Models\thuchien;
@@ -28,10 +29,11 @@ class DuAnController extends Controller
      public function SoDoCongViecData($id)
      {
       
-         $SoDo = DB::select('SELECT congviecs.*, giaidoans.TenGiaiDoan 
-         FROM giaidoans,thuchiens, congviecs 
+         $SoDo = DB::select('SELECT congviecs.*, giaidoans.TenGiaiDoan ,thuchiens.NgayBatDau as GiaiDoanDau ,thuchiens.NgayKetThuc as GiaiDoanCuoi  ,duans.NgayBatDau AS NgayBatDauDuAn ,duans.NgayKetThuc AS NgayKetThucDuAn
+         FROM giaidoans,thuchiens, congviecs ,duans
          WHERE congviecs.MaDuAn = ?
          AND congviecs.MaThucHien = thuchiens.id  
+         AND congviecs.MaDuAn = duans.id  
          AND thuchiens.MaGiaiDoan = giaidoans.id',[$id]);
          return response()->json(['data' => $SoDo]);
      }
@@ -113,7 +115,7 @@ class DuAnController extends Controller
    }
    public function getDuAn()
    {
-        $DuAn = duan::where('IsActive', 1)->get();
+        $DuAn = DB::select('SELECT duans.*,loaiduans.TenLoaiDuAn FROM duans,loaiduans WHERE duans.MaLoai = loaiduans.id');
        return response()->json(['data' => $DuAn]);
    }
  
@@ -147,8 +149,9 @@ class DuAnController extends Controller
         ');
             $DonVi = donvi::where('IsActive', 1)->get();
             $VaiTro = vaitro::where('IsActive', 1)->get();
+            $LoaiDuAn = loaiduan::where('IsActive', 1)->get();
             $GiaiDoan = giaidoan::where('IsActive', 1)->get();
-       return view('DuAn.AddDuAn', compact('VaiTro','GiaiDoan','DonVi','NguoiDung','title'));
+       return view('DuAn.AddDuAn', compact('VaiTro','GiaiDoan','DonVi','NguoiDung','title','LoaiDuAn'));
    }
    public function getNguoiDung($id)
    {
@@ -193,52 +196,46 @@ class DuAnController extends Controller
             // Tạo dự án mới
             $duAn = new duan();
             $duAn->TenDuAn = $request->TenDuAn;
+            $duAn->MaLoai = $request->MaLoai;
+            $duAn->QuyMo = $request->QuyMo;
             $duAn->Mota = $request->MoTa;
+            $duAn->NgayKetThuc = $request->NgayKetThucDuAn;
+            $duAn->NgayBatDau = $request->NgayBatDauDuAn;
             $duAn->TrangThai = 1;
             $duAn->MaNguoiTao = 1;
             $duAn->IsActive = true;
             $duAn->save();
         
             // Lấy dữ liệu từ request
-            $ngayBatDau = $request->input('NgayBatDau'); // Ngày bắt đầu của giai đoạn 1
+            $ngayBatDaus = $request->input('NgayBatDau', []); // Ngày bắt đầu của từng giai đoạn
             $maGiaiDoans = $request->input('MaGiaiDoan', []); // Mã giai đoạn
             $soNgayThucHiens = $request->input('SoNgayThucHien', []); // Số ngày thực hiện của từng giai đoạn
             $thuTuGiaiDoans = $request->input('ThuTuGiaiDoan', []); // Thứ tự giai đoạn
             $MaNguoiDung = $request->input('MaNguoiDung');
-        
-            // Biến lưu ngày kết thúc của giai đoạn trước
-            $ngayKetThucTruoc = null;
-        
+            
             // Duyệt qua từng giai đoạn và lưu vào cơ sở dữ liệu
             foreach ($maGiaiDoans as $index => $maGiaiDoan) {
                 $giaiDoan = new thuchien();
                 $giaiDoan->MaDuAn = $duAn->id; // Liên kết với dự án vừa tạo
                 $giaiDoan->MaGiaiDoan = $maGiaiDoan; // Mã giai đoạn từ form
                 $giaiDoan->IsCongViec = false; // Mã giai đoạn từ form
-        
-                // Gán ngày bắt đầu và ngày kết thúc cho giai đoạn
-                if ($index == 0) {
-                    // Giai đoạn 1 có ngày bắt đầu từ form
-                    $giaiDoan->NgayBatDau = $ngayBatDau;
-                } else {
-                    // Giai đoạn 2 trở đi có ngày bắt đầu từ ngày kết thúc của giai đoạn trước
-                    $giaiDoan->NgayBatDau = $ngayKetThucTruoc;
-                }
-        
+            
+                // Gán ngày bắt đầu và ngày kết thúc cho từng giai đoạn
+                $ngayBatDau = $ngayBatDaus[$index]; // Ngày bắt đầu từ form của từng giai đoạn
+                $giaiDoan->NgayBatDau = $ngayBatDau;
+            
                 // Tính toán ngày kết thúc dựa trên số ngày thực hiện
                 $soNgayThucHien = $soNgayThucHiens[$index];
-                $ngayKetThuc = date('Y-m-d', strtotime($giaiDoan->NgayBatDau . ' + ' . $soNgayThucHien . ' days'));
+                $ngayKetThuc = date('Y-m-d', strtotime($ngayBatDau . ' + ' . $soNgayThucHien . ' days'));
                 $giaiDoan->NgayKetThuc = $ngayKetThuc;
-        
+            
                 $giaiDoan->ThuGiaiDoan = $thuTuGiaiDoans[$index]; // Thứ tự giai đoạn từ form
                 $giaiDoan->IsActive = true;
-        
+            
                 // Lưu giai đoạn vào cơ sở dữ liệu
                 $giaiDoan->save();
-        
-                // Cập nhật ngày kết thúc của giai đoạn hiện tại để dùng cho giai đoạn kế tiếp
-                $ngayKetThucTruoc = $ngayKetThuc;
             }
+            
         
             foreach ($MaNguoiDung as $nguoiDungId) {
                 // Tạo một bản ghi mới trong bảng PhongBan
@@ -264,7 +261,8 @@ class DuAnController extends Controller
    {
        $DuAn = duan::find($id);
        $title = "Cập Nhật Dự Án";
-       return view('DuAn.UpdateDuAn', compact('DuAn', 'title'));
+       $LoaiDuAn = loaiduan::where('IsActive', 1)->get();
+       return view('DuAn.UpdateDuAn', compact('LoaiDuAn','DuAn', 'title'));
    }
    
    public function update(Request $request, $id)
@@ -280,6 +278,10 @@ class DuAnController extends Controller
             
                 $DuAn = duan::find($id);
                 $DuAn->TenDuAn = $request->TenDuAn;
+                $DuAn->QuyMo = $request->QuyMo;
+                $DuAn->MaLoai = $request->MaLoai;
+                $DuAn->NgayBatDau = $request->NgayBatDau;
+                $DuAn->NgayKetThuc = $request->NgayKetThuc;
                 $DuAn->Mota = $request->MoTa;
                 $DuAn->save();
                 return response()->json(['success' => true]);

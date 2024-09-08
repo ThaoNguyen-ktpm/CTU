@@ -12,12 +12,62 @@
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-    
       </div>
       <div class="invalid-feedback">
         Vui lòng nhập tên dự án !
       </div>
     </div>
+    <div class="group">       
+    <label>Chọn loại dự án <span style="color:red;">(*)</span></label>
+    <select name="MaLoai" class="form-control" required>
+        <option value="" disabled>Chọn loại dự án</option>
+        @foreach($LoaiDuAn as $LoaiDuAn1)
+        <option value="{{$LoaiDuAn1->id}}" {{ $DuAn->MaLoai == $LoaiDuAn1->id ? 'selected' : '' }}>
+            {{$LoaiDuAn1->TenLoaiDuAn}}
+        </option>
+        @endforeach
+    </select>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <div class="valid-feedback"></div>
+    <div class="invalid-feedback">Vui lòng chọn loại dự án!</div>
+</div>
+
+<div class="group">       
+    <label>Chọn quy mô <span style="color:red;">(*)</span></label>
+    <select name="QuyMo" class="form-control" required>
+        <option value="" disabled>Chọn quy mô dự án</option>
+        <option value="1" {{ $DuAn->QuyMo == 1 ? 'selected' : '' }}>Nhỏ</option>
+        <option value="2" {{ $DuAn->QuyMo == 2 ? 'selected' : '' }}>Vừa</option>
+        <option value="3" {{ $DuAn->QuyMo == 3 ? 'selected' : '' }}>Lớn</option>
+        <option value="4" {{ $DuAn->QuyMo == 4 ? 'selected' : '' }}>Rất lớn</option>
+    </select>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <div class="valid-feedback"></div>
+    <div class="invalid-feedback">Vui lòng chọn quy mô dự án!</div>
+</div>
+<div class="group">
+    <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
+    <input id="NgayBatDauDuAn" name="NgayBatDau" value="{{ $DuAn->NgayBatDau }}" type="date" class="form-control" required>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <div class="valid-feedback"></div>
+    <div class="invalid-feedback invalid-feedback1" id="dateStartInvalidFeedback">
+        Vui lòng chọn ngày bắt đầu lớn hơn ngày hiện tại!
+    </div>
+</div>
+
+<div class="group">
+    <label>Ngày kết thúc <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
+    <input id="NgayKetThucDuAn" name="NgayKetThuc" value="{{ $DuAn->NgayKetThuc }}" type="date" class="form-control" required>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <div class="valid-feedback"></div>
+    <div class="invalid-feedback invalid-feedback2" id="dateEndInvalidFeedback">
+        Ngày kết thúc phải nhỏ hơn ngày bắt đầu!
+    </div>
+</div>
     <div class="group">
     <label> Mô tả <span style="color:red;">(*)</span></label>
     <textarea id="NoiDungInput" name="MoTa" class="form-control textarea" required>{{ $DuAn->Mota }}</textarea>
@@ -118,7 +168,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: "Đã Tồn Tại Giai Đoạn  !",
+          message: "Đã Tồn Tại Dự Án !",
           type:"error",
           duration:2000
       })
@@ -127,7 +177,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Cập Nhật Giai Đoạn Thành Công !",
+        message: "Cập Nhật Dự Án Thành Công !",
         type:"success",
         duration:2000
       })
@@ -151,4 +201,44 @@
     e.target.value = sanitizedValue;
   });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var NgayBatDauDuAn = document.getElementById('NgayBatDauDuAn');  // Ngày bắt đầu dự án
+    var NgayKetThucDuAn = document.getElementById('NgayKetThucDuAn');  // Ngày kết thúc dự án
+    var dateEndInvalidFeedback = document.getElementById('dateEndInvalidFeedback');  // Div để hiển thị lỗi ngày kết thúc
+   // Div để hiển thị thông tin ngày và số ngày thực hiện
+
+    // Lắng nghe sự thay đổi của Ngày Bắt Đầu Dự Án và Ngày Kết Thúc Dự Án
+    NgayBatDauDuAn.addEventListener('input', function(e) {
+        validateEndDate();  // Kiểm tra ngày kết thúc dự án
+        displayDates();  // Hiển thị thông tin
+    });
+
+    NgayKetThucDuAn.addEventListener('input', function(e) {
+        validateEndDate();  // Kiểm tra ngày kết thúc dự án
+        displayDates();  // Hiển thị thông tin
+    });
+
+    // Hàm kiểm tra ngày kết thúc dự án phải lớn hơn ngày bắt đầu
+    function validateEndDate() {
+        var startDate = new Date(NgayBatDauDuAn.value);
+        var endDate = new Date(NgayKetThucDuAn.value);
+
+        if (startDate && endDate) {
+            if (endDate > startDate) {
+                dateEndInvalidFeedback.style.display = 'none';
+                NgayKetThucDuAn.classList.remove('is-invalid');
+            } else {
+                dateEndInvalidFeedback.style.display = 'block';
+                dateEndInvalidFeedback.innerHTML = 'Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu!';
+                NgayKetThucDuAn.classList.add('is-invalid');
+            }
+        }
+    }
+
+   
+});
+</script>
+
 @endsection

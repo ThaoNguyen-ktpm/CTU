@@ -4,23 +4,50 @@
 <div class="col">
 <div class="container">
   <h2 class=" text-weight">Cập Nhật Công Việc<small></small></h2>
-  <form  method="post" class="needs-validation CongViec-form" action="/CongViec/update/{{$CongViec->id}}" novalidate>
+  <form  method="post" class="needs-validation CongViec-form" action="/CongViec/update/{{$CongViec[0]->id}}" novalidate>
   @csrf
     <div class="group">
     <label>Tên công việc <span style="color:red;">(*)</span></label>
-      <input  id="usernameInput" name="TenCongViec" value="{{ $CongViec->TenCongViec }}" type="text" class="form-control" required>
+      <input  id="usernameInput" name="TenCongViec" value="{{ $CongViec[0]->TenCongViec }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
-       
       </div>
       <div class="invalid-feedback">
         Vui lòng nhập công việc !
       </div>
     </div>
+
+    <div style="background-color: darkgreen; color: white; padding: 10px; margin-top: 10px;">
+       
+    <span>Thời Gian Dự Án: Ngày {{ \Carbon\Carbon::parse($CongViec[0]->NgayBatDauDuAn)->format('d/m/Y') }} đến {{ \Carbon\Carbon::parse($CongViec[0]->NgayKetThucDuAn)->format('d/m/Y') }}</span><br>
+       <span>Thời Gian Giai Đoạn: Ngày{{ $ngayBatDau1 }} đến {{ $ngayKetThuc1}}</span>
+   </div>
+
+    <div class="group">
+    <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
+    <input name="NgayBatDau" value="{{ \Carbon\Carbon::parse($CongViec[0]->NgayBatDau)->format('Y-m-d') }}" type="date" class="form-control" required>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <div class="valid-feedback"></div>
+    <div class="invalid-feedback invalid-feedback1" id="dateStartInvalidFeedback">
+        Vui lòng chọn ngày bắt đầu lớn hơn ngày bắt đầu dự án!
+    </div>
+</div>
+
+<div class="group">
+    <label>Ngày đến hẹn <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
+    <input name="NgayKetThuc" value="{{ \Carbon\Carbon::parse($CongViec[0]->NgayKetThuc)->format('Y-m-d') }}" type="date" class="form-control" required>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <div class="valid-feedback"></div>
+    <div class="invalid-feedback invalid-feedback2" id="dateEndInvalidFeedback">
+        Ngày đến hẹn phải nhỏ hơn ngày bắt đầu hoặc nhỏ hơn ngày kết thúc dự án!
+    </div>
+</div>
     <div class="group">
     <label>Link tài liệu <span style="color:red;"></span></label>
-      <input  id="linkInput" name="LinkTaiLieu" value="{{ $CongViec->LinkTaiLieu }}" type="text"  class="form-control" pattern="^\S.*">
+      <input  id="linkInput" name="LinkTaiLieu" value="{{ $CongViec[0]->LinkTaiLieu }}" type="text"  class="form-control" pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
@@ -32,7 +59,7 @@
     </div>
     <div class="group">
     <label> Mô tả <span style="color:red;">(*)</span></label>
-    <textarea id="NoiDungInput" name="MoTa" class="form-control textarea" required>{{ $CongViec->MoTa }}</textarea>
+    <textarea id="NoiDungInput" name="MoTa" class="form-control textarea" required>{{ $CongViec[0]->MoTa }}</textarea>
     <span class="highlight"></span>
     <span class="bar"></span>
     <div class="valid-feedback">
@@ -42,23 +69,6 @@
         Vui lòng nhập mô tả !
     </div>
 </div>
-  <div style="background-color: darkgreen; color: white; padding: 10px; margin-top: 10px;">
-        <span>Số Ngày Thực Hiện: {{ $soNgayThucHien1 }} ngày</span><br>
-        <span>Thời Gian Thực Hiện: {{ $ngayBatDau1 }} đến {{ $ngayKetThuc1}}</span>
-    </div>
-    
-    <div class="group">
-      <label>Số ngày thực hiện <span style="color:red;">(*)</span></label>
-      <input id="SoNgayThucHienInput" name="SoNgayThucHien" value="{{ $soNgayThucHien }}" type="number" min="1" max="1000" class="form-control" required>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback">Vui lòng nhập số ngày thực hiện không lớn hơn số ngày giai đoạn!</div>
-    </div>
-    
-  <input name="NgayBatDau" value="{{ $ngayBatDau2 }}" type="date"  class="form-control"  >
-  
-
 
     <div class="group" style="margin-top: 20px;">
         <label>Chọn người nhận việc<span style="color:red;"> (*)</span></label>
@@ -72,9 +82,6 @@
         </label>
     </div>
 @endforeach
-
-
-
 
     </div>
       <div class="valid-feedback">
@@ -93,28 +100,45 @@
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 
 <script>
-    var soNgayThucHien = "{{$soNgayThucHien1 }}";
-</script>
+   
+   document.addEventListener('DOMContentLoaded', function() {
+    // Lấy giá trị ngày bắt đầu dự án và ngày kết thúc dự án từ HTML
+    var ngayBatDauDuAn = new Date("{{ $CongViec[0]->NgayBatDauDuAn }}");
+    var ngayKetThucDuAn = new Date("{{ $CongViec[0]->NgayKetThucDuAn}}");
+    
+    var ngayBatDauInput = document.querySelector('input[name="NgayBatDau"]');
+    var ngayKetThucInput = document.querySelector('input[name="NgayKetThuc"]');
+    
+    function validateDates() {
+        var ngayBatDau = new Date(ngayBatDauInput.value);
+        var ngayKetThuc = new Date(ngayKetThucInput.value);
+        
+        // Kiểm tra ngày bắt đầu
+        if (ngayBatDau < ngayBatDauDuAn) {
+            ngayBatDauInput.setCustomValidity('Vui lòng chọn ngày bắt đầu lớn hơn ngày bắt đầu dự án!');
+            document.getElementById('dateStartInvalidFeedback').style.display = 'block';
+        } else {
+            ngayBatDauInput.setCustomValidity('');
+            document.getElementById('dateStartInvalidFeedback').style.display = 'none';
+        }
+        
+        // Kiểm tra ngày kết thúc
+        if (ngayKetThuc < ngayBatDau || ngayKetThuc > ngayKetThucDuAn) {
+            ngayKetThucInput.setCustomValidity('Ngày đến hẹn phải nhỏ hơn ngày bắt đầu hoặc nhỏ hơn ngày kết thúc dự án!');
+            document.getElementById('dateEndInvalidFeedback').style.display = 'block';
+        } else {
+            ngayKetThucInput.setCustomValidity('');
+            document.getElementById('dateEndInvalidFeedback').style.display = 'none';
+        }
+    }
+    
+    // Lắng nghe sự kiện khi giá trị ngày được thay đổi
+    ngayBatDauInput.addEventListener('change', validateDates);
+    ngayKetThucInput.addEventListener('change', validateDates);
+});
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var soNgayThucHien = "{{ $soNgayThucHien1 }}";
 
-        var inputElements = document.querySelectorAll('input[name="SoNgayThucHien"]');
-        inputElements.forEach(function(input) {
-            input.addEventListener('input', function(e) {
-                var value = e.target.value;
-                var sanitizedValue = parseInt(value, 10); // Chuyển đổi giá trị thành số nguyên
-                
-                // Kiểm tra số ngày thực hiện
-                if (sanitizedValue > soNgayThucHien) {
-                    e.target.setCustomValidity(`Số ngày thực hiện không được vượt quá ${soNgayThucHien} ngày!`);
-                } else {
-                    e.target.setCustomValidity('');
-                }
-            });
-        });
-    });
+
 </script>
 <script>
 

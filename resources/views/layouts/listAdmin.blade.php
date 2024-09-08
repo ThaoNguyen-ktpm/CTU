@@ -69,7 +69,14 @@
                     <span class="menu-collapsed">Thông Tin Vai Trò Người Dùng</span>
                 </a>
             </div>
-          
+           <!-- Loại Dự Án -->
+           <a href="/LoaiDuAn"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-start align-items-center transformX" >
+                <i class="fa-solid fa-graduation-cap" style="color: #ffffff;"></i>
+                    <span class="menu-collapsed">Quản Lý Loại Dự Án</span>
+                    <span class="submenu-icon ml-auto"></span>
+                </div>
+            </a>
             <!-- Giai Đoạn -->
             <a href="/GiaiDoan"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
