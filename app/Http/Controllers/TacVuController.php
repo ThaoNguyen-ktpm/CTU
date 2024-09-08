@@ -20,7 +20,11 @@ class TacVuController extends Controller
     {
         $TacVu = DB::select('SELECT tacvus.*, vaitros.TenVaiTro, nguoidungs.UserName
         FROM vaitros, tacvus , nguoidungs 
-        WHERE tacvus.MaNguoiDung = nguoidungs.id and tacvus.MaVaiTro = vaitros.id and tacvus.IsActive = true');
+        WHERE tacvus.MaNguoiDung = nguoidungs.id 
+        and tacvus.MaVaiTro = vaitros.id 
+        and tacvus.IsActive = true
+        and vaitros.IsActive = true
+        and nguoidungs.IsActive = true');
         return response()->json(['data' => $TacVu]);
     }
     //Thêm Tác Vụ
@@ -61,11 +65,13 @@ class TacVuController extends Controller
     public function updateview($id)
     {
         $TacVu = DB::select('SELECT tacvus.*, vaitros.TenVaiTro, nguoidungs.UserName 
-        FROM vaitros, tacvus,nguoidungs
+        FROM vaitros, tacvus, nguoidungs
         WHERE tacvus.MaNguoiDung = nguoidungs.id 
         and tacvus.MaVaiTro = vaitros.id 
         and tacvus.IsActive = true 
-        and tacvus.id =?',[$id]);
+        and tacvus.id =?
+        and vaitros.IsActive = true
+        and nguoidungs.IsActive = true',[$id]);
         $title = "Cập Nhật Vai Trò Người Dùng";
         $VaiTro = vaitro::where('IsActive', 1)->get();
         return view('TacVu.UpdateTacVu', compact('VaiTro','TacVu', 'title'));

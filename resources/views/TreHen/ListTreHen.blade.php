@@ -5,25 +5,6 @@
             .dataTables_wrapper {
             padding-top: 0px;
         }
-        #myTableThongBao th:nth-of-type(2){
-            max-width: 250px !important;
-        }
-        #myTableThongBao td:nth-child(2){
-        font-size: 16px;
-        font-weight: 450;
-        color: var(--text-color);
-        line-height: 1.8rem;
-        margin: 10px 10px 6px;
-        height: 1.6rem;
-        overflow: hidden;
-        display: block;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        text-overflow: ellipsis;
-       
-
-        }
         .trehentext{
             color: white; /* Màu chữ trắng */
             text-decoration: none; 
@@ -35,8 +16,8 @@
         align-items: center;
         justify-content: flex-start;
         margin-left: 20px;
-        width: 170px;
-        height: 50px;
+        width: 150px;
+        height: 37px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
@@ -46,36 +27,28 @@
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
         background-color: rgb(255, 65, 65);
     }
-
-        
         </style>
-
-       <div style="display: flex;">
-       <a href="/run-schedulerThongBao"  aria-expanded="false" style=" color: white;text-decoration: none;">
+        <a href="/run-scheduler"  aria-expanded="false" style=" color: white;text-decoration: none;">
                 <div class="logoutForm">
                 <button class="Btn " id="BtnNew" style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
-            <div class="trehentext" > Cập nhật thông báo gần đến hẹn</div>
+               <div class="trehentext" > Cập Nhật Trễ Hẹn</div>
                 </button>
                 </div>
         </a>
-        <a href=" /ThongBao/addview"  aria-expanded="false" >
-                <div class="logoutForm">
-                <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
-                <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
-                <div class="text" style=" margin-left: 5px;" >Thêm</div>
-                </button>
-                </div>
-        </a>
-       </div>
         <div class="col">
-                <table id="myTableThongBao">
+                <table id="myTableTreHen">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nội Dung</th>
-                            <th>Người Nhận</th>
-                            <th>Thời Gian</th>
-                            <th>Xóa</th>
+                            <th>Tên Công Việc</th>
+                            <th>Dự Án</th>
+                            <th>Giai Đoạn</th>
+                            <th>Trạng Thái</th>
+                            <th>Ngày Bắt Đầu</th>
+                            <th>Ngày Đến Hẹn</th>
+                            <th>Người Nhận Việc</th>
+                            <th>Sửa</th>
+                           
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -86,37 +59,85 @@
             
         <script>
             $(document).ready(function() {
-            var table = $('#myTableThongBao').DataTable({
+            var table = $('#myTableTreHen').DataTable({
                 ajax: {
-                    url: "{{ route('ThongBao.data') }}",
+                    url: "{{ route('TreHen.data') }}",
                     dataSrc: 'data'
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'NoiDung' },
-                    { data: 'Name' },
-                    { data: 'ThoiGian' },
+                    { data: 'TenCongViec' },
+                    { data: 'TenDuAn' },
+                    { data: 'TenGiaiDoan' },
+                    {
+                        data: 'TrangThai',
+                        render: function(data, type, row) {
+                            if (data == 1) {
+                                return 'Đang Thực Hiện';
+                            } else if (data == 3){
+                                return 'Hoàn Thành';
+                            }else if ( data == 4){
+                                return 'Trễ Hẹn';
+                            } else {
+                                return 'Trống';
+                            }
+                        }
+                    },
+                    {
+                        data: 'NgayBatDau',
+                        render: function(data) {
+                            if (data === null || data === '') {
+                            return ' ';
+                            } else {
+                            var ngaySinh = new Date(data);
+                            var ngay = ngaySinh.getDate();
+                            var thang = ngaySinh.getMonth() + 1;
+                            var nam = ngaySinh.getFullYear();
+                            return ngay + '-' + thang + '-' + nam;
+                            }
+                        }
+                },
+                {
+                        data: 'NgayKetThuc',
+                        render: function(data) {
+                            if (data === null || data === '') {
+                            return ' ';
+                            } else {
+                            var ngaySinh = new Date(data);
+                            var ngay = ngaySinh.getDate();
+                            var thang = ngaySinh.getMonth() + 1;
+                            var nam = ngaySinh.getFullYear();
+                            return ngay + '-' + thang + '-' + nam;
+                            }
+                        }
+                }, {
+                        data: null,
+                        render: function(data, type, row) {
+                        return '<a href="/CongViec/ThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
+                   
+                    }
+                    },
                     {
                         data: null,
                         render: function(data, type, row) {
-                            return '<button class="btn btn-danger DeleteThongBao-form" onclick="deleteThongBao(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
-                        }
+                        return '<form method="get" action="/CongViec/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
+                    }
                     }
                 ]
             });
         });
 
-        function deleteThongBao(ThongBaoId) {
+        function deleteTreHen(TreHenId) {
             if (confirm('Bạn có chắc chắn muốn xóa vai trò này?')) {
                 // Gửi yêu cầu xóa vai trò đến server
                 $.ajax({
-                    url: '/ThongBao/remove/' + ThongBaoId,
+                    url: '/TreHen/remove/' + TreHenId,
                     type: 'GET',
                     success: function(response) {
                         if (response.success) {
                             // Cập nhật lại bảng dữ liệu
                             showSuccessToast1()
-                            var table = $('#myTableThongBao').DataTable();
+                            var table = $('#myTableTreHen').DataTable();
                             table.ajax.reload(null, false);
                         }
                     },
@@ -128,7 +149,7 @@
             }
         }
         $(document).ready(function() {
-	$('.DeleteThongBao-form').click(function(event) {
+	$('.DeleteTreHen-form').click(function(event) {
 		event.preventDefault(); // Ngăn chặn hành động mặc định của button
 		var button = $(this);
 		var id = button.attr('data-id');
@@ -192,7 +213,7 @@ function toast1({title='',message='',type='info',duration=2000}){
     function showSuccessToast1() {
         toast1({
             title: "Success",
-            message: "Xóa Đơn Vị Thành Công!",
+            message: "Xóa Giai Đoạn Thành Công!",
             type: "success",
             duration: 2000
         })

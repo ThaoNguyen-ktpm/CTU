@@ -29,6 +29,7 @@ class UpdateOverdueTasks extends Command
             ->join('congviecs', 'giaoviecs.MaCongViec', '=', 'congviecs.id')
             ->where('giaoviecs.TrangThai', '!=', [3, 4])
             ->where('congviecs.NgayKetThuc', '<=', $now)
+            ->where('giaoviecs.IsActive', true )
             ->update(['giaoviecs.TrangThai' => 4]);
 
         // Lấy danh sách các id công việc quá hạn

@@ -22,7 +22,6 @@ class DonViController extends Controller
    public function addview()
    {
        $title = "Thêm Đơn Vị";
-    
        return view('DonVi.AddDonVi', compact('title'));
    }
    public function add(Request $request)

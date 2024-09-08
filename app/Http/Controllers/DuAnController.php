@@ -22,7 +22,10 @@ class DuAnController extends Controller
      public function SoDoCongViec($id)
      {
          $title = "Sơ Đồ Công Việc";
-         $SoDo = DB::select('SELECT thuchiens.* FROM thuchiens WHERE thuchiens.MaDuAn= ?',[$id]);
+         $SoDo = DB::select('SELECT thuchiens.* 
+         FROM thuchiens 
+         WHERE thuchiens.IsActive 
+         AND thuchiens.MaDuAn= ? ',[$id]);
          return view('TienDoCongViec.SoDoCongViec', compact('title','SoDo'));
      }
      //Danh sách Dự Án
@@ -34,7 +37,11 @@ class DuAnController extends Controller
          WHERE congviecs.MaDuAn = ?
          AND congviecs.MaThucHien = thuchiens.id  
          AND congviecs.MaDuAn = duans.id  
-         AND thuchiens.MaGiaiDoan = giaidoans.id',[$id]);
+         AND thuchiens.MaGiaiDoan = giaidoans.id
+        AND congviecs.IsActive = true
+        AND duans.IsActive = true
+        AND thuchiens.IsActive = true
+        AND giaidoans.IsActive = true',[$id]);
          return response()->json(['data' => $SoDo]);
      }
    public function listTienDoCongViec()
@@ -103,7 +110,10 @@ class DuAnController extends Controller
          WHERE duans.id = ?
          AND duans.id= thuchiens.MaDuAn  
          AND thuchiens.MaGiaiDoan = giaidoans.id 
-         AND giaidoans.IsActive = true',[$id]);
+         AND giaidoans.IsActive = true
+        AND duans.IsActive = true
+        AND thuchiens.IsActive = true
+       ',[$id]);
         return response()->json(['data' => $DuAn]);
     }
 
@@ -115,7 +125,11 @@ class DuAnController extends Controller
    }
    public function getDuAn()
    {
-        $DuAn = DB::select('SELECT duans.*,loaiduans.TenLoaiDuAn FROM duans,loaiduans WHERE duans.MaLoai = loaiduans.id');
+        $DuAn = DB::select('SELECT duans.*,loaiduans.TenLoaiDuAn 
+        FROM duans,loaiduans 
+        WHERE duans.MaLoai = loaiduans.id
+        AND duans.IsActive = true
+        AND loaiduans.IsActive = true');
        return response()->json(['data' => $DuAn]);
    }
  

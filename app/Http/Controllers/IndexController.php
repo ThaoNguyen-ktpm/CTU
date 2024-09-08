@@ -23,12 +23,16 @@ class IndexController extends Controller
     
          // Sử dụng $userId trong truy vấn
          $NhanViec = DB::select('SELECT congviecs.* ,duans.TenDuAn
-             FROM giaoviecs, congviecs ,duans
-             WHERE giaoviecs.MaNguoiDung = ? 
-             AND congviecs.MaDuAn = ?
+            FROM giaoviecs, congviecs ,duans
+            WHERE giaoviecs.MaNguoiDung = ? 
+            AND congviecs.MaDuAn = ?
             AND duans.id = congviecs.MaDuAn 
-             AND giaoviecs.MaCongViec = congviecs.id 
-             AND giaoviecs.TrangThai = 1', [$userId,$id]);
+            AND giaoviecs.MaCongViec = congviecs.id 
+            AND giaoviecs.TrangThai = 1
+            AND congviecs.IsActive = true
+            AND duans.IsActive = true
+            AND giaoviecs.IsActive = true
+          ', [$userId,$id]);
     
         return response()->json($NhanViec);
     }
@@ -57,8 +61,8 @@ class IndexController extends Controller
                 giaoviecs.MaNguoiDung = ? 
                 AND congviecs.MaDuAn = ?
                 AND giaoviecs.TrangThai = 2
-
-            
+                AND duans.IsActive = true
+                AND giaoviecs.IsActive = true   
             ', [$userId,$id]);
     
         return response()->json($DangThucHien);
@@ -76,7 +80,9 @@ class IndexController extends Controller
             AND giaoviecs.TrangThai = 3
             AND duans.id = congviecs.MaDuAn 
             AND congviecs.MaDuAn = ?
-            AND capnhattiendos.MaGiaoViec = giaoviecs.id', [$userId,$id]);
+            AND capnhattiendos.MaGiaoViec = giaoviecs.id
+            AND duans.IsActive = true
+            AND giaoviecs.IsActive = true', [$userId,$id]);
 
         return response()->json($HoanThanh);
     }
@@ -92,7 +98,9 @@ class IndexController extends Controller
             AND congviecs.MaDuAn =  ? 
             AND duans.id = congviecs.MaDuAn 
             AND giaoviecs.MaCongViec = congviecs.id 
-            AND giaoviecs.TrangThai = 4', [$userId,$id]);
+            AND giaoviecs.TrangThai = 4
+            AND duans.IsActive = true
+            AND giaoviecs.IsActive = true', [$userId,$id]);
 
         return response()->json($TreHen);
     }
@@ -110,7 +118,9 @@ class IndexController extends Controller
             WHERE giaoviecs.MaNguoiDung = ? 
             AND giaoviecs.MaCongViec = congviecs.id 
             AND duans.id = congviecs.MaDuAn 
-            AND giaoviecs.TrangThai = 1', [$userId]);
+            AND giaoviecs.TrangThai = 1
+            AND duans.IsActive = true
+            AND giaoviecs.IsActive = true', [$userId]);
     
         $DangThucHien = DB::select('SELECT congviecs.*, 
                 capnhattiendos.ThoiGian, 
@@ -122,7 +132,9 @@ class IndexController extends Controller
             JOIN duans ON duans.id = congviecs.MaDuAn 
             LEFT JOIN capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
             WHERE giaoviecs.MaNguoiDung = ?
-            AND giaoviecs.TrangThai = 2;
+            AND giaoviecs.TrangThai = 2
+            AND duans.IsActive = true
+            AND giaoviecs.IsActive = true;
             ', [$userId]);
 
         $HoanThanh= DB::select('SELECT congviecs.*  ,capnhattiendos.ThoiGian ,duans.TenDuAn
@@ -131,25 +143,35 @@ class IndexController extends Controller
             AND giaoviecs.MaCongViec = congviecs.id 
              AND duans.id = congviecs.MaDuAn 
             AND giaoviecs.TrangThai = 3
-            AND capnhattiendos.MaGiaoViec = giaoviecs.id', [$userId]);
+            AND capnhattiendos.MaGiaoViec = giaoviecs.id
+            AND duans.IsActive = true
+            AND giaoviecs.IsActive = true', [$userId]);
 
         $TreHen= DB::select('SELECT congviecs.*  ,duans.TenDuAn
             FROM giaoviecs, congviecs  ,duans
             WHERE giaoviecs.MaNguoiDung = ? 
              AND duans.id = congviecs.MaDuAn
             AND giaoviecs.MaCongViec = congviecs.id 
-            AND giaoviecs.TrangThai = 4', [$userId]);
+            AND giaoviecs.TrangThai = 4
+            AND duans.IsActive = true
+            AND giaoviecs.IsActive = true', [$userId]);
         $DuAn = DB::select('SELECT duans.id 
             FROM thanhviens , duans 
             WHERE duans.id = thanhviens.MaDuAn 
-            AND thanhviens.MaNguoiDung = ?',[$userId]);
+            AND thanhviens.MaNguoiDung = ?
+            AND duans.IsActive = true
+            AND thanhviens.IsActive = true',[$userId]);
         $DuAnAll = duan::where('IsActive', 1)->get();
         return view('Index.TrangChu', compact('TreHen','HoanThanh','DangThucHien', 'NhanViec','DuAn', 'title','DuAnAll'));
     }
     public function ChiTietCongViec($id)
     {
         $title = "Chi Tiết Công Việc";
-       $CongViec = DB::select('SELECT congviecs.* , duans.TenDuAn FROM congviecs , duans WHERE congviecs.id = ? AND congviecs.MaDuAn = duans.id',[$id]);
+       $CongViec = DB::select('SELECT congviecs.* , duans.TenDuAn 
+            FROM congviecs , duans 
+            WHERE congviecs.id = ? 
+            AND congviecs.MaDuAn = duans.id
+            AND duans.IsActive = true',[$id]);
         return view('Index.ChiTiet', compact( 'CongViec','title'));
     }
     public function ChiTietHoanThanh($id)
@@ -166,7 +188,9 @@ class IndexController extends Controller
        AND capnhattiendos.id = files.MaCapNhatTienDo 
        AND giaoviecs.TrangThai = 3   
        AND giaoviecs.MaNguoiDung = ?
-       AND giaoviecs.id = capnhattiendos.MaGiaoViec',[$id,$userId]);
+       AND giaoviecs.id = capnhattiendos.MaGiaoViec
+        AND duans.IsActive = true
+        AND giaoviecs.IsActive = true',[$id,$userId]);
         return view('Index.ChiTietHoanThanh', compact( 'CongViec','title'));
     }
         public function CapNhatTienDoView($id, $idcapnhattiendo )
@@ -178,16 +202,21 @@ class IndexController extends Controller
                 $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn 
                 FROM congviecs 
                 JOIN duans ON congviecs.MaDuAn = duans.id
-                WHERE congviecs.id = ?', [$id]);
+                WHERE congviecs.id = ?
+                AND duans.IsActive = true
+                AND congviecs.IsActive = true', [$id]);
             } else {
                 $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn, capnhattiendos.TienDo, capnhattiendos.ThoiGian, capnhattiendos.NoiDung, files.DuongDanFile ,capnhattiendos.id as idcapnhattiendo
-                                    FROM congviecs 
-                                    JOIN duans ON congviecs.MaDuAn = duans.id
-                                    LEFT JOIN giaoviecs ON giaoviecs.MaCongViec = congviecs.id
-                                    LEFT JOIN capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
-                                    LEFT JOIN files ON files.MaCapNhatTienDo = capnhattiendos.id
-                                    WHERE congviecs.id = ? AND capnhattiendos.id = ?;
-                                    ', [$id, $idcapnhattiendo]);
+                FROM congviecs 
+                JOIN duans ON congviecs.MaDuAn = duans.id
+                LEFT JOIN giaoviecs ON giaoviecs.MaCongViec = congviecs.id
+                LEFT JOIN capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
+                LEFT JOIN files ON files.MaCapNhatTienDo = capnhattiendos.id
+                WHERE congviecs.id = ? 
+                AND capnhattiendos.id = ?
+                AND duans.IsActive = true
+                AND giaoviecs.IsActive = true;
+                ', [$id, $idcapnhattiendo]);
 
             }
     
@@ -198,7 +227,12 @@ class IndexController extends Controller
     public function NhanCongViec($id)
     {
         $userId = Session::get('sessionUserId');
-        $CongViecid = DB::select('SELECT giaoviecs.id FROM giaoviecs WHERE MaCongViec = ? AND MaNguoiDung= ?', [$id, $userId]);
+        $CongViecid = DB::select('SELECT giaoviecs.id 
+        FROM giaoviecs 
+        WHERE MaCongViec = ? 
+        AND MaNguoiDung= ?
+        AND giaoviecs.IsActive = true'
+        , [$id, $userId]);
         
         // Kiểm tra xem kết quả có tồn tại hay không
         if (!empty($CongViecid)) {
@@ -224,7 +258,7 @@ class IndexController extends Controller
     public function NopBaoCao(Request $request, $id, $idcapnhattiendo)
     {
         $userId = Session::get('sessionUserId');
-        $CongViecid = DB::select('SELECT giaoviecs.id FROM giaoviecs WHERE MaCongViec = ? AND MaNguoiDung= ?', [$id, $userId]);
+        $CongViecid = DB::select('SELECT giaoviecs.id FROM giaoviecs WHERE MaCongViec = ? AND MaNguoiDung= ? AND giaoviecs.IsActive = true', [$id, $userId]);
        
         if ( $idcapnhattiendo  ===  'null') {
            // Tạo bản ghi cập nhật tiến độ
@@ -267,6 +301,7 @@ class IndexController extends Controller
     
             $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                         ->where('TrangThai', '!=', 3)
+                                        ->where('IsActive', true)
                                         ->count();
     
             if ($soLuongHoanThanh == 0) {
@@ -318,6 +353,7 @@ class IndexController extends Controller
       
               $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                           ->where('TrangThai', '!=', 3)
+                                        ->where('IsActive', true)
                                           ->count();
       
               if ($soLuongHoanThanh == 0) {

@@ -430,7 +430,7 @@ public function Welcome()
                         if (in_array($user->Quyen, [1, 2, 3])) {
                             return response()->json(['success' => true]);
                         } else {
-                            $ThongBao =DB::select('SELECT * FROM thongbaos WHERE thongbaos.MaNguoiDung = ?  AND IsSee = false',[$user->id]);
+                            $ThongBao =DB::select('SELECT * FROM thongbaos WHERE thongbaos.MaNguoiDung = ?  AND IsSee = false AND IsActive = true',[$user->id]);
                             Session::put('ThongBao', $ThongBao);
                             return response()->json(['successIndex' => true]);
                         }
@@ -477,7 +477,7 @@ public function Welcome()
                         Session::put('sessionUser', $findUser->UserName);
                         Session::put('sessionUserId', $findUser->id);
                         Session::put('IsAdmin', $findUser->Quyen);
-                        $ThongBao =DB::select('SELECT * FROM thongbaos WHERE thongbaos.MaNguoiDung = ? AND IsSee = false',[ $findUser->id]);
+                        $ThongBao =DB::select('SELECT * FROM thongbaos WHERE thongbaos.MaNguoiDung = ? AND IsSee = false AND IsActive = true',[ $findUser->id]);
                         Session::put('ThongBao', $ThongBao);
                         return redirect()->intended('/Index');
                    

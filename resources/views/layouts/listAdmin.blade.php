@@ -121,6 +121,13 @@
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
+            <a href="/TreHen"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-start align-items-center transformX" >
+                    <i class="fa-solid fa-file-import" style="color: #ffffff;"></i>
+                    <span class="menu-collapsed">Quản Lý Trễ Hện</span>
+                    <span class="submenu-icon ml-auto"></span>
+                </div>
+            </a>
          
             <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
                 <small style="font-weight: 700;color: #c5c5c5;">Đăng Xuất</small>

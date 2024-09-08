@@ -149,9 +149,11 @@ class CongViecController extends Controller
    public function getThoiGian($id)
    {
        $GiaiDoan = DB::select('
-           SELECT thuchiens.* ,duans.NgayBatDau AS NgayBatDauDuAn , duans.NgayKetThuc AS NgayKetThucDuAn FROM thuchiens ,duans
+           SELECT thuchiens.* ,duans.NgayBatDau AS NgayBatDauDuAn , duans.NgayKetThuc AS NgayKetThucDuAn 
+           FROM thuchiens ,duans
            WHERE thuchiens.id = ?
            AND thuchiens.IsActive = true 
+           AND duans.IsActive = true 
            AND thuchiens.MaDuAn = duans.id 
             ',[$id]);
    
@@ -298,6 +300,8 @@ class CongViecController extends Controller
         $CongViec = DB::select('SELECT  congviecs.*,duans.NgayBatDau AS NgayBatDauDuAn, duans.NgayKetThuc AS NgayKetThucDuAn 
         FROM congviecs , duans  
         WHERE congviecs.MaDuAn = duans.id 
+        AND congviecs.IsActive = true
+        AND duans.IsActive = true
         AND congviecs.id = ?',[$id]);
         $title = "Cập Nhật Công Việc";
            // Parse ngày bắt đầu và ngày kết thúc
@@ -326,7 +330,7 @@ class CongViecController extends Controller
         $ngayKetThuc1 = null;
     }
 
-        $MaDuAn = DB::select('SELECT congviecs.MaDuAn FROM congviecs WHERE congviecs.id = ?',[$id]);
+        $MaDuAn = DB::select('SELECT congviecs.MaDuAn FROM congviecs WHERE congviecs.IsActive = true AND congviecs.id = ?',[$id]);
 
 
             $ThanhVienCongViec = DB::select('  SELECT nguoidungs.id, 
@@ -447,6 +451,7 @@ class CongViecController extends Controller
                 foreach ($inDBNotInUI as $maNguoiDung) {
                     $GiaoViec = giaoviec::where('MaCongViec', $CongViec->id)
                         ->where('MaNguoiDung', $maNguoiDung)
+                        ->where('IsActive',true)
                         ->first();
                     if ($GiaoViec) {
                         $GiaoViec->IsActive = false;
@@ -458,6 +463,7 @@ class CongViecController extends Controller
                 foreach ($inUINotInDB as $maNguoiDung) {
                     $GiaoViec = giaoviec::where('MaCongViec', $CongViec->id)
                         ->where('MaNguoiDung', $maNguoiDung)
+                        ->where('IsActive',true)
                         ->first();
                     if ($GiaoViec) {
                         $GiaoViec->IsActive = true;

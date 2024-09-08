@@ -22,7 +22,6 @@ class LoaiDuAnController extends Controller
    public function addview()
    {
        $title = "Thêm Loại Dự Án";
-    
        return view('LoaiDuAn.AddLoaiDuAn', compact('title'));
    }
    public function add(Request $request)

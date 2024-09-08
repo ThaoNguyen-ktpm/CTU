@@ -18,8 +18,12 @@ class PhongBanController extends Controller
     public function getPhongBan()
     {
         $PhongBan = DB::select('SELECT phongbans.*, donvis.TenDonVi, nguoidungs.UserName
-        FROM donvis, phongbans,nguoidungs
-        WHERE phongbans.MaNguoiDung = nguoidungs.id and phongbans.MaDonVi = donvis.id and phongbans.IsActive = true');
+        FROM donvis, phongbans, nguoidungs
+        WHERE phongbans.MaNguoiDung = nguoidungs.id 
+        and phongbans.MaDonVi = donvis.id 
+        and phongbans.IsActive = true
+        and donvis.IsActive = true
+        and nguoidungs.IsActive = true');
         return response()->json(['data' => $PhongBan]);
     }
     //Thêm Đơn Vị Người Dùng
@@ -62,7 +66,9 @@ class PhongBanController extends Controller
         WHERE phongbans.MaNguoiDung = nguoidungs.id 
         and phongbans.MaDonVi = donvis.id 
         and phongbans.IsActive = true 
-        and phongbans.id =?',[$id]);
+        and phongbans.id =?
+        and donvis.IsActive = true
+        and nguoidungs.IsActive = true',[$id]);
         $title = "Cập Nhật Đơn Vị Người Dùng";
         $DonVi = donvi::where('IsActive', 1)->get();
         return view('PhongBan.UpdatePhongBan', compact('DonVi','PhongBan', 'title'));

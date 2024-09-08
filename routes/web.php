@@ -20,9 +20,19 @@ use Illuminate\Support\Facades\Log;
 
 Route::get('/run-scheduler', function () {
     Artisan::call('tasks:update-overdue');
-    return response()->json(['message' => 'Thành công'], 200);
+    Artisan::call('tasks:update-overdueThongBao');
+    $title = "Cập Nhật Trễ Hẹn";
+    return view('TreHen.ListTreHen', compact('title'));
+  
 });
 
+Route::get('/run-schedulerThongBao', function () {
+   
+    Artisan::call('tasks:update-overdueThongBao');
+    $title = "Cập Nhật Gần Trễ Hẹn";
+    return view('ThongBao.ListThongBao', compact('title'));
+  
+});
 //Index
 Route::get('/Index', [IndexController::class,'index'])->middleware('checkUserSession');
 Route::post('NhanCongViec/{id}', [IndexController::class,'NhanCongViec'])->middleware('checkUserSession');
@@ -231,3 +241,8 @@ Route::get('ThongBao/addview', [ThongBaoController::class,'addview'])->name('Tho
 Route::post('ThongBao/add', [ThongBaoController::class,'add'])->name('ThongBao.add')->middleware('checkUserSession');
 // routes/web.php
 Route::post('/thongbao/{id}', [ThongBaoController::class, 'destroy'])->name('thongbao.destroy')->middleware('checkUserSession');
+
+
+// Danh sách Trễ Hẹn
+Route::get('TreHen', [ThongBaoController::class,'listTreHen'])->name('TreHen.listTreHen')->middleware('checkUserSession');
+Route::get('TreHen/data',[ThongBaoController::class,'getTreHen'])->name('TreHen.data')->middleware('checkUserSession');
