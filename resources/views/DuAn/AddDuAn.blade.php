@@ -78,7 +78,7 @@
 </div>
 <div class="group">       
     <label>Chọn quy mô <span style="color:red;">(*)</span></label>
-    <select name="MaLoai" class="form-control" required>
+    <select name="QuyMo" class="form-control" required>
         <option value="" disabled selected>Chọn quy mô dự án</option>
         <!-- Các loại mặc định -->
         <option value="1">Nhỏ</option>

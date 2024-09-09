@@ -18,7 +18,7 @@
                 <table id="myTableCongViec">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Mã Dự Án</th>
                             <th>Tên Công Việc</th>
                             <th>Dự Án</th>
                             <th>Giai Đoạn</th>
@@ -44,7 +44,9 @@
                     dataSrc: 'data'
                 },
                 columns: [
-                    { data: 'id' },
+                    { 
+                        data: 'TenMa' 
+                    },
                     { data: 'TenCongViec' },
                     { data: 'TenDuAn' },
                     { data: 'TenGiaiDoan' },

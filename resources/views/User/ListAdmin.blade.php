@@ -17,6 +17,7 @@
                 <table id="myTableAdmin">
                     <thead>
                         <tr>
+                            <th>Thứ Tự</th>
                             <th>Tài Khoản</th>
                             <th>Số Điện Thoại</th>
                              <th>Email</th>
@@ -34,7 +35,12 @@
                     dataSrc: 'data'
                 },
                 columns: [
-                    // { data: 'id' },
+                    { 
+                        data: null, // Không lấy dữ liệu từ server
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Trả về thứ tự hàng (bắt đầu từ 1)
+                        }
+                    },
                     { data: 'Name' }, 
                     {
                         data: 'SDT',

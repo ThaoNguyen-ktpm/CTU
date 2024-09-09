@@ -30,12 +30,12 @@
                 @endphp
             
                 <a href="/Admin" class="list-group-item list-group-item-action bg-dark text-white transformY">
-                    <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
+                    <i class="fa-solid fa-user-shield"></i>
                     <span class="menu-collapsed">Thông Tin Admin</span>
                 </a>
             
                 <a href="/User" class="list-group-item list-group-item-action bg-dark text-white transformY">
-                    <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
+                    <i class="fa-solid fa-user"></i>
                     <span class="menu-collapsed">Thông Tin Người Dùng</span>
                 </a>
              
@@ -45,7 +45,7 @@
         <!-- Chứng Chỉ -->
             <a href="#submenu14" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformY">
-                    <i class="fa-solid fa-swatchbook"></i>
+                <i class="fa-solid fa-address-card"></i>
                     <span class="menu-collapsed fontweight600">Quản Lý Thông Tin Nhân Viên</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
@@ -53,26 +53,26 @@
             <div id='submenu14' class="collapse sidebar-submenu">
              
                <a href="/DonVi" class="list-group-item list-group-item-action bg-dark text-white transformY">
-                    <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
+                   <i class="fa-solid fa-id-badge"></i>
                     <span class="menu-collapsed">Thông Tin Đơn Vị</span>
                 </a>
                 <a href="/PhongBan" class="list-group-item list-group-item-action bg-dark text-white transformY">
-                    <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
+                   <i class="fa-solid fa-id-badge"></i>
                     <span class="menu-collapsed">Thông Tin Đơn Vị Người Dùng</span>
                 </a>
                 <a href="/VaiTro" class="list-group-item list-group-item-action bg-dark text-white transformY">
-                    <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
+                   <i class="fa-solid fa-id-badge"></i>
                     <span class="menu-collapsed">Thông Tin Vai Trò</span>
                 </a>
                 <a href="/TacVu" class="list-group-item list-group-item-action bg-dark text-white transformY">
-                    <i class="fa-solid fa-book-bookmark" style="color: #ffffff;"></i>
+                   <i class="fa-solid fa-id-badge"></i>
                     <span class="menu-collapsed">Thông Tin Vai Trò Người Dùng</span>
                 </a>
             </div>
            <!-- Loại Dự Án -->
            <a href="/LoaiDuAn"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
-                <i class="fa-solid fa-graduation-cap" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-table-list"></i>
                     <span class="menu-collapsed">Quản Lý Loại Dự Án</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
@@ -80,7 +80,7 @@
             <!-- Giai Đoạn -->
             <a href="/GiaiDoan"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
-                <i class="fa-solid fa-graduation-cap" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-bars-staggered"></i>
                     <span class="menu-collapsed">Quản Lý Giai Đoạn</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
@@ -88,7 +88,7 @@
               <!-- Dự Án -->
             <a href="/DuAn"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
-                <i class="fa-solid fa-chalkboard-user" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-folder-open"></i>
                     <span class="menu-collapsed">Quản Lý Dự Án</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
@@ -96,7 +96,7 @@
               <!-- Công Việc -->
             <a href="/CongViec"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
-                <i class="fa-solid fa-chalkboard-user" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-clipboard"></i>
                     <span class="menu-collapsed">Quản Lý Công Việc</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
@@ -104,7 +104,7 @@
               <!-- TienDoCongViec -->
               <a href="/TienDoCongViec"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
-                <i class="fa-solid fa-swatchbook"></i>
+                <i class="fa-solid fa-signal"></i>
                     <span class="menu-collapsed">Quản Lý Tiến Độ Công Việc</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
@@ -116,14 +116,16 @@
             </li>
             <a href="/ThongBao"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
-                    <i class="fa-solid fa-file-import" style="color: #ffffff;"></i>
+              
+                    <i class="fa-solid fa-envelope" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Quản Lý Thông Báo</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
             <a href="/TreHen"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
-                    <i class="fa-solid fa-file-import" style="color: #ffffff;"></i>
+                  
+                    <i class="fa-solid fa-circle-info" style="color: #ffffff;"></i>
                     <span class="menu-collapsed">Quản Lý Trễ Hện</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>

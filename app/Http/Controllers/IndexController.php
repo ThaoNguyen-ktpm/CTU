@@ -206,7 +206,7 @@ class IndexController extends Controller
                 AND duans.IsActive = true
                 AND congviecs.IsActive = true', [$id]);
             } else {
-                $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn, capnhattiendos.TienDo, capnhattiendos.ThoiGian, capnhattiendos.NoiDung, files.DuongDanFile ,capnhattiendos.id as idcapnhattiendo
+                $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn, capnhattiendos.TienDo, capnhattiendos.ThoiGian, capnhattiendos.NoiDung, files.DuongDanFile , files.TenFile ,capnhattiendos.id as idcapnhattiendo
                 FROM congviecs 
                 JOIN duans ON congviecs.MaDuAn = duans.id
                 LEFT JOIN giaoviecs ON giaoviecs.MaCongViec = congviecs.id
@@ -280,24 +280,31 @@ class IndexController extends Controller
             }
 
             $files = $request->file('file_nop');
-              dd($files);
             $fileRecords = [];
-    
+
             foreach ($files as $file) {
+                // Lấy tên file gốc
                 $originalFileName = $file->getClientOriginalName();
+
+                // Tạo tên file mới dựa trên thời gian
                 $fileName = time() . '_' . $originalFileName;
+
+                // Di chuyển file vào thư mục uploads
                 $file->move(public_path('uploads'), $fileName);
-    
+
+                // Tạo mảng chứa các bản ghi để lưu vào cơ sở dữ liệu
                 $fileRecords[] = [
                     'MaCapNhatTienDo' => $capnhattiendo->id,
                     'DuongDanFile' => 'uploads/' . $fileName,
                     'IsActive' => true,
-                  
+                    'ThoiGianNop' => now(), // Lưu thời gian nộp hiện tại
+                    'TenFile' => $originalFileName, // Lưu tên file gốc
                 ];
             }
-    
-            // Batch insert file records to reduce database queries
+
+            // Thực hiện batch insert để giảm số lượng query
             DB::table('files')->insert($fileRecords);
+
     
             $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                         ->where('TrangThai', '!=', 3)
@@ -335,21 +342,30 @@ class IndexController extends Controller
               
                   foreach ($files as $file) {
                       if ($file) {
+                          // Lấy tên file gốc
                           $originalFileName = $file->getClientOriginalName();
+              
+                          // Tạo tên file mới dựa trên thời gian
                           $fileName = time() . '_' . $originalFileName;
+              
+                          // Di chuyển file vào thư mục uploads
                           $file->move(public_path('uploads'), $fileName);
               
+                          // Tạo mảng chứa các bản ghi để lưu vào cơ sở dữ liệu
                           $fileRecords[] = [
                               'MaCapNhatTienDo' => $capnhattiendo->id,
                               'DuongDanFile' => 'uploads/' . $fileName,
                               'IsActive' => true,
+                              'ThoiGianNop' => now(), // Lưu thời gian nộp hiện tại
+                              'TenFile' => $originalFileName, // Lưu tên file gốc
                           ];
                       }
                   }
               
-                  // Batch insert file records to reduce database queries
+                  // Thực hiện batch insert để giảm số lượng query
                   DB::table('files')->insert($fileRecords);
-                }
+              }
+              
       
               $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                           ->where('TrangThai', '!=', 3)

@@ -4,6 +4,7 @@
                 <table id="myTableDuAnThanhVien">
                     <thead>
                         <tr>
+                            <th>Thứ Tự</th>
                             <th>Tên</th>
                             <th>Quyền</th>
                             <th>Vai Trò</th>
@@ -25,6 +26,12 @@
                     dataSrc: 'data'
                 },
                 columns: [
+                    { 
+                        data: null, // Không lấy dữ liệu từ server
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Trả về thứ tự hàng (bắt đầu từ 1)
+                        }
+                    },
                     { data: 'user_name' },
                     {
                         data: 'Quyen',

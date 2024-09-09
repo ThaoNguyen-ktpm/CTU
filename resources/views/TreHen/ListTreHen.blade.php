@@ -39,7 +39,7 @@
                 <table id="myTableTreHen">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Thứ Tự</th>
                             <th>Tên Công Việc</th>
                             <th>Dự Án</th>
                             <th>Giai Đoạn</th>
@@ -65,7 +65,12 @@
                     dataSrc: 'data'
                 },
                 columns: [
-                    { data: 'id' },
+                    { 
+                    data: null, // Không lấy dữ liệu từ server
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1; // Trả về thứ tự hàng (bắt đầu từ 1)
+                    }
+                    },
                     { data: 'TenCongViec' },
                     { data: 'TenDuAn' },
                     { data: 'TenGiaiDoan' },

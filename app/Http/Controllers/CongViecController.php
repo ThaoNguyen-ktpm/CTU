@@ -24,7 +24,7 @@ class CongViecController extends Controller
    }
    public function getCongViec()
    {
-        $CongViec = DB::select('SELECT congviecs.* ,duans.TenDuAn , giaidoans.TenGiaiDoan 
+        $CongViec = DB::select('SELECT congviecs.* ,duans.TenDuAn ,duans.TenMa , giaidoans.TenGiaiDoan 
         FROM congviecs , duans, thuchiens, giaidoans 
         WHERE congviecs.MaDuAn = duans.id 
         AND congviecs.MaThucHien = thuchiens.id 

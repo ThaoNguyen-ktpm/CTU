@@ -18,10 +18,11 @@
                 <table id="myTableDuAn">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Mã Dự Án</th>
                             <th>Tên Dự Án</th>
                             <th>Thành Viên</th>
                             <th>Giai Đoạn</th>
+                            <th>Công Việc</th>
                             <th>Sơ Đồ</th>
                         </tr>
                        
@@ -40,7 +41,7 @@
                     dataSrc: 'data'
                 },
                 columns: [
-                    { data: 'id' },
+                    { data: 'TenMa' },
                     { data: 'TenDuAn' },
                     {
                         data: null,
@@ -56,7 +57,15 @@
                         return '<a href="/DuAn/GiaiDoan?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-bars-staggered" style="color: #20679d; font-size:25px"></i></a>';                            
                    
                     }
-                    }, {
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                        return '<a href="/DuAn/CongViecDuAn?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf <i class="fa-solid fa-clipboard" style="color: #20679d; font-size:25px"></i> </a>';                            
+                   
+                    }
+                    },
+                    {
                         data: null,
                         render: function(data, type, row) {
                         return '<a href="/DuAn/SoDoCongViec/'+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-chart-gantt"style="color: #20679d; font-size:25px"></i></a>';                            

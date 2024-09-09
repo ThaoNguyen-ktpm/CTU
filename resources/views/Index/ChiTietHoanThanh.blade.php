@@ -65,7 +65,7 @@
                         <label class="file-label">
                         </label>
                         <div style="margin-top: 10px;">
-                            {{ $CongViec1->DuongDanFile }}
+                            {{ $CongViec1->TenFile }}
                         </div>
                         <a href="{{ asset($CongViec1->DuongDanFile) }}" download style="margin-left: 10px;">
                             <i class="fas fa-download" style="font-size: 16px;"></i> <!-- Font Awesome icon -->

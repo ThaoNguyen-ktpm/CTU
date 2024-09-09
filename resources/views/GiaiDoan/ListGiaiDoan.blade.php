@@ -18,7 +18,7 @@
                 <table id="myTableGiaiDoan">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Thứ Tự</th>
                             <th>Giai Đoạn</th>
                             <th>Sửa</th>
                             <th>Xóa</th>
@@ -38,7 +38,12 @@
                     dataSrc: 'data'
                 },
                 columns: [
-                    { data: 'id' },
+                    { 
+                        data: null, // Không lấy dữ liệu từ server
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Trả về thứ tự hàng (bắt đầu từ 1)
+                        }
+                    },
                     { data: 'TenGiaiDoan' },
                     {
                         data: null,

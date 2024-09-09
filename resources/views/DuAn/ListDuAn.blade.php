@@ -18,7 +18,7 @@
                 <table id="myTableDuAn">
                     <thead>
                         <tr>
-                            <!-- <th>ID</th> -->
+                            <th>Mã Dự Án</th>
                             <th>Tên Dự Án</th>
                             <th>Loại Dự Án</th>
                             <th>Quy Mô</th>
@@ -45,7 +45,9 @@
                     dataSrc: 'data'
                 },
                 columns: [
-                    // { data: 'id' },
+                    { 
+                        data: 'TenMa' 
+                    },
                     { data: 'TenDuAn' },
                     { data: 'TenLoaiDuAn' },
                     {

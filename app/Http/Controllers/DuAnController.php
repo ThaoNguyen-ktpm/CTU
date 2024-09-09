@@ -10,7 +10,7 @@ use App\Models\thanhvien;
 use App\Models\thuchien;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use function Laravel\Prompts\select;
@@ -54,7 +54,25 @@ class DuAnController extends Controller
         $DuAn = duan::where('IsActive', 1)->get();
        return response()->json(['data' => $DuAn]);
    }
-
+   public function listCongViecThanhVien(Request $request)
+   {
+       $title = "Danh Sách Công Việc Dự Án";
+       $id = $request->input('id');
+       return view('TienDoCongViec.ListCongViecThanhVien', compact('id','title'));
+   }
+   public function getCongViecThanhVien(Request $request)
+    {
+         $id = $request->input('id');
+        
+         $DuAn = DB::select('SELECT nguoidungs.*, capnhattiendos.TienDo ,capnhattiendos.id as idcapnhattiendo
+        FROM giaoviecs
+        JOIN nguoidungs ON giaoviecs.MaNguoiDung = nguoidungs.id
+        LEFT JOIN capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
+        WHERE giaoviecs.MaCongViec = ? 
+        AND giaoviecs.IsActive = true 
+        AND nguoidungs.IsActive = true;',[$id]);
+        return response()->json(['data' => $DuAn]);
+    }
     public function listThanhVien(Request $request)
     {
         $title = "Danh Sách Giai Đoạn Dự Án";
@@ -100,7 +118,6 @@ class DuAnController extends Controller
         $id = $request->input('id');
         return view('DuAn.ListDuAnGiaiDoan', compact('id','title'));
     }
-
     public function getDuAnGiaiDoan(Request $request)
     {
          $id = $request->input('id');
@@ -116,7 +133,34 @@ class DuAnController extends Controller
        ',[$id]);
         return response()->json(['data' => $DuAn]);
     }
-
+    public function listCongViecDuAnfile(Request $request)
+    {
+        $title = "Danh Sách File Công Việc";
+        $id = $request->input('id');
+        return view('TienDoCongViec.ListCongViecFile', compact('id','title'));
+    }
+    public function getCongViecDuAnfile(Request $request)
+    {
+         $id = $request->input('id');
+        
+         $DuAn = DB::select('SELECT * FROM files WHERE files.MaCapNhatTienDo = ? AND IsActive = true
+       ',[$id]);
+        return response()->json(['data' => $DuAn]);
+    }
+    public function listCongViecDuAn(Request $request)
+    {
+        $title = "Danh Sách Công Việc Dự Án";
+        $id = $request->input('id');
+        return view('TienDoCongViec.ListCongViecDuAn', compact('id','title'));
+    }
+    public function getCongViecDuAn(Request $request)
+    {
+         $id = $request->input('id');
+        
+         $DuAn = DB::select('SELECT * FROM congviecs WHERE congviecs.MaDuAn =? AND IsActive = true
+       ',[$id]);
+        return response()->json(['data' => $DuAn]);
+    }
     //Danh sách Dự Án
    public function list()
    {
@@ -212,6 +256,7 @@ class DuAnController extends Controller
             $duAn->TenDuAn = $request->TenDuAn;
             $duAn->MaLoai = $request->MaLoai;
             $duAn->QuyMo = $request->QuyMo;
+          
             $duAn->Mota = $request->MoTa;
             $duAn->NgayKetThuc = $request->NgayKetThucDuAn;
             $duAn->NgayBatDau = $request->NgayBatDauDuAn;
@@ -219,6 +264,14 @@ class DuAnController extends Controller
             $duAn->MaNguoiTao = 1;
             $duAn->IsActive = true;
             $duAn->save();
+
+            $idDuAn = $duAn->id;
+            $year = Carbon::now()->format('y'); // Lấy 2 số cuối của năm hiện tại
+            $tenMa = 'DuAn' . $year . $idDuAn;
+            $duAn->TenMa = $tenMa;
+            // Lưu lại lần thứ 2 sau khi đã có TenMa
+            $duAn->save();
+
         
             // Lấy dữ liệu từ request
             $ngayBatDaus = $request->input('NgayBatDau', []); // Ngày bắt đầu của từng giai đoạn

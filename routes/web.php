@@ -182,11 +182,20 @@ Route::get('TacVu/remove/{id}', [TacVuController::class,'remove'])->name('TacVu.
 Route::get('/TacVu/getNguoiDung/{id}', [TacVuController::class,'getNguoiDung'])->middleware('checkUserSession');
  
 
-
+// Tiến Độ Công việc
 Route::get('TienDoCongViec', [DuAnController::class,'listTienDoCongViec'])->name('TienDoCongViec.listTienDoCongViec')->middleware('checkUserSession');
 Route::get('TienDoCongViec/data', [DuAnController::class, 'getTienDoCongViec'])->name('TienDoCongViec.data')->middleware('checkUserSession');
 Route::get('DuAn/SoDoCongViec/{id}', [DuAnController::class,'SoDoCongViec'])->name('DuAn.listSoDoCongViec')->middleware('checkUserSession');
 Route::get('SoDoCongViec/data/{id}', [DuAnController::class, 'SoDoCongViecData'])->name('SoDoCongViecData')->middleware('checkUserSession');
+Route::get('DuAn/CongViecDuAn', [DuAnController::class,'listCongViecDuAn'])->name('DuAn.listCongViecDuAn')->middleware('checkUserSession');
+Route::get('DuAn/CongViecDuAn/data', [DuAnController::class, 'getCongViecDuAn'])->name('CongViecDuAn.data')->middleware('checkUserSession');
+
+Route::get('DuAn/CongViecThanhVien', [DuAnController::class,'listCongViecThanhVien'])->name('DuAn.listCongViecThanhVien')->middleware('checkUserSession');
+Route::get('DuAn/CongViecThanhVien/data', [DuAnController::class, 'getCongViecThanhVien'])->name('DuAnCongViecThanhVien.data')->middleware('checkUserSession');
+
+Route::get('DuAn/CongViecDuAn/file', [DuAnController::class,'listCongViecDuAnfile'])->name('DuAn.listCongViecDuAnflie')->middleware('checkUserSession');
+Route::get('DuAn/CongViecDuAn/file/data', [DuAnController::class, 'getCongViecDuAnfile'])->name('CongViecDuAnfile.data')->middleware('checkUserSession');
+
 
 // Danh sách Dự Án
 Route::get('DuAn', [DuAnController::class,'list'])->name('DuAn.listDuAn')->middleware('checkUserSession');
