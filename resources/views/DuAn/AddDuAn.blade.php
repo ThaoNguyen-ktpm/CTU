@@ -535,9 +535,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-</script>
-
-<script>
 document.addEventListener('DOMContentLoaded', function() {
     var NgayBatDauDuAn = document.getElementById('NgayBatDauDuAn');  // Ngày bắt đầu dự án
     var NgayKetThucDuAn = document.getElementById('NgayKetThucDuAn');  // Ngày kết thúc dự án
@@ -640,18 +637,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Hàm hiển thị ngày bắt đầu, kết thúc dự án và số ngày thực hiện
-    function displayDates() {
+        // Hàm hiển thị ngày bắt đầu, kết thúc dự án và số ngày thực hiện
+        function displayDates() {
         var startDate = NgayBatDauDuAn.value;
         var endDate = NgayKetThucDuAn.value;
 
         if (startDate && endDate) {
-            var totalDays = Math.floor((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));  // Tính số ngày giữa hai mốc thời gian
-            displayDateDiv.innerHTML = `Ngày bắt đầu dự án: ${startDate} Tổng số ngày: ${totalDays} ngày,`;
+            // Tạo đối tượng ngày từ chuỗi startDate và endDate
+            var start = new Date(startDate);
+            var end = new Date(endDate);
+
+            // Tính số ngày giữa hai mốc thời gian
+            var totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+
+            // Định dạng ngày theo kiểu ngày/tháng/năm
+            var startFormatted = start.toLocaleDateString('vi-VN');
+            var endFormatted = end.toLocaleDateString('vi-VN');
+
+            // Hiển thị thông tin với ngày bắt đầu, ngày kết thúc và tổng số ngày
+            displayDateDiv.innerHTML = `Ngày bắt đầu dự án: ${startFormatted} Tổng số ngày: ${totalDays} ngày`;
         } else {
             displayDateDiv.innerHTML = '';  // Xóa nội dung nếu không có giá trị
         }
     }
+
 
     // Hiển thị ngày và thông tin ngay từ đầu nếu có
     displayDates();

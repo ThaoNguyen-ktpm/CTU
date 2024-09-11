@@ -329,11 +329,95 @@ class DuAnController extends Controller
        $DuAn = duan::find($id);
        $title = "Cập Nhật Dự Án";
        $LoaiDuAn = loaiduan::where('IsActive', 1)->get();
-       return view('DuAn.UpdateDuAn', compact('LoaiDuAn','DuAn', 'title'));
+       $GiaiDoan = giaidoan::where('IsActive', 1)->get();
+        $CacGiaiDoan = DB::select(' SELECT *, 
+                DATEDIFF(NgayKetThuc, NgayBatDau) AS SoNgayThucHienTinhToan
+                FROM thuchiens
+                WHERE MaDuAn = ?',[$id]);
+
+
+        $ThanhVienDuAn = DB::select('SELECT 
+                nguoidungs.id, 
+                nguoidungs.Quyen, 
+                nguoidungs.UserName AS user_name, 
+                GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+                GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
+            FROM 
+                nguoidungs 
+            LEFT JOIN 
+                tacvus ON nguoidungs.id = tacvus.MaNguoiDung AND tacvus.IsActive = true 
+            LEFT JOIN 
+                vaitros ON vaitros.id = tacvus.MaVaiTro AND vaitros.IsActive = true 
+            LEFT JOIN 
+                phongbans ON nguoidungs.id = phongbans.MaNguoiDung AND phongbans.IsActive = true 
+            LEFT JOIN 
+                donvis ON donvis.id = phongbans.MaDonVi AND donvis.IsActive = true 
+            LEFT JOIN 
+                thanhviens ON nguoidungs.id = thanhviens.MaNguoiDung AND thanhviens.IsActive = true 
+            WHERE 
+                nguoidungs.Quyen IN (2, 3, 4) 
+            AND nguoidungs.IsActive = true 
+            AND thanhviens.MaDuAn = ?
+            GROUP BY 
+                nguoidungs.id, 
+                nguoidungs.Quyen, 
+                nguoidungs.UserName;
+                ',[$id]);
+        $idMaDonVi= DB::select('SELECT 
+                donvis.id AS MaDonVi, 
+               GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS TenDonVi,
+                COUNT(donvis.id) AS donvi_count
+            FROM 
+                nguoidungs 
+            LEFT JOIN 
+                phongbans ON nguoidungs.id = phongbans.MaNguoiDung AND phongbans.IsActive = true 
+            LEFT JOIN 
+                donvis ON donvis.id = phongbans.MaDonVi AND donvis.IsActive = true 
+            LEFT JOIN 
+                thanhviens ON nguoidungs.id = thanhviens.MaNguoiDung AND thanhviens.IsActive = true 
+            WHERE 
+                nguoidungs.Quyen IN (2, 3, 4) 
+                AND nguoidungs.IsActive = true 
+                AND thanhviens.MaDuAn = ?
+            GROUP BY 
+                donvis.id
+            ORDER BY 
+                donvi_count DESC
+            LIMIT 1;
+            ',[$id]);
+        $ThanhVienDonVi = DB::select('SELECT 
+            nguoidungs.id, 
+            nguoidungs.Quyen, 
+            nguoidungs.UserName AS user_name, 
+            GROUP_CONCAT(DISTINCT vaitros.TenVaiTro) AS vaitro_names, 
+            GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS donvi_names 
+        FROM 
+            nguoidungs 
+        LEFT JOIN 
+            tacvus ON nguoidungs.id = tacvus.MaNguoiDung AND tacvus.IsActive = true 
+        LEFT JOIN 
+            vaitros ON vaitros.id = tacvus.MaVaiTro AND vaitros.IsActive = true 
+        LEFT JOIN 
+            phongbans ON nguoidungs.id = phongbans.MaNguoiDung AND phongbans.IsActive = true 
+        LEFT JOIN 
+            donvis ON donvis.id = phongbans.MaDonVi AND donvis.IsActive = true 
+        LEFT JOIN 
+            thanhviens ON nguoidungs.id = thanhviens.MaNguoiDung AND thanhviens.IsActive = true 
+        WHERE 
+            nguoidungs.Quyen IN (2, 3, 4) 
+            AND nguoidungs.IsActive = true 
+            AND donvis.id = ?
+        GROUP BY 
+            nguoidungs.id, 
+            nguoidungs.Quyen, 
+            nguoidungs.UserName;',[$idMaDonVi[0]->MaDonVi]);
+       return view('DuAn.UpdateDuAn', compact('LoaiDuAn','DuAn', 'title','GiaiDoan','CacGiaiDoan','ThanhVienDuAn','ThanhVienDonVi','idMaDonVi'));
    }
    
    public function update(Request $request, $id)
    {
+    DB::beginTransaction(); // Bắt đầu giao dịch
+        try {
         $DuAn = duan::where('id', '!=', $id)
         ->where('TenDuAn', $request->TenDuAn)
         ->where('IsActive', true)
@@ -342,19 +426,122 @@ class DuAnController extends Controller
         if ($DuAn) {
             return response()->json(['success' => false, 'message' => 'Giá trị TenDuAn đã tồn tại']);
         } else {
-            
                 $DuAn = duan::find($id);
                 $DuAn->TenDuAn = $request->TenDuAn;
                 $DuAn->QuyMo = $request->QuyMo;
                 $DuAn->MaLoai = $request->MaLoai;
-                $DuAn->NgayBatDau = $request->NgayBatDau;
-                $DuAn->NgayKetThuc = $request->NgayKetThuc;
+                $DuAn->NgayBatDau = $request->NgayBatDauDuAn;
+                $DuAn->NgayKetThuc = $request->NgayKetThucDuAn;
                 $DuAn->Mota = $request->MoTa;
                 $DuAn->save();
-                return response()->json(['success' => true]);
+
+
+                 // Lấy dữ liệu từ request
+            $ngayBatDaus = $request->input('NgayBatDau', []); // Ngày bắt đầu của từng giai đoạn
+            $maGiaiDoans = $request->input('MaGiaiDoan', []); // Mã giai đoạn
+            $soNgayThucHiens = $request->input('SoNgayThucHien', []); // Số ngày thực hiện của từng giai đoạn
+            $thuTuGiaiDoans = $request->input('ThuTuGiaiDoan', []); // Thứ tự giai đoạn
+          
             
-           
+          // Lấy dữ liệu từ request (đảm bảo lấy đúng giá trị ngày của từng giai đoạn)
+            $ngayBatDaus = $request->input('NgayBatDau', []); // Phải là mảng các ngày bắt đầu cho từng giai đoạn
+            $maGiaiDoans = $request->input('MaGiaiDoan', []);
+            $soNgayThucHiens = $request->input('SoNgayThucHien', []);
+            $thuTuGiaiDoans = $request->input('ThuTuGiaiDoan', []);
+
+            // Duyệt qua từng giai đoạn và kiểm tra trong CSDL
+            foreach ($maGiaiDoans as $index => $maGiaiDoan) {
+                // Kiểm tra giai đoạn đã tồn tại hay chưa
+                $existingGiaiDoan = DB::table('thuchiens')
+                    ->select('id')
+                    ->where('MaDuAn', $id)
+                    ->where('ThuGiaiDoan', $thuTuGiaiDoans[$index])
+                    ->first();
+
+                // Lấy ngày bắt đầu của từng giai đoạn
+                $ngayBatDau = isset($ngayBatDaus[$index]) ? $ngayBatDaus[$index] : null;
+
+                if ($ngayBatDau === null) {
+                    // Nếu không có ngày bắt đầu, bỏ qua giai đoạn này
+                    continue;
+                }
+
+                // Tính toán ngày kết thúc
+                $soNgayThucHien = $soNgayThucHiens[$index];
+                $ngayKetThuc = date('Y-m-d', strtotime($ngayBatDau . ' + ' . $soNgayThucHien . ' days'));
+
+                if ($existingGiaiDoan) {
+                    // Cập nhật giai đoạn nếu đã tồn tại
+                    $giaiDoan = thuchien::find($existingGiaiDoan->id);
+                } else {
+                    // Tạo mới giai đoạn nếu chưa tồn tại
+                    $giaiDoan = new thuchien();
+                    $giaiDoan->MaDuAn = $id;
+                    $giaiDoan->MaGiaiDoan = $maGiaiDoan;
+                    $giaiDoan->IsCongViec = false;
+                }
+
+                // Gán ngày và lưu vào CSDL
+                $giaiDoan->NgayBatDau = $ngayBatDau;
+                $giaiDoan->NgayKetThuc = $ngayKetThuc;
+                $giaiDoan->ThuGiaiDoan = $thuTuGiaiDoans[$index];
+                $giaiDoan->IsActive = true;
+                $giaiDoan->save();
+            }
+
+              
+                // Xử lý thông tin giao việc
+                $MaNguoiDung = $request->input('MaNguoiDung');
+                $MaNguoiDungListDB = thanhvien::where('MaDuAn', $id)
+                    ->where('IsActive', true)
+                    ->pluck('MaNguoiDung')
+                    ->toArray();
+                $MaNguoiDungListUI = is_array($MaNguoiDung) ? $MaNguoiDung : [$MaNguoiDung];
+                
+                // Kiểm tra sự thay đổi dữ liệu
+                $inDBNotInUI = array_diff($MaNguoiDungListDB, $MaNguoiDungListUI);
+                $inUINotInDB = array_diff($MaNguoiDungListUI, $MaNguoiDungListDB);
+                
+               
+                foreach ($inDBNotInUI as $maNguoiDung) {
+                    $GiaoViec = thanhvien::where('MaDuAn', $id)
+                        ->where('MaNguoiDung', $maNguoiDung)
+                        ->where('IsActive', true)
+                        ->first();
+                    if ($GiaoViec) {
+                        $GiaoViec->IsActive = false;
+                        $GiaoViec->save();
+                    }
+                }
+                
+                // Thêm những người dùng mới được chọn
+                foreach ($inUINotInDB as $maNguoiDung) {
+                    $GiaoViec = thanhvien::where('MaDuAn', $id)
+                        ->where('MaNguoiDung', $maNguoiDung)
+                        ->where('IsActive', true)
+                        ->first();
+                    if ($GiaoViec) {
+                        $GiaoViec->IsActive = true;
+                        $GiaoViec->save();
+                    } else {
+                        $GiaoViec = new thanhvien;
+                        $GiaoViec->MaDuAn = $id;
+                        $GiaoViec->MaNguoiDung = $maNguoiDung;
+                        $GiaoViec->IsActive = true;
+                        $GiaoViec->save();
+                    }
+                }
+                
+              
+
         }
+        DB::commit(); // Lưu tất cả thay đổi vào cơ sở dữ liệu
+        return response()->json(['success' => true]);
+    
+    } catch (\Exception $e) {
+        DB::rollBack(); // Hoàn tác tất cả thay đổi nếu có lỗi
+        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    }
    }
    public function remove($id)
    {
