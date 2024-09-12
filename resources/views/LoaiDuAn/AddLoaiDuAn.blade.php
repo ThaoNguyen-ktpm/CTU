@@ -7,7 +7,7 @@
   <form  method="post" class="needs-validation LoaiDuAn-form" action="/LoaiDuAn/add" novalidate>
   @csrf
     <div class="group">
-    <label>Tên Loại dự án <span style="color:red;">(*)</span></label>
+    <label>Tên loại dự án <span style="color:red;">(*)</span></label>
       <input  id="usernameInput" name="TenLoaiDuAn" type="text"  class="form-control" required pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
@@ -15,7 +15,7 @@
     
       </div>
       <div class="invalid-feedback">
-        Vui lòng nhập Loại dự án !
+        Vui lòng nhập loại dự án !
       </div>
     </div>
       <button name="Add" type="submit" class="submit-btn">Thêm Loại Dự Án</button>

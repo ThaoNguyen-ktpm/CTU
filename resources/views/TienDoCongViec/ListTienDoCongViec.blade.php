@@ -6,14 +6,14 @@
             padding-top: 0px;
         }
         </style>
-        <a href="/DuAn/addview"  aria-expanded="false" >
                 <div class="logoutForm">
                 <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
+                <a href="/DuAn/addview"  aria-expanded="false" >
                 <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
+                </a>
                 <div class="text" style=" margin-left: 5px;" >Thêm</div>
                 </button>
                 </div>
-        </a>
         <div class="col">
                 <table id="myTableDuAn">
                     <thead>

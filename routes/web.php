@@ -33,6 +33,12 @@ Route::get('/run-schedulerThongBao', function () {
     return view('ThongBao.ListThongBao', compact('title'));
   
 });
+
+
+
+
+
+
 //Index
 Route::get('/Index', [IndexController::class,'index'])->middleware('checkUserSession');
 Route::post('NhanCongViec/{id}', [IndexController::class,'NhanCongViec'])->middleware('checkUserSession');
@@ -57,6 +63,8 @@ Route::get('/adminWelcome', [UserController::class,'Welcome'])->middleware('chec
 Route::get('/', [UserController::class,'login'])->name('Login');
 
 Route::get('LogoutAction', [UserController::class,'logoutAction'])->name('LogoutAction');
+
+
 Route::post('LoginAction', [UserController::class,'loginAction'])->name('LoginAction');
 Route::post('RegisterAction', [UserController::class,'registerAction'])->name('RegisterAction');
 
@@ -200,6 +208,11 @@ Route::get('DuAn/CongViecDuAn/file/data', [DuAnController::class, 'getCongViecDu
 // Danh sách Dự Án
 Route::get('DuAn', [DuAnController::class,'list'])->name('DuAn.listDuAn')->middleware('checkUserSession');
 Route::get('DuAn/data', [DuAnController::class, 'getDuAn'])->name('DuAn.data')->middleware('checkUserSession');
+
+Route::get('DuAn/updateviewSee/{id}', [DuAnController::class, 'updateviewSee'])->middleware('checkUserSession');
+
+
+
 //Thêm Dự Án
 Route::get('DuAn/addview', [DuAnController::class,'addview'])->name('DuAn.addview')->middleware('checkUserSession');
 Route::post('DuAn/add', [DuAnController::class,'add'])->name('DuAn.add')->middleware('checkUserSession');

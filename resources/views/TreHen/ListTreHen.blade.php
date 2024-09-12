@@ -28,13 +28,13 @@
         background-color: rgb(255, 65, 65);
     }
         </style>
-        <a href="/run-scheduler"  aria-expanded="false" style=" color: white;text-decoration: none;">
-                <div class="logoutForm">
+            <div class="logoutForm">
                 <button class="Btn " id="BtnNew" style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
-               <div class="trehentext" > Cập Nhật Trễ Hẹn</div>
-                </button>
-                </div>
+                    <a href="/run-scheduler"  aria-expanded="false" style=" color: white;text-decoration: none;">
+            <div class="trehentext" > Cập Nhật Trễ Hẹn</div>
         </a>
+            </button>
+            </div>
         <div class="col">
                 <table id="myTableTreHen">
                     <thead>

@@ -126,11 +126,11 @@
                 <div class="d-flex w-100 justify-content-start align-items-center transformX" >
                   
                     <i class="fa-solid fa-circle-info" style="color: #ffffff;"></i>
-                    <span class="menu-collapsed">Quản Lý Trễ Hện</span>
+                    <span class="menu-collapsed">Quản Lý Trễ Hẹn</span>
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-         
+       
             <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
                 <small style="font-weight: 700;color: #c5c5c5;">Đăng Xuất</small>
             </li>

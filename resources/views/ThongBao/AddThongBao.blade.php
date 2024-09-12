@@ -87,7 +87,7 @@
 
 
   <div class="group">
-    <label>Chọn người dùng <span style="color:red;">(*)</span></label>
+    <label>Người dùng <span style="color:red;">(*)</span></label>
   <div class="custom-select"> 
   <div class="select-selected">Chọn Người Dùng</div> 
   <div class="select-items select-hide">
@@ -112,7 +112,7 @@
   
     <div class="group">
     <div style="display: flex;">
-        <div><label style="margin-top: 10px;">Nhập Nội Dung <span style="color:red;">(*)</span></label></div>   
+        <div><label style="margin-top: 10px;">Nội Dung <span style="color:red;">(*)</span></label></div>   
         <div id="suggest-button">Gợi ý thông báo</div>
        
     </div>

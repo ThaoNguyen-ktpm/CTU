@@ -56,14 +56,14 @@
         </div>
 
         <div class="row flex-grow-1" id="body-row">
-            <div class="col-12" style="   position: relative;">
+            <div class="col-12" style="   position: relative;min-height: 500px;">
                 @yield('content')
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-12"style="padding-right: 0; " >
             @include('layouts/footer')
         </div>
     </div>

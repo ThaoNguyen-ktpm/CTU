@@ -6,6 +6,7 @@ use App\Models\donvi;
 use App\Models\giaidoan;
 use App\Models\loaiduan;
 use App\Models\vaitro;
+use App\Models\nguoidung;
 use App\Models\thanhvien;
 use App\Models\thuchien;
 use Illuminate\Support\Facades\DB;
@@ -176,6 +177,48 @@ class DuAnController extends Controller
         AND loaiduans.IsActive = true');
        return response()->json(['data' => $DuAn]);
    }
+
+   public function updateviewSee($id)
+   {
+    $DuAn = DB::select('
+                SELECT 
+                    loaiduans.TenLoaiDuAn, 
+                    giaidoans.TenGiaiDoan,  
+                    thuchiens.NgayBatDau, 
+                    thuchiens.NgayKetThuc, 
+                    thuchiens.MaGiaiDoan, 
+                    thuchiens.ThuGiaiDoan,  
+                    duans.QuyMo, 
+                    duans.NgayBatDau AS NgayBatDauDuAn,   
+                    duans.NgayKetThuc AS NgayKetThucDuAn,   
+                    duans.Mota,  
+                    duans.TenMa,  
+                    GROUP_CONCAT(thanhviens.MaNguoiDung SEPARATOR ", ") AS MaNguoiDung
+                FROM 
+                    loaiduans
+                    JOIN duans ON duans.MaLoai = loaiduans.id
+                    JOIN thuchiens ON thuchiens.MaDuAn = duans.id
+                    JOIN giaidoans ON thuchiens.MaGiaiDoan = giaidoans.id
+                    JOIN thanhviens ON thanhviens.MaDuAn = duans.id
+                WHERE 
+                    duans.id = ?
+                GROUP BY 
+                    loaiduans.TenLoaiDuAn, 
+                    giaidoans.TenGiaiDoan, 
+                    thuchiens.NgayBatDau, 
+                    thuchiens.NgayKetThuc,
+                    thuchiens.MaGiaiDoan,
+                    thuchiens.ThuGiaiDoan,
+                    duans.QuyMo, 
+                    duans.NgayBatDau, 
+                    duans.NgayKetThuc, 
+                    duans.Mota, 
+                    duans.TenMa
+            ', [$id]);
+            $NguoiDung = nguoidung::where('IsActive', 1)->get();
+            
+       return response()->json(['data' => $DuAn,'NguoiDung'=>$NguoiDung]);
+   }
  
    //Thêm Dự Án
    public function addview()
@@ -276,7 +319,7 @@ class DuAnController extends Controller
             // Lấy dữ liệu từ request
             $ngayBatDaus = $request->input('NgayBatDau', []); // Ngày bắt đầu của từng giai đoạn
             $maGiaiDoans = $request->input('MaGiaiDoan', []); // Mã giai đoạn
-            $soNgayThucHiens = $request->input('SoNgayThucHien', []); // Số ngày thực hiện của từng giai đoạn
+            $ngayKetThucs = $request->input('NgayKetThuc', []); // Ngày bắt đầu của từng giai đoạn
             $thuTuGiaiDoans = $request->input('ThuTuGiaiDoan', []); // Thứ tự giai đoạn
             $MaNguoiDung = $request->input('MaNguoiDung');
             
@@ -291,11 +334,9 @@ class DuAnController extends Controller
                 $ngayBatDau = $ngayBatDaus[$index]; // Ngày bắt đầu từ form của từng giai đoạn
                 $giaiDoan->NgayBatDau = $ngayBatDau;
             
-                // Tính toán ngày kết thúc dựa trên số ngày thực hiện
-                $soNgayThucHien = $soNgayThucHiens[$index];
-                $ngayKetThuc = date('Y-m-d', strtotime($ngayBatDau . ' + ' . $soNgayThucHien . ' days'));
+                $ngayKetThuc = $ngayKetThucs[$index]; // Ngày bắt đầu từ form của từng giai đoạn
                 $giaiDoan->NgayKetThuc = $ngayKetThuc;
-            
+               
                 $giaiDoan->ThuGiaiDoan = $thuTuGiaiDoans[$index]; // Thứ tự giai đoạn từ form
                 $giaiDoan->IsActive = true;
             
@@ -363,28 +404,8 @@ class DuAnController extends Controller
                 nguoidungs.Quyen, 
                 nguoidungs.UserName;
                 ',[$id]);
-        $idMaDonVi= DB::select('SELECT 
-                donvis.id AS MaDonVi, 
-               GROUP_CONCAT(DISTINCT donvis.TenDonVi) AS TenDonVi,
-                COUNT(donvis.id) AS donvi_count
-            FROM 
-                nguoidungs 
-            LEFT JOIN 
-                phongbans ON nguoidungs.id = phongbans.MaNguoiDung AND phongbans.IsActive = true 
-            LEFT JOIN 
-                donvis ON donvis.id = phongbans.MaDonVi AND donvis.IsActive = true 
-            LEFT JOIN 
-                thanhviens ON nguoidungs.id = thanhviens.MaNguoiDung AND thanhviens.IsActive = true 
-            WHERE 
-                nguoidungs.Quyen IN (2, 3, 4) 
-                AND nguoidungs.IsActive = true 
-                AND thanhviens.MaDuAn = ?
-            GROUP BY 
-                donvis.id
-            ORDER BY 
-                donvi_count DESC
-            LIMIT 1;
-            ',[$id]);
+        $idMaDonVi1= DB::select('SELECT * FROM duans WHERE id = ?;',[$id]);
+        $idMaDonVi= DB::select('SELECT * FROM donvis WHERE id = ?;',[$idMaDonVi1[0]->MaDonVi]);
         $ThanhVienDonVi = DB::select('SELECT 
             nguoidungs.id, 
             nguoidungs.Quyen, 
@@ -410,7 +431,7 @@ class DuAnController extends Controller
         GROUP BY 
             nguoidungs.id, 
             nguoidungs.Quyen, 
-            nguoidungs.UserName;',[$idMaDonVi[0]->MaDonVi]);
+            nguoidungs.UserName;',[$idMaDonVi1[0]->MaDonVi]);
        return view('DuAn.UpdateDuAn', compact('LoaiDuAn','DuAn', 'title','GiaiDoan','CacGiaiDoan','ThanhVienDuAn','ThanhVienDonVi','idMaDonVi'));
    }
    
@@ -434,21 +455,13 @@ class DuAnController extends Controller
                 $DuAn->NgayKetThuc = $request->NgayKetThucDuAn;
                 $DuAn->Mota = $request->MoTa;
                 $DuAn->save();
-
-
-                 // Lấy dữ liệu từ request
-            $ngayBatDaus = $request->input('NgayBatDau', []); // Ngày bắt đầu của từng giai đoạn
-            $maGiaiDoans = $request->input('MaGiaiDoan', []); // Mã giai đoạn
-            $soNgayThucHiens = $request->input('SoNgayThucHien', []); // Số ngày thực hiện của từng giai đoạn
-            $thuTuGiaiDoans = $request->input('ThuTuGiaiDoan', []); // Thứ tự giai đoạn
-          
             
-          // Lấy dữ liệu từ request (đảm bảo lấy đúng giá trị ngày của từng giai đoạn)
+            // Lấy dữ liệu từ request (đảm bảo lấy đúng giá trị ngày của từng giai đoạn)
             $ngayBatDaus = $request->input('NgayBatDau', []); // Phải là mảng các ngày bắt đầu cho từng giai đoạn
-            $maGiaiDoans = $request->input('MaGiaiDoan', []);
-            $soNgayThucHiens = $request->input('SoNgayThucHien', []);
-            $thuTuGiaiDoans = $request->input('ThuTuGiaiDoan', []);
-
+            $maGiaiDoans = $request->input('MaGiaiDoan', []); // Mảng các mã giai đoạn
+            $ngayKetThucs = $request->input('NgayKetThuc', []); // Mảng các ngày kết thúc cho từng giai đoạn
+            $thuTuGiaiDoans = $request->input('ThuTuGiaiDoan', []); // Mảng các thứ tự giai đoạn
+            
             // Duyệt qua từng giai đoạn và kiểm tra trong CSDL
             foreach ($maGiaiDoans as $index => $maGiaiDoan) {
                 // Kiểm tra giai đoạn đã tồn tại hay chưa
@@ -457,19 +470,16 @@ class DuAnController extends Controller
                     ->where('MaDuAn', $id)
                     ->where('ThuGiaiDoan', $thuTuGiaiDoans[$index])
                     ->first();
-
+            
                 // Lấy ngày bắt đầu của từng giai đoạn
                 $ngayBatDau = isset($ngayBatDaus[$index]) ? $ngayBatDaus[$index] : null;
-
-                if ($ngayBatDau === null) {
-                    // Nếu không có ngày bắt đầu, bỏ qua giai đoạn này
+                $ngayKetThuc = isset($ngayKetThucs[$index]) ? $ngayKetThucs[$index] : null;
+            
+                if ($ngayBatDau === null || $ngayKetThuc === null) {
+                    // Nếu không có ngày bắt đầu hoặc ngày kết thúc, bỏ qua giai đoạn này
                     continue;
                 }
-
-                // Tính toán ngày kết thúc
-                $soNgayThucHien = $soNgayThucHiens[$index];
-                $ngayKetThuc = date('Y-m-d', strtotime($ngayBatDau . ' + ' . $soNgayThucHien . ' days'));
-
+            
                 if ($existingGiaiDoan) {
                     // Cập nhật giai đoạn nếu đã tồn tại
                     $giaiDoan = thuchien::find($existingGiaiDoan->id);
@@ -478,18 +488,18 @@ class DuAnController extends Controller
                     $giaiDoan = new thuchien();
                     $giaiDoan->MaDuAn = $id;
                     $giaiDoan->MaGiaiDoan = $maGiaiDoan;
-                    $giaiDoan->IsCongViec = false;
+                    $giaiDoan->IsCongViec = false; // Đặt giá trị mặc định cho IsCongViec
                 }
-
-                // Gán ngày và lưu vào CSDL
+            
+                // Gán ngày bắt đầu, ngày kết thúc và thứ tự giai đoạn
                 $giaiDoan->NgayBatDau = $ngayBatDau;
                 $giaiDoan->NgayKetThuc = $ngayKetThuc;
                 $giaiDoan->ThuGiaiDoan = $thuTuGiaiDoans[$index];
-                $giaiDoan->IsActive = true;
+                $giaiDoan->IsActive = true; // Đặt IsActive thành true
+            
+                // Lưu giai đoạn vào CSDL
                 $giaiDoan->save();
-            }
-
-              
+            }       
                 // Xử lý thông tin giao việc
                 $MaNguoiDung = $request->input('MaNguoiDung');
                 $MaNguoiDungListDB = thanhvien::where('MaDuAn', $id)
@@ -530,9 +540,7 @@ class DuAnController extends Controller
                         $GiaoViec->IsActive = true;
                         $GiaoViec->save();
                     }
-                }
-                
-              
+                }    
 
         }
         DB::commit(); // Lưu tất cả thay đổi vào cơ sở dữ liệu

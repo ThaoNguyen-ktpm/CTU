@@ -51,21 +51,21 @@
         </style>
 
        <div style="display: flex;">
-       <a href="/run-schedulerThongBao"  aria-expanded="false" style=" color: white;text-decoration: none;">
-                <div class="logoutForm">
-                <button class="Btn " id="BtnNew" style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
+           <div class="logoutForm">
+               <button class="Btn " id="BtnNew" style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
+                <a href="/run-schedulerThongBao"  aria-expanded="false" style=" color: white;text-decoration: none;">
             <div class="trehentext" > Cập nhật thông báo gần đến hẹn</div>
-                </button>
-                </div>
-        </a>
-        <a href=" /ThongBao/addview"  aria-expanded="false" >
-                <div class="logoutForm">
-                <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
-                <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
-                <div class="text" style=" margin-left: 5px;" >Thêm</div>
-                </button>
-                </div>
-        </a>
+                 </a>
+            </button>
+            </div>
+        <div class="logoutForm">
+            <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
+                <a href=" /ThongBao/addview"  aria-expanded="false" >
+            <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
+                 </a>
+            <div class="text" style=" margin-left: 5px;" >Thêm</div>
+            </button>
+            </div>
        </div>
         <div class="col">
                 <table id="myTableThongBao">

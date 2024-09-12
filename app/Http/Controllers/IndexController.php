@@ -155,12 +155,13 @@ class IndexController extends Controller
             AND giaoviecs.TrangThai = 4
             AND duans.IsActive = true
             AND giaoviecs.IsActive = true', [$userId]);
-        $DuAn = DB::select('SELECT duans.id 
-            FROM thanhviens , duans 
-            WHERE duans.id = thanhviens.MaDuAn 
-            AND thanhviens.MaNguoiDung = ?
+        $DuAn = DB::select('SELECT DISTINCT duans.id
+            FROM congviecs
+            JOIN giaoviecs ON giaoviecs.MaCongViec = congviecs.id
+            JOIN duans ON duans.id = congviecs.MaDuAn
+            WHERE giaoviecs.MaNguoiDung = ?
             AND duans.IsActive = true
-            AND thanhviens.IsActive = true',[$userId]);
+            AND giaoviecs.IsActive = true',[$userId]);
         $DuAnAll = duan::where('IsActive', 1)->get();
         return view('Index.TrangChu', compact('TreHen','HoanThanh','DangThucHien', 'NhanViec','DuAn', 'title','DuAnAll'));
     }

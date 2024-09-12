@@ -450,10 +450,11 @@ public function Welcome()
     {
         Session::forget('sessionUser'); // Xóa session 'sessionuser'
         Session::forget('sessionUserId'); // Xóa session 'sessionuser'
-        Session::forget('IsAdmin'); // Xóa session 'sessionuser'
+        Session::forget('IsAdmin');
+        Session::forget('previous_urls'); // Xóa session 'sessionuser'
         return redirect('/');
     }
-   
+  
     // Đăng Nhập google 
     public function redirectToGoogle()
     {

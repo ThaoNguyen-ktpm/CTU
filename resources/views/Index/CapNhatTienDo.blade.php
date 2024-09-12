@@ -298,38 +298,40 @@ input[type="range"]::-moz-range-thumb {
 
 
       document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.getElementById('fileInput');
-            const fileNameDisplay = document.getElementById('fileNameDisplay');
-            let selectedFiles = []; // Lưu trữ các file đã chọn
+    const fileInput = document.getElementById('fileInput');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    let selectedFiles = []; // Lưu trữ các file đã chọn
 
-            const updateFileList = () => {
-                fileNameDisplay.innerHTML = ''; // Xóa nội dung cũ
+    const updateFileList = () => {
+        fileNameDisplay.innerHTML = ''; // Xóa nội dung cũ
 
-                if (selectedFiles.length > 0) {
-                    const fileList = document.createElement('ul');
-                    
-                    selectedFiles.forEach((file, index) => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = "Tên file: " + file.name;
-                        
-                        const deleteButton = document.createElement('span');
-                        deleteButton.textContent = 'Xóa';
-                        deleteButton.className = 'delete-file-button';
-                        deleteButton.addEventListener('click', function() {
-                            selectedFiles.splice(index, 1); // Xóa file khỏi mảng đã chọn
-                            updateFileList(); // Cập nhật danh sách hiển thị
-                            updateFileInput(); // Cập nhật input file
-                        });
-                        
-                        listItem.appendChild(deleteButton);
-                        fileList.appendChild(listItem);
-                    });
-                    
-                    fileNameDisplay.appendChild(fileList);
-                } else {
-                    fileNameDisplay.textContent = "Chưa chọn file nào";
-                }
-            };
+        if (selectedFiles.length > 0) {
+            const fileList = document.createElement('ul');
+            
+            selectedFiles.forEach((file, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = "Tên file: " + file.name;
+                
+                const deleteButton = document.createElement('span');
+                // Thay chữ "Xóa" bằng icon trash
+                deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                deleteButton.className = 'delete-file-button';
+                deleteButton.style.cursor = 'pointer'; // Thêm hiệu ứng con trỏ chuột
+                deleteButton.addEventListener('click', function() {
+                    selectedFiles.splice(index, 1); // Xóa file khỏi mảng đã chọn
+                    updateFileList(); // Cập nhật danh sách hiển thị
+                    updateFileInput(); // Cập nhật input file
+                });
+                
+                listItem.appendChild(deleteButton);
+                fileList.appendChild(listItem);
+            });
+            
+            fileNameDisplay.appendChild(fileList);
+        } else {
+            fileNameDisplay.textContent = "Chưa chọn file nào";
+        }
+    };
 
             const updateFileInput = () => {
                 // Tạo một đối tượng DataTransfer để lưu trữ các file đã chọn

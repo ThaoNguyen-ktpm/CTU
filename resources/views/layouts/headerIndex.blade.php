@@ -192,7 +192,7 @@
                 @endphp
 
                 @if ($ThongBao)
-                <ul id="notification-list">
+                <ul id="notification-list" >
                     @foreach($ThongBao as $ThongBao1)
                         <li class="thethongbao" draggable="true" data-id="{{ $ThongBao1->id }}"> 
                             <button class="delete-icon" data-id="{{ $ThongBao1->id }}">&#10006;</button>
@@ -205,7 +205,7 @@
                 </ul>
                
                 @else
-                    <p>Không có thông báo !</p>
+                    <p style="display: block;padding: 10px;margin-bottom: 0px;padding-left: 34px;background: aliceblue;" ><i class="fa-solid fa-circle-exclamation"></i>Không có thông báo !</p>
                 @endif
                 </div>
                 <div id="notification-count" class="notification-count" ></div>

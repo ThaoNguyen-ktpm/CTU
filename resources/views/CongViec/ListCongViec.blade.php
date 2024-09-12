@@ -5,16 +5,70 @@
             .dataTables_wrapper {
             padding-top: 0px;
         }
+
+        /* From Uiverse.io by JaydipPrajapati1910 */ 
+        .button11 {
+        color: white;
+        background-color: #222;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        line-height: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 0.7rem;
+        padding-bottom: 0.7rem;
+        cursor: pointer;
+        text-align: center;
+        margin-right: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        border: none;
+        }
+
+        .button11:hover {
+        background-color: #333;
+        }
+
+        .button11 svg {
+        display: inline;
+        width: 1.3rem;
+        height: 1.3rem;
+        margin-right: 0.75rem;
+        color: white;
+        }
+
+        .button11:focus svg {
+        animation: spin_357 0.5s linear;
+        }
+
+        @keyframes spin_357 {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+        }
+
+
+
         </style>
-        <a href="/CongViec/addview"  aria-expanded="false" >
-                <div class="logoutForm">
-                <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
-                <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
-                <div class="text" style=" margin-left: 5px;" >Thêm</div>
-                </button>
-                </div>
-        </a>
-        <div class="col">
+   
+        <div class="logoutForm" style="width:100px">
+            <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
+            <a href="/CongViec/addview"  aria-expanded="false" >
+            <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
+            </a>
+            <div class="text" style=" margin-left: 5px;" >Thêm</div>
+            </button>
+            </div>
+
+          
+ 
+
+       <div class="col" >
                 <table id="myTableCongViec">
                     <thead>
                         <tr>

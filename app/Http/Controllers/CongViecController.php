@@ -127,9 +127,15 @@ class CongViecController extends Controller
         //             $DuAn[] = $duAn;
         //     }
         // }
-            $GiaiDoan = giaidoan::where('IsActive', 1)->get();
+        $GiaiDoan = DB::select('
+        SELECT thuchiens.* , giaidoans.TenGiaiDoan FROM thuchiens , giaidoans 
+        WHERE thuchiens.MaDuAn = ? AND thuchiens.MaGiaiDoan = giaidoans.id 
+        AND thuchiens.IsActive = true  
+        AND giaidoans.IsActive = true
+       
+         ',[$id]);
             $DonVi = donvi::where('IsActive', 1)->get();
-            return view('CongViec.AddCongViec', compact('DonVi','NguoiDung','GiaiDoan','DuAn','title'));
+            return view('CongViec.AddCongViecid', compact('DonVi','NguoiDung','GiaiDoan','DuAn','title'));
        
    }
 

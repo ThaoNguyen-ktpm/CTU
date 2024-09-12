@@ -49,28 +49,28 @@
       </div>
     </div>
     <div class="group">
-    <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
+    <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: ngày / tháng / năm)</label></label>
     <input name="NgayBatDau" type="date" class="form-control" required>
     <span class="highlight"></span>
     <span class="bar"></span>
     <div class="valid-feedback"></div>
     <div class="invalid-feedback invalid-feedback1" id="dateStartInvalidFeedback">
-        Vui lòng chọn ngày bắt đầu lớn hơn ngày hiện tại!
+        Ngày bắt đầu phải lớn hoặc bằng ngày bất đầu của dự án !
     </div>
 </div>
 
 <div class="group">
-    <label>Ngày kết thúc <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
+    <label>Ngày đến hẹn <span style="color:red;">(*)</span> <label>(lưu ý: ngày / tháng / năm)</label></label>
     <input  name="NgayKetThuc" type="date" class="form-control" required>
     <span class="highlight"></span>
     <span class="bar"></span>
     <div class="valid-feedback"></div>
     <div class="invalid-feedback invalid-feedback2" id="dateEndInvalidFeedback">
-        Ngày kết thúc phải nhỏ hơn ngày bắt đầu!
+        Ngày đến hẹn phải nhỏ hoặc bằng ngày kết thúc của dự án !
     </div>
 </div>
     <div class="group">
-    <label>Nhập link tài liệu <span style="color:red;"></span></label>
+    <label>Link tài liệu <span style="color:red;"></span></label>
       <input  id="linkInput" name="LinkTaiLieu" type="text"  class="form-control" pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
@@ -95,7 +95,7 @@
     </div>
    
     <div class="group" style="margin-top: 20px;">
-        <label>Chọn người nhận việc<span style="color:red;"> (*)</span></label>
+        <label>Người nhận việc<span style="color:red;"> (*)</span></label>
       <div  class="GiaoVienGiangDay-list">
     </div>
       <div class="valid-feedback">

@@ -7,7 +7,7 @@
   <form  method="post" class="needs-validation LoaiDuAn-form" action="/LoaiDuAn/update/{{$LoaiDuAn->id}}" novalidate>
   @csrf
     <div class="group">
-    <label>Tên giai đoạn <span style="color:red;">(*)</span></label>
+    <label>Tên loại dự án <span style="color:red;">(*)</span></label>
       <input  id="usernameInput" name="TenLoaiDuAn" value="{{ $LoaiDuAn->TenLoaiDuAn }}" type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
@@ -15,7 +15,7 @@
        
       </div>
       <div class="invalid-feedback">
-        Vui Lòng Nhập Loại Dự Án !
+        Vui lòng nhập tên loại dự án !
       </div>
     </div>
 

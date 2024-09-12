@@ -1,6 +1,5 @@
 @extends('layouts/layoutAdmin')
 @section('content')
- 
 <div class="col">
 <div class="container">
   <h2 class=" text-weight">Thông Tin Dự Án<small></small></h2>
@@ -8,7 +7,7 @@
   @csrf
     <div class="group">
     <label>Tên dự án <span style="color:red;">(*)</span></label>
-      <input  id="usernameInput" name="TenDuAn" value="{{ $DuAn->TenDuAn }}" type="text" class="form-control" required>
+      <input  id="usernameInput" name="TenDuAn" value="{{ $DuAn->TenDuAn }}"  type="text" class="form-control" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">
@@ -18,7 +17,7 @@
       </div>
     </div>
     <div class="group">       
-    <label>Chọn loại dự án <span style="color:red;">(*)</span></label>
+    <label>Loại dự án <span style="color:red;">(*)</span></label>
     <select name="MaLoai" class="form-control" required>
         <option value="" disabled>Chọn loại dự án</option>
         @foreach($LoaiDuAn as $LoaiDuAn1)
@@ -34,7 +33,7 @@
 </div>
 
 <div class="group">       
-    <label>Chọn quy mô <span style="color:red;">(*)</span></label>
+    <label>Quy mô <span style="color:red;">(*)</span></label>
     <select name="QuyMo" class="form-control" required>
         <option value="" disabled>Chọn quy mô dự án</option>
         <option value="1" {{ $DuAn->QuyMo == 1 ? 'selected' : '' }}>Nhỏ</option>
@@ -48,7 +47,7 @@
     <div class="invalid-feedback">Vui lòng chọn quy mô dự án!</div>
 </div>
 <div class="group">
-    <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
+    <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: ngày / tháng / năm)</label></label>
     <input id="NgayBatDauDuAn" name="NgayBatDauDuAn" value="{{ $DuAn->NgayBatDau }}" type="date" class="form-control" required>
     <span class="highlight"></span>
     <span class="bar"></span>
@@ -59,7 +58,7 @@
 </div>
 
 <div class="group">
-    <label>Ngày kết thúc <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
+    <label>Ngày kết thúc <span style="color:red;">(*)</span> <label>(lưu ý: ngày / tháng / năm)</label></label>
     <input id="NgayKetThucDuAn" name="NgayKetThucDuAn" value="{{ $DuAn->NgayKetThuc }}" type="date" class="form-control" required>
     <span class="highlight"></span>
     <span class="bar"></span>
@@ -90,7 +89,6 @@
          @foreach($CacGiaiDoan as $index => $CacGiaiDoan1)
        <div class="group">
             <h4>Giai Đoạn {{$CacGiaiDoan1->ThuGiaiDoan}}</h4>
-            
                   <label>Chọn giai đoạn <span style="color:red;">(*)</span></label>
                   <select name="MaGiaiDoan[]" class="form-control" id="selectGiaiDoan{{$index}}" required>
                       <option value="" disabled selected>Chọn giai đoạn</option>
@@ -102,31 +100,30 @@
                           </option>
                       @endforeach
                   </select>
-           
-
-
             <span class="highlight"></span>
             <span class="bar"></span>
             <div class="valid-feedback"></div>
             <div class="invalid-feedback">Vui lòng chọn giai đoạn!</div>
             </div>
             <div class="group">
-            <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
-            <input id="NgayBatDau1" name="NgayBatDau[]" value="{{ \Carbon\Carbon::parse($CacGiaiDoan1->NgayBatDau)->format('Y-m-d') }}" type="date" class="form-control" required>
+            <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: ngày / tháng / năm)</label></label>
+            <input id="NgayBatDau{{$CacGiaiDoan1->ThuGiaiDoan}}" name="NgayBatDau[]" value="{{ \Carbon\Carbon::parse($CacGiaiDoan1->NgayBatDau)->format('Y-m-d') }}" type="date" class="form-control" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <div class="valid-feedback"></div>
-            <div class="invalid-feedback" id="dateStartInvalidFeedback1" >
-                Vui lòng chọn ngày bắt đầu lớn hơn ngày hiện tại!
+            <div class="invalid-feedback" id="dateStartInvalidFeedback{{$CacGiaiDoan1->ThuGiaiDoan}}" >
+                Ngày bắt đầu lớn hoặc bằng ngày bất đầu của dự án!
             </div>
             </div>
             <div class="group">
-            <label>Nhập số ngày thực hiện <span style="color:red;">(*)</span></label>
-            <input id="SoNgayThucHien1" name="SoNgayThucHien[]" value="{{$CacGiaiDoan1->SoNgayThucHienTinhToan}}" type="number"  min="1" max="1000" class="form-control" required>
-            <span class="highlight"></span>
-            <span class="bar"></span>
-            <div class="valid-feedback"></div>
-            <div class="invalid-feedback" id="soNgayInvalidFeedback1"></div>
+                <label>Ngày kết thúc <span style="color:red;">(*)</span> <label>(lưu ý: ngày / tháng / năm)</label></label>
+                <input id="NgayKetThuc{{$CacGiaiDoan1->ThuGiaiDoan}}" name="NgayKetThuc[]" value="{{ \Carbon\Carbon::parse($CacGiaiDoan1->NgayKetThuc)->format('Y-m-d') }}" type="date" class="form-control" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback" id="dateEndInvalidFeedback{{$CacGiaiDoan1->ThuGiaiDoan}}" >
+                Ngày kết thúc nhỏ hoặc bằng kết thúc của dự án!
+                </div>
             </div>
             <div class="group">
             <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="{{$CacGiaiDoan1->ThuGiaiDoan}}" readonly hidden>
@@ -154,7 +151,7 @@
     </div>
     @endforeach
     </div>
-      <button name="Add" type="submit" class="submit-btn">Cập Nhật</button>
+      <button name="Add" type="submit" class="submit-btn" style=" margin-top: 25px;">Cập Nhật</button>
   </form>
 </div>
 </div>
@@ -322,85 +319,97 @@ document.addEventListener('DOMContentLoaded', function () {
 
     giaiDoanDiv.innerHTML = `
         <h4>Giai Đoạn ${soLuongGiaiDoan}</h4>
-        <label>Chọn Giai Đoạn <span style="color:red;">(*)</span></label>
-        <select name="MaGiaiDoan[]" class="form-control" required>
-            <option value="" disabled selected>Chọn Giai Đoạn</option>
-            @foreach($GiaiDoan as $GiaiDoan1)
-            <option value="{{$GiaiDoan1->id}}">{{$GiaiDoan1->TenGiaiDoan}}</option>
-            @endforeach
-        </select>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback">Vui Lòng Chọn Giai Đoạn!</div>
-    </div>
-    <div class="group">
-        <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: tháng / ngày / năm)</label></label>
-        <input id="NgayBatDau${soLuongGiaiDoan}" name="NgayBatDau[]" type="date" class="form-control" required>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback" id="dateStartInvalidFeedback${soLuongGiaiDoan}">
-            Vui lòng chọn ngày bắt đầu lớn hơn ngày hiện tại!
+        <div class="group">
+            <label>Chọn Giai Đoạn <span style="color:red;">(*)</span></label>
+            <select name="MaGiaiDoan[]" class="form-control" required>
+                <option value="" disabled selected>Chọn Giai Đoạn</option>
+                @foreach($GiaiDoan as $GiaiDoan1)
+                <option value="{{$GiaiDoan1->id}}">{{$GiaiDoan1->TenGiaiDoan}}</option>
+                @endforeach
+            </select>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <div class="valid-feedback"></div>
+            <div class="invalid-feedback">Vui Lòng Chọn Giai Đoạn!</div>
         </div>
-    </div>
-    <div class="group">
-        <label>Nhập Số Ngày Thực Hiện <span style="color:red;">(*)</span></label>
-        <input id="SoNgayThucHien${soLuongGiaiDoan}" name="SoNgayThucHien[]" type="number" min="1" max="1000" class="form-control" required>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback" id="soNgayInvalidFeedback${soLuongGiaiDoan}">Vui Lòng Nhập Số Ngày Thực Hiện!</div>
-    </div>
-    <div class="group">
-        <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="${soLuongGiaiDoan}" readonly hidden>
-        <span class="highlight"></span>
-        <span class="bar"></span>
+        <div class="group">
+            <label>Ngày bắt đầu <span style="color:red;">(*)</span> <label>(lưu ý: ngày / tháng / năm)</label></label>
+            <input id="NgayBatDau${soLuongGiaiDoan}" name="NgayBatDau[]" type="date" class="form-control" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <div class="valid-feedback"></div>
+            <div class="invalid-feedback" id="dateStartInvalidFeedback${soLuongGiaiDoan}">
+                Vui lòng chọn ngày bắt đầu lớn hơn ngày hiện tại!
+            </div>
+        </div>
+        <div class="group">
+            <label>Ngày kết thúc <span style="color:red;">(*)</span> <label>(lưu ý: ngày / tháng / năm)</label></label>
+            <input id="NgayKetThuc${soLuongGiaiDoan}" name="NgayKetThuc[]" type="date" class="form-control" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <div class="valid-feedback"></div>
+            <div class="invalid-feedback" id="dateEndInvalidFeedback${soLuongGiaiDoan}">
+                Ngày kết thúc nhỏ hoặc bằng kết thúc của dự án!
+            </div>
+        </div>
+        <div class="group">
+            <input name="ThuTuGiaiDoan[]" type="number" class="form-control" value="${soLuongGiaiDoan}" readonly hidden>
+            <span class="highlight"></span>
+            <span class="bar"></span>
     `;
 
     giaiDoanContainer.appendChild(giaiDoanDiv);
 
-    const NgayBatDauGiaiDoan = document.getElementById(`NgayBatDau${soLuongGiaiDoan}`);
-    const SoNgayThucHien = document.getElementById(`SoNgayThucHien${soLuongGiaiDoan}`);
+    const NgayBatDauGiaiDoanDUAN = document.getElementById(`NgayBatDau${soLuongGiaiDoan}`);
+    const NgayKetThucGiaiDoanDUAN = document.getElementById(`NgayKetThuc${soLuongGiaiDoan}`);
     const dateStartInvalidFeedback = document.getElementById(`dateStartInvalidFeedback${soLuongGiaiDoan}`);
-    const soNgayInvalidFeedback = document.getElementById(`soNgayInvalidFeedback${soLuongGiaiDoan}`);
-    
-    // Lấy thông tin ngày bắt đầu dự án từ div hiển thị
-    const displayDateDiv = document.getElementById('displayDateDiv').innerText;
-    const regex = /Ngày bắt đầu dự án: (\d{4}-\d{2}-\d{2})/;
-    const match = regex.exec(displayDateDiv);
-    const ngayBatDauDuAn = match ? new Date(match[1]) : null;
+    const dateEndInvalidFeedback = document.getElementById(`dateEndInvalidFeedback${soLuongGiaiDoan}`);
 
-    // Lấy tổng số ngày thực hiện từ displayDateDiv
-    const totalDaysRegex = /Tổng số ngày: (\d+) ngày/;
-    const totalDaysMatch = totalDaysRegex.exec(displayDateDiv);
-    const totalDays = totalDaysMatch ? parseInt(totalDaysMatch[1], 10) : null;
+    // Lấy thông tin ngày bắt đầu và kết thúc dự án từ div hiển thị
+    const displayDateDiv = document.getElementById('displayDateDiv').innerText;
+
+    // Tách chuỗi để lấy phần ngày tháng năm sau chữ "Ngày bắt đầu dự án:"
+    const partsStart = displayDateDiv.split('Ngày bắt đầu dự án: ');
+    const dateStringStart = partsStart[1] ? partsStart[1].split(',')[0].trim() : '';
+    
+    // Tách chuỗi để lấy phần ngày tháng năm sau chữ "Ngày kết thúc dự án:"
+    const partsEnd = displayDateDiv.split('Ngày kết thúc dự án: ');
+    const dateStringEnd = partsEnd[1] ? partsEnd[1].split(',')[0].trim() : '';
+
+    // Chuyển đổi ngày từ định dạng dd/mm/yyyy sang yyyy-mm-dd
+    const [dayStart, monthStart, yearStart] = dateStringStart.split('/');
+    const ngayBatDauDuAn = new Date(`${yearStart}-${monthStart}-${dayStart}`);
+
+    const [dayEnd, monthEnd, yearEnd] = dateStringEnd.split('/');
+    const ngayKetThucDuAn = new Date(`${yearEnd}-${monthEnd}-${dayEnd}`);
+
+  
 
     // Sự kiện thay đổi ngày bắt đầu của giai đoạn mới
-    NgayBatDauGiaiDoan.addEventListener('input', function() {
-        const startDateGiaiDoan = new Date(NgayBatDauGiaiDoan.value);
+    NgayBatDauGiaiDoanDUAN.addEventListener('input', function() {
+        const startDateGiaiDoan = new Date(NgayBatDauGiaiDoanDUAN.value);
 
         if (startDateGiaiDoan < ngayBatDauDuAn) {
             dateStartInvalidFeedback.style.display = 'block';
             dateStartInvalidFeedback.innerHTML = 'Ngày bắt đầu giai đoạn không được nhỏ hơn ngày bắt đầu dự án!';
-            NgayBatDauGiaiDoan.classList.add('is-invalid');
+            NgayBatDauGiaiDoanDUAN.classList.add('is-invalid');
         } else {
             dateStartInvalidFeedback.style.display = 'none';
-            NgayBatDauGiaiDoan.classList.remove('is-invalid');
+            NgayBatDauGiaiDoanDUAN.classList.remove('is-invalid');
         }
     });
 
-    // Sự kiện thay đổi số ngày thực hiện của giai đoạn mới
-    SoNgayThucHien.addEventListener('input', function() {
-        const soNgay = parseInt(SoNgayThucHien.value, 10);
+    // Sự kiện thay đổi ngày kết thúc của giai đoạn mới
+    NgayKetThucGiaiDoanDUAN.addEventListener('input', function() {
+        const endDateGiaiDoan = new Date(NgayKetThucGiaiDoanDUAN.value);
 
-        if (soNgay > totalDays) {
-            soNgayInvalidFeedback.style.display = 'block';
-            soNgayInvalidFeedback.innerHTML = `Số ngày thực hiện không được lớn hơn tổng số ngày dự án (${totalDays} ngày)!`;
-            SoNgayThucHien.classList.add('is-invalid');
+        if (endDateGiaiDoan > ngayKetThucDuAn) {
+            dateEndInvalidFeedback.style.display = 'block';
+            dateEndInvalidFeedback.innerHTML = 'Ngày kết thúc giai đoạn không được lớn hơn ngày kết thúc dự án!';
+            NgayKetThucGiaiDoanDUAN.classList.add('is-invalid');
         } else {
-            soNgayInvalidFeedback.style.display = 'none';
-            SoNgayThucHien.classList.remove('is-invalid');
+            dateEndInvalidFeedback.style.display = 'none';
+            NgayKetThucGiaiDoanDUAN.classList.remove('is-invalid');
         }
     });
 
@@ -440,83 +449,118 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('suaGiaiDoanButton').addEventListener('click', suaGiaiDoan);
 });
 
-
 document.addEventListener('DOMContentLoaded', function() {
     var NgayBatDauDuAn = document.getElementById('NgayBatDauDuAn');  // Ngày bắt đầu dự án
     var NgayKetThucDuAn = document.getElementById('NgayKetThucDuAn');  // Ngày kết thúc dự án
-
-    var dateEndInvalidFeedback = document.getElementById('dateEndInvalidFeedback');  // Div để hiển thị lỗi ngày kết thúc
     var displayDateDiv = document.getElementById('displayDateDiv');  // Div để hiển thị thông tin ngày và số ngày thực hiện
 
-    // Lắng nghe sự thay đổi của Ngày Bắt Đầu Dự Án và Ngày Kết Thúc Dự Án
+    // Lắng nghe sự thay đổi của Ngày Bắt Đầu Dự Án và Ngày Kết Thúc Dự ÁN
     NgayBatDauDuAn.addEventListener('input', function(e) {
-        validateEndDate();  // Kiểm tra ngày kết thúc dự án
-        displayDates();  // Hiển thị thông tin
+        validateDates();  // Kiểm tra ngày bắt đầu, ngày kết thúc
     });
 
     NgayKetThucDuAn.addEventListener('input', function(e) {
-        validateEndDate();  // Kiểm tra ngày kết thúc dự án
-        displayDates();  // Hiển thị thông tin
+        validateDates();  // Kiểm tra ngày kết thúc dự án
     });
 
-   
+    // Lặp qua các giai đoạn để thêm sự kiện
+    var totalPhases = document.querySelectorAll("[id^='NgayBatDau']").length;  // Lấy tổng số giai đoạn dựa trên các id bắt đầu bằng 'NgayBatDau'
+    
+    for (let i = 1; i <= totalPhases; i++) {
+        var NgayBatDauGiaiDoan = document.getElementById(`NgayBatDau${i}`);
+        var NgayKetThucGiaiDoan = document.getElementById(`NgayKetThuc${i}`);
+        
+        NgayBatDauGiaiDoan.addEventListener('input', function(e) {
+            validateDates();  // Kiểm tra ngày bắt đầu của giai đoạn
+        });
 
-    // Hàm kiểm tra ngày kết thúc dự án phải lớn hơn ngày bắt đầu
-    function validateEndDate() {
-        var startDate = new Date(NgayBatDauDuAn.value);
-        var endDate = new Date(NgayKetThucDuAn.value);
-        var today = new Date();
-        today.setHours(0, 0, 0, 0);  // Đặt giờ về 0 để so sánh chính xác
+        NgayKetThucGiaiDoan.addEventListener('input', function(e) {
+            validateDates();  // Kiểm tra ngày kết thúc của giai đoạn
+        });
+    }
 
-        if (startDate && endDate) {
-            if (startDate <= today) {
-                dateEndInvalidFeedback.style.display = 'block';
-                dateEndInvalidFeedback.innerHTML = 'Ngày bắt đầu dự án phải lớn hơn hôm nay!';
-                NgayBatDauDuAn.classList.add('is-invalid');
+    // Hàm kiểm tra ngày bắt đầu và kết thúc cho dự án và tất cả các giai đoạn
+  function validateDates() {
+    var startDateValue = NgayBatDauDuAn.value;
+    var endDateValue = NgayKetThucDuAn.value;
+
+    // Kiểm tra ngày bắt đầu và ngày kết thúc dự án
+    if (startDateValue && endDateValue) {
+        var startDate = new Date(startDateValue);
+        var endDate = new Date(endDateValue);
+
+        if (endDate > startDate) {
+           
+            NgayKetThucDuAn.classList.remove('is-invalid');
+        } else {
+         
+            NgayKetThucDuAn.classList.add('is-invalid');
+        }
+    }
+
+    // Lặp qua các giai đoạn để kiểm tra từng giai đoạn
+    for (let i = 1; i <= totalPhases; i++) {
+        var phaseStartDateValue = document.getElementById(`NgayBatDau${i}`).value;
+        var phaseEndDateValue = document.getElementById(`NgayKetThuc${i}`).value;
+        var phaseStartInvalidFeedback = document.getElementById(`dateStartInvalidFeedback${i}`);
+        var phaseEndInvalidFeedback = document.getElementById(`dateEndInvalidFeedback${i}`);
+        var NgayBatDauGiaiDoan = document.getElementById(`NgayBatDau${i}`);
+        var NgayKetThucGiaiDoan = document.getElementById(`NgayKetThuc${i}`);
+
+        // Kiểm tra ngày bắt đầu của giai đoạn
+        if (phaseStartDateValue) {
+            var phaseStartDate = new Date(phaseStartDateValue);
+            if (phaseStartDate >= new Date(startDateValue)) {
+                phaseStartInvalidFeedback.style.display = 'none';
+                NgayBatDauGiaiDoan.classList.remove('is-invalid');
             } else {
-                NgayBatDauDuAn.classList.remove('is-invalid');
-                dateEndInvalidFeedback.style.display = 'none';
+                phaseStartInvalidFeedback.style.display = 'block';
+                phaseStartInvalidFeedback.innerHTML = 'Ngày bắt đầu của giai đoạn phải lớn hơn hoặc bằng Ngày Bắt Đầu Dự Án!';
+                NgayBatDauGiaiDoan.classList.add('is-invalid');
             }
+        }
 
-            if (endDate > startDate) {
-                dateEndInvalidFeedback.style.display = 'none';
-                NgayKetThucDuAn.classList.remove('is-invalid');
+        // Kiểm tra ngày kết thúc của giai đoạn
+        if (phaseEndDateValue) {
+            var phaseEndDate = new Date(phaseEndDateValue);
+            if (phaseEndDate <= new Date(endDateValue)) {
+                phaseEndInvalidFeedback.style.display = 'none';
+                NgayKetThucGiaiDoan.classList.remove('is-invalid');
             } else {
-                dateEndInvalidFeedback.style.display = 'block';
-                dateEndInvalidFeedback.innerHTML = 'Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu!';
-                NgayKetThucDuAn.classList.add('is-invalid');
+                phaseEndInvalidFeedback.style.display = 'block';
+                phaseEndInvalidFeedback.innerHTML = 'Ngày kết thúc của giai đoạn phải nhỏ hơn hoặc bằng Ngày Kết Thúc Dự Án!';
+                NgayKetThucGiaiDoan.classList.add('is-invalid');
             }
         }
     }
 
+    // Hiển thị ngày và số ngày thực hiện
+    displayDates();
+}
     // Hàm hiển thị ngày bắt đầu, kết thúc dự án và số ngày thực hiện
-      function displayDates() {
-      var startDate = NgayBatDauDuAn.value;
-      var endDate = NgayKetThucDuAn.value;
+    function displayDates() {
+        var startDateValue = NgayBatDauDuAn.value;
+        var endDateValue = NgayKetThucDuAn.value;
 
-      if (startDate && endDate) {
-          // Tạo đối tượng ngày từ chuỗi startDate và endDate
-          var start = new Date(startDate);
-          var end = new Date(endDate);
+        if (startDateValue && endDateValue) {
+            var start = new Date(startDateValue);
+            var end = new Date(endDateValue);
 
-          // Tính số ngày giữa hai mốc thời gian
-          var totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+            var totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
 
-          // Định dạng ngày theo kiểu ngày/tháng/năm
-          var startFormatted = start.toLocaleDateString('vi-VN');
-          var endFormatted = end.toLocaleDateString('vi-VN');
+            var startFormatted = start.toLocaleDateString('vi-VN');
+            var endFormatted = end.toLocaleDateString('vi-VN');
 
-          // Hiển thị thông tin với ngày bắt đầu, ngày kết thúc và tổng số ngày
-          displayDateDiv.innerHTML = `Ngày bắt đầu dự án: ${startFormatted} Tổng số ngày: ${totalDays} ngày`;
-      } else {
-          displayDateDiv.innerHTML = '';  // Xóa nội dung nếu không có giá trị
-      }
-  }
-
+            displayDateDiv.innerHTML = `Ngày bắt đầu dự án: ${startFormatted}, Ngày kết thúc dự án: ${endFormatted}, Tổng số ngày: ${totalDays} ngày`;
+        } else {
+            displayDateDiv.innerHTML = '';  // Xóa nội dung nếu không có giá trị
+        }
+    }
 
     // Hiển thị ngày và thông tin ngay từ đầu nếu có
-    displayDates();
+    validateDates();
 });
+
 
 
 
