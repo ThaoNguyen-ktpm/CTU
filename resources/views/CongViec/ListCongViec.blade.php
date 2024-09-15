@@ -145,10 +145,11 @@
                             return ngay + '-' + thang + '-' + nam;
                             }
                         }
-                }, {
+                },
+                {
                         data: null,
                         render: function(data, type, row) {
-                        return '<a href="/CongViec/ThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
+                        return '<a href="/DuAn/CongViecThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
                    
                     }
                     },

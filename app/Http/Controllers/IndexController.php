@@ -280,33 +280,41 @@ class IndexController extends Controller
                 }
             }
 
+            // Xử lý file nếu có
+        if ($request->hasFile('file_nop')) {
             $files = $request->file('file_nop');
             $fileRecords = [];
+            $maxFileSize = 15 * 1024 * 1024; // Giới hạn 15MB
 
             foreach ($files as $file) {
-                // Lấy tên file gốc
-                $originalFileName = $file->getClientOriginalName();
+                // Kiểm tra dung lượng file
+                if ($file->getSize() > $maxFileSize) {
+                    return response()->json(['success' => false, 'message' => 'File ' . $file->getClientOriginalName() . ' vượt quá 15MB.'], 400);
+                }
 
-                // Tạo tên file mới dựa trên thời gian
+                // Lấy tên file gốc và tạo tên mới
+                $originalFileName = $file->getClientOriginalName();
                 $fileName = time() . '_' . $originalFileName;
 
                 // Di chuyển file vào thư mục uploads
                 $file->move(public_path('uploads'), $fileName);
 
-                // Tạo mảng chứa các bản ghi để lưu vào cơ sở dữ liệu
+                // Tạo bản ghi cho cơ sở dữ liệu
                 $fileRecords[] = [
                     'MaCapNhatTienDo' => $capnhattiendo->id,
                     'DuongDanFile' => 'uploads/' . $fileName,
                     'IsActive' => true,
-                    'ThoiGianNop' => now(), // Lưu thời gian nộp hiện tại
-                    'TenFile' => $originalFileName, // Lưu tên file gốc
+                    'ThoiGianNop' => now(),
+                    'TenFile' => $originalFileName,
                 ];
             }
 
-            // Thực hiện batch insert để giảm số lượng query
+            // Thực hiện batch insert
             DB::table('files')->insert($fileRecords);
+        } else {
+            return response()->json(['success' => false, 'message' =>  ' vượt quá 15MB.'], 400);
 
-    
+        }
             $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                         ->where('TrangThai', '!=', 3)
                                         ->where('IsActive', true)
@@ -337,36 +345,41 @@ class IndexController extends Controller
                       $GiaoViec->save();
                   }
               }
-              $files = $request->file('file_nop');
-              if ($files && is_array($files)) {
-                  $fileRecords = [];
-              
-                  foreach ($files as $file) {
-                      if ($file) {
-                          // Lấy tên file gốc
-                          $originalFileName = $file->getClientOriginalName();
-              
-                          // Tạo tên file mới dựa trên thời gian
-                          $fileName = time() . '_' . $originalFileName;
-              
-                          // Di chuyển file vào thư mục uploads
-                          $file->move(public_path('uploads'), $fileName);
-              
-                          // Tạo mảng chứa các bản ghi để lưu vào cơ sở dữ liệu
-                          $fileRecords[] = [
-                              'MaCapNhatTienDo' => $capnhattiendo->id,
-                              'DuongDanFile' => 'uploads/' . $fileName,
-                              'IsActive' => true,
-                              'ThoiGianNop' => now(), // Lưu thời gian nộp hiện tại
-                              'TenFile' => $originalFileName, // Lưu tên file gốc
-                          ];
-                      }
-                  }
-              
-                  // Thực hiện batch insert để giảm số lượng query
-                  DB::table('files')->insert($fileRecords);
-              }
-              
+              // Xử lý file nếu có
+        if ($request->hasFile('file_nop')) {
+            $files = $request->file('file_nop');
+            $fileRecords = [];
+            $maxFileSize = 15 * 1024 * 1024; // Giới hạn 15MB
+
+            foreach ($files as $file) {
+                // Kiểm tra dung lượng file
+                if ($file->getSize() > $maxFileSize) {
+                    return response()->json(['success' => false, 'message' => 'File ' . $file->getClientOriginalName() . ' vượt quá 15MB.'], 400);
+                }
+
+                // Lấy tên file gốc và tạo tên mới
+                $originalFileName = $file->getClientOriginalName();
+                $fileName = time() . '_' . $originalFileName;
+
+                // Di chuyển file vào thư mục uploads
+                $file->move(public_path('uploads'), $fileName);
+
+                // Tạo bản ghi cho cơ sở dữ liệu
+                $fileRecords[] = [
+                    'MaCapNhatTienDo' => $capnhattiendo->id,
+                    'DuongDanFile' => 'uploads/' . $fileName,
+                    'IsActive' => true,
+                    'ThoiGianNop' => now(),
+                    'TenFile' => $originalFileName,
+                ];
+            }
+
+            // Thực hiện batch insert
+            DB::table('files')->insert($fileRecords);
+        }else {
+            return response()->json(['success' => false, 'message' =>  ' vượt quá 15MB.'], 400);
+
+        }
       
               $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                           ->where('TrangThai', '!=', 3)

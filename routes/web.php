@@ -205,12 +205,14 @@ Route::get('DuAn/CongViecDuAn/file', [DuAnController::class,'listCongViecDuAnfil
 Route::get('DuAn/CongViecDuAn/file/data', [DuAnController::class, 'getCongViecDuAnfile'])->name('CongViecDuAnfile.data')->middleware('checkUserSession');
 
 
+
 // Danh sách Dự Án
 Route::get('DuAn', [DuAnController::class,'list'])->name('DuAn.listDuAn')->middleware('checkUserSession');
 Route::get('DuAn/data', [DuAnController::class, 'getDuAn'])->name('DuAn.data')->middleware('checkUserSession');
 
 Route::get('DuAn/updateviewSee/{id}', [DuAnController::class, 'updateviewSee'])->middleware('checkUserSession');
 
+Route::get('DuAn/updateviewFile/{id}', [DuAnController::class, 'updateviewFile'])->middleware('checkUserSession');
 
 
 //Thêm Dự Án

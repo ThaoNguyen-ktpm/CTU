@@ -36,9 +36,6 @@
                 </table>
                
             </div>
-            <!-- Modal Bootstrap -->
-           <!-- Modal -->
-       <!-- Modal -->
         <!-- Modal -->
         <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -121,7 +118,7 @@
                     {
                         data: null,
                         render: function(data, type, row) {
-                        return '  <form method="get" action="CongViec/viewid/'+row.id+'"> <div class="logoutForm"><button class="Btn"  style="background-color: rgb(13 55 111); z-index: 10;" ><div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div><div class="text" style=" margin-left: 5px;" >Thêm</div></button></div></form>';
+                        return '  <form method="get" action="CongViec/viewid/'+row.id+'"> @csrf <button class="btn btn-success" style="      border-radius: 50%;  background-color: #0d376f;" type="submit"><i class="fa-solid fa-plus" style="color: #ffffff;margin:0 "></i></button></form>';
                     }
                     },
                     {

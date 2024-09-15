@@ -220,6 +220,68 @@ class DuAnController extends Controller
        return response()->json(['data' => $DuAn,'NguoiDung'=>$NguoiDung]);
    }
  
+   public function updateviewFile($id)
+   {
+      // Lấy thông tin file từ CSDL
+        $fileRecord = DB::table('files')->where('id', $id)->first();
+
+        if ($fileRecord) {
+            $filePath = public_path($fileRecord->DuongDanFile);
+
+            // Chuẩn hóa dấu gạch chéo trong đường dẫn
+            $filePath = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $filePath);
+
+            if (file_exists($filePath)) {
+                $mimeType = mime_content_type($filePath);
+
+                // Nếu file là văn bản hoặc JSON, trả về nội dung file dưới dạng text
+                if (str_starts_with($mimeType, 'text') || $mimeType == 'application/json') {
+                    $content = file_get_contents($filePath);
+                    $content = mb_convert_encoding($content, 'UTF-8', 'auto');
+                    return response()->json(['content' => $content, 'type' => $mimeType]);
+                }
+
+                // Các file hình ảnh, PDF, Word, Excel, ZIP sẽ được trả về dưới dạng URL
+                $supportedMimeTypes = [
+                    'image' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+                    'pdf' => ['application/pdf'],
+                    'word_excel' => [
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'application/vnd.ms-excel',
+                    ],
+                    'zip' => ['application/zip']
+                ];
+
+                // Nếu file là hình ảnh, trả về URL và header cache để cải thiện tốc độ tải
+                if (in_array($mimeType, $supportedMimeTypes['image'])) {
+                    return response()->json([
+                        'url' => asset($fileRecord->DuongDanFile),
+                        'type' => $mimeType
+                    ])->header('Cache-Control', 'public, max-age=86400'); // Cache 1 ngày
+                }
+
+                // Nếu file là PDF, Word, Excel, hoặc ZIP, trả về URL và loại file
+                if (in_array($mimeType, array_merge($supportedMimeTypes['pdf'], $supportedMimeTypes['word_excel'], $supportedMimeTypes['zip']))) {
+                    return response()->json([
+                        'url' => asset($fileRecord->DuongDanFile),
+                        'type' => $mimeType
+                    ]);
+                }
+
+                // Nếu không hỗ trợ, trả về liên kết tải về
+                return response()->json(['url' => asset($fileRecord->DuongDanFile), 'type' => $mimeType]);
+            } else {
+                return response()->json(['error' => 'File not found'], 404);
+            }
+        } else {
+            return response()->json(['error' => 'File not found in database'], 404);
+        }
+
+   }
+   
+   
+
+
    //Thêm Dự Án
    public function addview()
    {

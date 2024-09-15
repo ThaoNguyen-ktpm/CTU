@@ -111,7 +111,7 @@ input[type="range"]::-moz-range-thumb {
             <td class="text-left" id="fileContainer">
             <div class="file-upload-group">
                 <label for="fileInput" class="file-label">
-                    <i class="fa-solid fa-file-import"></i> Chọn File
+                    <i class="fa-solid fa-file-import"></i> Chọn File : giới hạn file 15MB!.
                 </label>
                 <input type="file" id="fileInput" name="file_nop[]" class="form-control-file" multiple required style="display: none;">
                 <div id="fileNameDisplay" style="margin-top: 10px;"></div>
@@ -251,7 +251,7 @@ input[type="range"]::-moz-range-thumb {
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: " Tệp không hợp lệ !",
+          message: " Tệp vượt quá kích thước cho phép (15MB)! !",
           type:"error",
           duration:2000
       })

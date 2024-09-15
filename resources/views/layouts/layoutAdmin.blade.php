@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="{{ asset('css/admininput.css') }}">
     <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
     <link rel="stylesheet" href="{{ asset('css/background.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tableAdmin.css') }}">
 
 </head>
 <body  style="overflow:auto;box-sizing:border-box;overflow-x:hidden;">

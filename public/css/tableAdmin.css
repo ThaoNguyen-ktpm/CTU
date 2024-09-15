@@ -1,0 +1,73 @@
+  /* Căn giữa nội dung bên trong modal */
+  
+  #fileModalContent {
+      padding: 20px;
+      text-align: justify;
+  }
+  /* Căn chỉnh lề của đoạn văn */
+  
+  p {
+      text-align: justify;
+      /* Căn đều 2 bên */
+      margin: 10px 0;
+      /* Khoảng cách trên dưới */
+      line-height: 1.6;
+      /* Khoảng cách giữa các dòng */
+  }
+  /* Điều chỉnh hình ảnh cho đúng kích thước và căn giữa */
+  
+  img {
+      display: block;
+      /* Đảm bảo hình ảnh là khối */
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 100%;
+      /* Đảm bảo hình ảnh không vượt quá khung */
+      height: auto;
+      /* Đảm bảo tỷ lệ hình ảnh */
+  }
+  /* Căn chỉnh bảng */
+  
+  table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      /* Khoảng cách trên dưới bảng */
+  }
+  /* Kiểu cho các ô trong bảng */
+  
+  th,
+  td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+      /* Căn giữa nội dung trong ô */
+  }
+  /* Tiêu đề bảng */
+  
+  th {
+      background-color: #81c7ed;
+  }
+  /* Khoảng cách giữa các đoạn văn */
+  
+  .docx p {
+      margin: 10px 0;
+  }
+  /* Kiểu tiêu đề (Heading) */
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+      text-align: center;
+      /* Căn giữa tiêu đề */
+      margin: 20px 0;
+      /* Khoảng cách trên dưới */
+  }
+  
+  .dataTables_length {
+      margin-top: 16px;
+      margin-bottom: 16px;
+  }

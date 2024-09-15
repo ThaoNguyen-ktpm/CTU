@@ -1,7 +1,7 @@
 <style>
-    .dataTables_wrapper {
+    /* .dataTables_wrapper {
     padding-top: 0px;
-}
+} */
 
 /* From Uiverse.io by JaydipPrajapati1910 */ 
 .button11 {
