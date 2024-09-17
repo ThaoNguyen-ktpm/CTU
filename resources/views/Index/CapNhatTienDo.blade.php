@@ -251,7 +251,7 @@ input[type="range"]::-moz-range-thumb {
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: " Tệp vượt quá kích thước cho phép (15MB)! !",
+          message: " Tệp vượt quá kích thước cho phép 15MB !",
           type:"error",
           duration:2000
       })

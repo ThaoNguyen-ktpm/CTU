@@ -152,7 +152,7 @@
                 </table>
             </div>
             <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-lg" style="max-width: 1000px;">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="fileModalLabel">Nội dung File</h5>

@@ -348,7 +348,7 @@ function loadNguoiDungData(maDonVi) {
     function showErrorToast2(){
       toast1({
           title: "Error",
-          message: " Thêm Dự Án Thất Bại Do Chưa Có Thành Viên !",
+          message: " Thêm Dự Án Thất Bại !",
           type:"error",
           duration:2000
       })

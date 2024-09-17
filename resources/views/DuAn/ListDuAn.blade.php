@@ -5,6 +5,56 @@
             .dataTables_wrapper {
             padding-top: 0px;
         }
+        .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+
+    .table-bordered {
+        border: 1px solid #dee2e6;
+    }
+
+    .table-bordered th, .table-bordered td {
+        border: 1px solid #dee2e6;
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        text-align: center;
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+
+    .table tbody td {
+        padding: 8px;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+    b, strong {
+    display: block;
+    font-weight: bolder;
+    width: 124px;
+}
         </style>
                 <div class="logoutForm">
                     <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
@@ -28,6 +78,7 @@
                             <th>Thêm Công Việc</th>
                             <th>Xem</th>
                             <th>Sửa</th>
+                            <th>Export</th>
                             <th>Xóa</th>
                         </tr>
                        
@@ -38,7 +89,7 @@
             </div>
         <!-- Modal -->
         <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog" style="max-width: 1000px;" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="projectModalLabel">Thông tin Dự Án</h5>
@@ -47,7 +98,6 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p id="projectName">Tên Dự Án: </p>
                         <div id="modalContent"></div>
                     </div>
                     <div class="modal-footer">
@@ -141,9 +191,16 @@
                     {
                         data: null,
                         render: function(data, type, row) {
+                            return '<button class="btn btn-success" ><a href="/Excel/ExportDuAn/'+row.id+'"><i class="fa-solid fa-file-export" style="color: #ffffff;margin:0"></i></a> </button>';
+                        }
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
                             return '<button class="btn btn-danger DeleteDuAn-form" onclick="deleteDuAn(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     }
+                    
                 ]
             });
         });
@@ -167,6 +224,7 @@
             var data = response.data;
             var NguoiDung = response.NguoiDung;
 
+            // Chuyển đổi Quy Mô thành văn bản
             var quyMoText;
             switch (data[0].QuyMo) {
                 case 1:
@@ -194,40 +252,93 @@
                 return user ? user.UserName : 'Không xác định';
             }).join(', ');
 
-            // Chèn nội dung phản hồi vào modal
-            document.getElementById('projectName').innerText = `Tên Dự Án: ${data[0].TenMa}`;
-            $('#modalContent').html(`
-                <p><strong>Quy Mô:</strong> ${quyMoText}</p>
-                <p><strong>Mô Tả:</strong> ${data[0].Mota}</p>
-                <p><strong>Ngày Bắt Đầu:</strong> ${formatDate(data[0].NgayBatDauDuAn)}</p>
-                <p><strong>Ngày Kết Thúc:</strong> ${formatDate(data[0].NgayKetThucDuAn)}</p>
-                <p><strong>Thành Viên:</strong> ${thanhVienNames}</p>
-                <!-- Thêm các thông tin khác nếu cần -->
-            `);
+         // Chèn nội dung phản hồi vào modal với bảng thông tin dự án
+    $('#modalContent').html(`
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tên Dự Án:</strong></td>
+                        <td>${data[0].TenMa}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quy Mô:</strong></td>
+                        <td>${quyMoText}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ngày Bắt Đầu:</strong></td>
+                        <td>${formatDate(data[0].NgayBatDauDuAn)}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ngày Kết Thúc:</strong></td>
+                        <td>${formatDate(data[0].NgayKetThucDuAn)}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mô Tả:</strong></td>
+                        <td>${data[0].Mota}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thành Viên:</strong></td>
+                        <td>${thanhVienNames}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    `);
 
-            // Hiển thị thông tin giai đoạn
-            var giaiDoanContent = '<h5>Thông tin Giai Đoạn</h5>';
-            data.forEach(item => {
-                giaiDoanContent += `
-                    <p><strong>Thứ Tự Giai Đoạn:</strong> ${item.ThuGiaiDoan}</p>
-                    <p><strong>Tên Giai Đoạn:</strong> ${item.TenGiaiDoan}</p>
-                    <p><strong>Ngày Bắt Đầu Giai Đoạn:</strong> ${formatDate(item.NgayBatDau)}</p>
-                    <p><strong>Ngày Kết Thúc Giai Đoạn:</strong> ${formatDate(item.NgayKetThuc)}</p>
-                    <hr />
-                `;
-            });
+    // Sắp xếp dữ liệu giai đoạn theo ThuGiaiDoan
+    var sortedData = data.sort((a, b) => a.ThuGiaiDoan - b.ThuGiaiDoan);
 
-            // Chèn thông tin giai đoạn vào modal
-            $('#modalContent').append(giaiDoanContent);
+    // Hiển thị thông tin giai đoạn theo kiểu bảng truyền thống
+    var giaiDoanContent = `
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Thứ Tự Giai Đoạn</th>
+                        <th>Tên Giai Đoạn</th>
+                        <th>Ngày Bắt Đầu Giai Đoạn</th>
+                        <th>Ngày Kết Thúc Giai Đoạn</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
 
-            // Hiển thị modal
-            $('#projectModal').modal('show');
+    sortedData.forEach(item => {
+        giaiDoanContent += `
+            <tr>
+                <td>${item.ThuGiaiDoan}</td>
+                <td>${item.TenGiaiDoan}</td>
+                <td>${formatDate(item.NgayBatDau)}</td>
+                <td>${formatDate(item.NgayKetThuc)}</td>
+            </tr>
+        `;
+    });
+
+    giaiDoanContent += `
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    // Chèn thông tin giai đoạn vào modal
+    $('#modalContent').append(giaiDoanContent);
+
+    // Hiển thị modal
+    $('#projectModal').modal('show');
         },
         error: function(xhr, status, error) {
             console.error('Lỗi khi tải dữ liệu:', error);
         }
     });
 }
+
 
 
         function deleteDuAn(DuAnId) {
@@ -316,7 +427,7 @@ function toast1({title='',message='',type='info',duration=2000}){
     function showSuccessToast1() {
         toast1({
             title: "Success",
-            message: "Xóa Chứng Chỉ Thành Công!",
+            message: "Xóa Dự Án Thành Công!",
             type: "success",
             duration: 2000
         })
@@ -324,7 +435,7 @@ function toast1({title='',message='',type='info',duration=2000}){
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: " Xóa Thất Bại  !",
+          message: " Xóa Dự Án Thất Bại  !",
           type:"error",
           duration:2000
       })

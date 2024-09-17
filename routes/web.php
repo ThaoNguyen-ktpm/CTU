@@ -233,6 +233,12 @@ Route::get('DuAn/GiaiDoan/data', [DuAnController::class, 'getDuAnGiaiDoan'])->na
 Route::get('DuAn/ThanhVien', [DuAnController::class,'listThanhVien'])->name('DuAn.listDuAnThanhVien')->middleware('checkUserSession');
 Route::get('DuAn/ThanhVien/data', [DuAnController::class, 'getDuAnThanhVien'])->name('DuAnThanhVien.data')->middleware('checkUserSession');
 
+//Export
+Route::get('Excel/ExportDuAn/{id}', [DuAnController::class,'ExportDuAn'])->middleware('checkUserSession');
+Route::get('Excel/ExportCongViec/{id}', [DuAnController::class,'ExportCongViec'])->middleware('checkUserSession');
+
+
+
 // Danh sách Công Việc
 Route::get('CongViec', [CongViecController::class,'list'])->name('CongViec.listCongViec')->middleware('checkUserSession');
 Route::get('CongViec/data',[CongViecController::class,'getCongViec'])->name('CongViec.data')->middleware('checkUserSession');

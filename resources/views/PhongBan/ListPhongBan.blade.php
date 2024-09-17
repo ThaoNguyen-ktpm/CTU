@@ -149,7 +149,7 @@ function toast1({title='',message='',type='info',duration=2000}){
     function showSuccessToast1() {
         toast1({
             title: "Success",
-            message: "Xóa Khóa Học Thành Công!",
+            message: "Xóa Đơn Vị Thành Công!",
             type: "success",
             duration: 2000
         })
@@ -164,7 +164,7 @@ function toast1({title='',message='',type='info',duration=2000}){
     }
 
         function exportPhongBan(PhongBanId) {
-            if (confirm('Bạn có muốn tải xuống dữ liệu khóa học?')) {
+            if (confirm('Bạn có muốn tải xuống dữ liệu Đơn Vị?')) {
                 // Gửi yêu cầu xuống máy chủ để tạo và tải xuống tệp Excel
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', '/Excel/ExportLop/' + PhongBanId, true);

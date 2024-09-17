@@ -102,7 +102,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: "Đã Tồn Tại Loại Dự Án  !",
+          message: "Đã Tồn Tại Loại Dự Án !",
           type:"error",
           duration:2000
       })

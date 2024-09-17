@@ -20,8 +20,6 @@
                         <tr>
                             <th>Mã Dự Án</th>
                             <th>Tên Dự Án</th>
-                            <th>Thành Viên</th>
-                            <th>Giai Đoạn</th>
                             <th>Công Việc</th>
                             <th>Sơ Đồ</th>
                         </tr>
@@ -43,21 +41,6 @@
                 columns: [
                     { data: 'TenMa' },
                     { data: 'TenDuAn' },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '<a href="/DuAn/ThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
-                   
-                    }
-                    },
-                    
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '<a href="/DuAn/GiaiDoan?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-bars-staggered" style="color: #20679d; font-size:25px"></i></a>';                            
-                   
-                    }
-                    },
                     {
                         data: null,
                         render: function(data, type, row) {

@@ -142,7 +142,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: " Đơn Vị Đã Tồn Tại !",
+          message: " Nhận Công Việc Thất Bại !",
           type:"error",
           duration:2000
       })

@@ -177,7 +177,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: " Đơn Vị Đã Tồn Tại !",
+          message: " Thất Bại !",
           type:"error",
           duration:2000
       })
@@ -186,7 +186,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Thêm Đơn Vị Thành Công !",
+        message: " Thành Công !",
         type:"success",
         duration:2000
       })

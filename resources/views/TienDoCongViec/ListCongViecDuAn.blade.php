@@ -8,8 +8,9 @@
                             <th>Tên Công Việc</th>
                             <th>Trạng Thái</th>
                             <th>Ngày Bắt Đầu</th>
-                            <th>Ngày Kết Thúc</th>
+                            <th>Ngày Đến Hẹn</th>
                             <th>Thành Viên</th>
+                            <th>Export</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -82,6 +83,12 @@
                         return '<a href="/DuAn/CongViecThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
                    
                     }
+                },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return '<button class="btn btn-success" ><a href="/Excel/ExportCongViec/'+row.id+'"><i class="fa-solid fa-file-export" style="color: #ffffff;margin:0"></i></a> </button>';
+                        }
                     }
                 ]
             });
