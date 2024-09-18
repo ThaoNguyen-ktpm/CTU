@@ -1,5 +1,13 @@
 @extends('layouts/layoutAdmin')
 @section('content')
+<style>
+  h3 {
+      text-align: center;
+      /* Căn giữa tiêu đề */
+      margin: 10px 0;
+      /* Khoảng cách trên dưới */
+  }
+</style>
 <div class="col">
 <div class="container">
   <h2 class=" text-weight">Cập Nhật Công Việc<small></small></h2>
@@ -95,7 +103,7 @@
   </form>
 </div>
 </div>
-<div id="toast1"></div>
+<div id="toast1" ></div>
 <script src="{{ asset('js/formvalidation.js') }}"></script>
 
 <script>
@@ -201,11 +209,11 @@
         <div class="toast1_icon">
         <i class="${icon}"></i>         
         </div>
-        <div class="toast1_body">
+        <div class="toast1_body" style="margin-top:0, padding-top : 0">
         <!-- Tiêu đề -->
-        <h3 class="toast1_title">${title}</h3>
+        <h3 class="toast1_title"  margin: 0px !important>${title}</h3>
         <!-- Nội dung -->
-        <p class="toast1_msg">${message}</p>
+        <p class="toast1_msg" margin: 0px !important >${message}</p>
         
         </div>
         <!-- Nút Close -->
@@ -219,7 +227,7 @@
     function showErrorToast1(){
       toast1({
           title: "Error",
-          message: "Đã Tồn Tại Giai Đoạn  !",
+          message: "Cập Nhật Thất Bại !",
           type:"error",
           duration:2000
       })
@@ -235,7 +243,7 @@
     function showSuccessToast1(){
       toast1({
         title: "Success",
-        message: "Cập Nhật Công Việc Thành Công !",
+        message: "Cập Nhật Thành Công !",
         type:"success",
         duration:2000
       })

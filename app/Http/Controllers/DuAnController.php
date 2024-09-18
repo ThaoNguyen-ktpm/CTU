@@ -375,7 +375,8 @@ class DuAnController extends Controller
             $duAn->NgayKetThuc = $request->NgayKetThucDuAn;
             $duAn->NgayBatDau = $request->NgayBatDauDuAn;
             $duAn->TrangThai = 1;
-            $duAn->MaNguoiTao = 1;
+            $sessionUserId = Session::get('sessionUserId');
+            $duAn->MaNguoiTao = $sessionUserId;
             $duAn->IsActive = true;
             $duAn->save();
 

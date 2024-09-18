@@ -1,6 +1,12 @@
 @extends('layouts/layoutDetails')
 @section('content')
 <style>
+    h3 {
+        text-align: center;
+        /* Căn giữa tiêu đề */
+        margin: 10px 0;
+        /* Khoảng cách trên dưới */
+    }
     .submit-btn {
     transform: translateX(0px);
     margin-top: 20px;

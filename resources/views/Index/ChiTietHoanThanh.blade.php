@@ -1,5 +1,6 @@
 @extends('layouts/layoutDetails')
 @section('content')
+
 <style>
     .submit-btn {
     transform: translateX(0px);

@@ -1,6 +1,13 @@
 @extends('layouts/layoutAdmin')
 @section('content')
 <style>
+  h3 {
+      text-align: center;
+      /* Căn giữa tiêu đề */
+      margin: 10px 0;
+      /* Khoảng cách trên dưới */
+  }
+
 .custom-select {
   position: relative;
   display: inline-block;
@@ -385,6 +392,17 @@ function loadNguoiDungData(maDonVi) {
 document.addEventListener('DOMContentLoaded', function () {
     let soLuongGiaiDoan = 1;
 
+
+    function toggleSuaGiaiDoanButton() {
+        const suaGiaiDoanButton = document.getElementById('suaGiaiDoanButton');
+        if (soLuongGiaiDoan <= 1) {
+            suaGiaiDoanButton.style.display = 'none';  // Ẩn nút nếu chỉ còn 1 giai đoạn
+        } else {
+            suaGiaiDoanButton.style.display = 'inline-block';  // Hiện nút nếu có hơn 1 giai đoạn
+        }
+    }
+
+
     function updateSelectOptions() {
         const selectedValues = Array.from(document.querySelectorAll('select[name="MaGiaiDoan[]"]'))
             .map(select => select.value)
@@ -515,6 +533,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Cập nhật các tùy chọn cho tất cả các select sau khi thêm giai đoạn mới
     updateSelectOptions();
+    toggleSuaGiaiDoanButton();  
 }
 
     function suaGiaiDoan() {
@@ -522,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let giaiDoanDivs = giaiDoanContainer.querySelectorAll('.group');
 
     let count = 0; // Biến đếm số giai đoạn đã xóa
-    while (giaiDoanDivs.length > 1 && count < 4) {  // Xóa tối đa 3 giai đoạn, nhưng không xóa giai đoạn mặc định
+    while (giaiDoanDivs.length > 1 && count < 5) {  // Xóa tối đa 3 giai đoạn, nhưng không xóa giai đoạn mặc định
         const lastGiaiDoanDiv = giaiDoanDivs[giaiDoanDivs.length - 1];
 
         if (!lastGiaiDoanDiv.closest('.macdinh')) {  // Kiểm tra nếu giai đoạn cuối cùng không phải là giai đoạn mặc định
@@ -532,17 +551,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Cập nhật danh sách giai đoạn sau khi xóa
         giaiDoanDivs = giaiDoanContainer.querySelectorAll('.group');
-    }
-
+    } 
+    
     if (count > 0) {
-        soLuongGiaiDoan--;  // Giảm số lượng giai đoạn sau khi xóa 3 lần
+        soLuongGiaiDoan--;  // Giảm số lượng giai đoạn sau khi xóa 5 lần
     }
+    toggleSuaGiaiDoanButton();  
 }
 
 
     // Gán sự kiện click cho các nút sau khi DOM đã được tải
     document.getElementById('themGiaiDoanButton').addEventListener('click', themGiaiDoan);
     document.getElementById('suaGiaiDoanButton').addEventListener('click', suaGiaiDoan);
+    toggleSuaGiaiDoanButton();  
 });
 
 

@@ -270,7 +270,9 @@ class CongViecController extends Controller
 
         $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
         $CongViec->TrangThai = 1;
-        $CongViec->MaNguoiTao = 1;
+        $sessionUserId = Session::get('sessionUserId');
+        $CongViec->MaNguoiTao = $sessionUserId;
+   
         $CongViec->IsActive = true;
         $CongViec->save();
     
@@ -413,8 +415,39 @@ class CongViecController extends Controller
             if ($existingCongViec > 0) {
                 return response()->json(['success' => false, 'message' => 'Giá trị Tên Công Việc đã tồn tại']);
             }
-            // Tạo công việc mới
+        
             $CongViec = congviec::find($id);
+
+             // Kiểm tra trạng thái và sự thay đổi ngày
+            if ($CongViec->TrangThai == 4) {
+                $dateChanged = $CongViec->NgayKetThuc != $request->NgayKetThuc;
+
+                if ($dateChanged) {
+                    // Cập nhật ngày và các thông tin khác
+                    $CongViec->TenCongViec = $request->TenCongViec;
+                    $CongViec->MoTa = $request->MoTa;
+                    $CongViec->NgayBatDau = $request->NgayBatDau;
+                    $CongViec->NgayKetThuc = $request->NgayKetThuc;
+                    $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
+                    $CongViec->TrangThai = 1; // Trạng thái mới
+                    $sessionUserId = Session::get('sessionUserId');
+                    $CongViec->MaNguoiTao = $sessionUserId;
+                    $CongViec->IsActive = true; // Còn hoạt động
+                    $CongViec->save();
+
+                    // Tìm bản ghi `giaoviecs` theo `MaCongViec`
+                    $giaoviecs = giaoviec::where('MaCongViec', $id)->get();
+
+                    // Duyệt qua tất cả các bản ghi giao việc
+                    foreach ($giaoviecs as $giaoviec) {
+                        // Kiểm tra trạng thái của từng bản ghi
+                        if ($giaoviec->TrangThai == 4) {
+                            $giaoviec->TrangThai = 2; // Chuyển trạng thái từ 4 thành 2
+                            $giaoviec->save();
+                        }
+                    }
+                }
+            }
             $CongViec->TenCongViec = $request->TenCongViec;
             $CongViec->MoTa = $request->MoTa;
         
@@ -422,7 +455,9 @@ class CongViecController extends Controller
             $CongViec->NgayKetThuc = $request->NgayKetThuc;
             $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
             $CongViec->TrangThai = 1;
-            $CongViec->MaNguoiTao = 1;
+            $sessionUserId = Session::get('sessionUserId');
+            $CongViec->MaNguoiTao = $sessionUserId;
+        
             $CongViec->IsActive = true;
             $CongViec->save();
         

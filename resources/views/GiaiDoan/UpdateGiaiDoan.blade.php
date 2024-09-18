@@ -1,6 +1,13 @@
 @extends('layouts/layoutAdmin')
 @section('content')
- 
+<style>
+  h3 {
+      text-align: center;
+      /* Căn giữa tiêu đề */
+      margin: 10px 0;
+      /* Khoảng cách trên dưới */
+  }
+</style>
 <div class="col">
 <div class="container">
   <h2 class=" text-weight">Cập Nhật Giai Đoạn<small></small></h2>

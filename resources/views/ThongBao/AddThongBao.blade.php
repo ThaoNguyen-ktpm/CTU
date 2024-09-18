@@ -1,6 +1,12 @@
 @extends('layouts/layoutAdmin')
 @section('content')
 <style>
+  h3 {
+      text-align: center;
+      /* Căn giữa tiêu đề */
+      margin: 10px 0;
+      /* Khoảng cách trên dưới */
+  }
 .custom-select {
   position: relative;
   display: inline-block;
