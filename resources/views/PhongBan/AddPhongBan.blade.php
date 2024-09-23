@@ -35,7 +35,7 @@
       <div class="form-check">
           <input class="form-check-input"  type="checkbox" name="MaNguoiDung[]" value="{{$NguoiDung1->id}}" required>
           <label class="form-check-label">
-              {{$NguoiDung1->Name}} 
+              {{$NguoiDung1->UserName}} 
           </label>
       </div>
       @endforeach
@@ -79,7 +79,7 @@ function loadNguoiDungData(maDonVi) {
                 var checkboxHtml = `
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="MaNguoiDung[]" value="${nguoiDung.id}">
-                        <label class="form-check-label">${nguoiDung.Name}</label>
+                        <label class="form-check-label">${nguoiDung.UserName}</label>
                     </div>
                 `;
                 nguoiDungListContainer.append(checkboxHtml);

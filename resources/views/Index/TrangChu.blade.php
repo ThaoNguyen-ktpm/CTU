@@ -208,13 +208,23 @@
             
             <tr>
                 <td style="font-size: 14px;text-align: left;font-family: monospace;">Tài Liệu</td>
-                <td style="font-size: 14px;text-align: right;font-family: monospace;"><a href="{{$NhanViec1->LinkTaiLieu}}" class="link-tai-lieu">link tài liệu</a></td>
+                <td style="font-size: 14px;text-align: right;font-family: monospace;">
+                    @if(!empty($NhanViec1->LinkTaiLieu))
+                        <a href="{{$NhanViec1->LinkTaiLieu}}" class="link-tai-lieu">Tài liệu tham khảo</a>
+                    @else
+                        Không có tài liệu
+                    @endif
+                </td>
+                
             </tr>
             
         </table>
            <form  method="POST" action="/ChiTiet/CongViec/{{ $NhanViec1->id }}" novalidate>
                 @csrf 
                 <button class="button" type="submit">Xem Chi Tiết</button>
+                @if( $NhanViec1->IsSapDenHen == true)
+                <div class="button" style="    transform: translateX(136px) translateY(-266px); z-index: 10;    background-color: #ff934a"><div style="    color: #8d0505;font-weight: 500;">Sắp đến hẹn!</div></div>
+                @endif
             </form>
         </li>
         @endforeach
@@ -257,9 +267,13 @@
 
             </tr>
         </table>
-        <form method="POST" action="/CapNhatTienDo/CongViec/{{$DangThucHien1->id}}/{{$DangThucHien1->idcapnhattiendo ?? 'null'}}" novalidate>
+        <form method="POST" style="height: 80px" action="/CapNhatTienDo/CongViec/{{$DangThucHien1->id}}/{{$DangThucHien1->idcapnhattiendo ?? 'null'}}" novalidate>
                 @csrf 
                 <button class="button" type="submit">Cập Nhật Tiến Độ</button>
+                @if( $DangThucHien1->IsSapDenHen == true)
+                <div class="button" style="    transform: translateX(136px) translateY(-266px);z-index: 10;    background-color: #ff934a"><div style="    color: #8d0505;font-weight: 500;">Sắp đến hẹn!</div></div>
+                @endif
+
             </form>
           </div>
         </div>
@@ -298,7 +312,11 @@
                         </tr>
                         <tr>
                             <td>Tài Liệu</td>
-                            <td><a href="{{$HoanThanh1->LinkTaiLieu}}" class="link-tai-lieu">link tài liệu</a></td>
+                            <td> @if(!empty($HoanThanh1->LinkTaiLieu))
+                                <a href="{{$HoanThanh1->LinkTaiLieu}}" class="link-tai-lieu">Tài liệu tham khảo</a>
+                            @else
+                                Không có tài liệu
+                            @endif</td>
                         </tr>
                     </table>
                     <form  method="POST" action="/ChiTietHoanThanh/CongViec/{{$HoanThanh1->id }}" novalidate>
@@ -340,7 +358,11 @@
                     </tr>
                     <tr>
                         <td style="font-size: 14px;text-align: left;font-family: monospace;">Tài Liệu</td>
-                        <td style="font-size: 14px;text-align: right;font-family: monospace;"><a href="{{$TreHen1->LinkTaiLieu}}" class="link-tai-lieu">link tài liệu</a></td>
+                        <td style="font-size: 14px;text-align: right;font-family: monospace;"> @if(!empty($TreHen1->LinkTaiLieu))
+                            <a href="{{$TreHen1->LinkTaiLieu}}" class="link-tai-lieu">Tài liệu tham khảo</a>
+                        @else
+                            Không có tài liệu
+                        @endif</td>
                     </tr>
             
                     </table>
@@ -533,27 +555,41 @@ function updateNhanCongViec(data) {
         li.style.margin = '13px';
         
         li.innerHTML = `
-            <span class="overlay1" style="text-align: center;"><div style=" padding-top: 5px;color: aliceblue;font-variant-caps: all-petite-caps; font-size: 20px;">${nhanViec.TenDuAn}</div></span>
-         
-            <table width="100%" cellspacing="0" style="margin-top: 55px;">
-                <tr>
-                    <td style="font-size: 14px; text-align: left;font-family: monospace;">Tên Công Việc</td>
-                    <td style="font-size: 14px;text-align: right;font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px">${nhanViec.TenCongViec}</td>
-                </tr>
-                <tr>
-                    <td style="font-size: 14px;text-align: left;">Thời Gian</td>
-                   <td style="font-size: 12px;text-align: right;">${new Date(nhanViec.NgayBatDau).toLocaleDateString('vi-VN')} đến ${new Date(nhanViec.NgayKetThuc).toLocaleDateString('vi-VN')}</td>
-                  </tr>
-                <tr>
-                    <td style="font-size: 14px;text-align: left;font-family: monospace;">Tài Liệu</td>
-                    <td style="font-size: 14px;text-align: right;font-family: monospace;"><a href="${nhanViec.LinkTaiLieu}" class="link-tai-lieu">link tài liệu</a></td>
-                </tr>
-            </table>
-            <form  method="POST" action="/ChiTiet/CongViec/${nhanViec.id}" novalidate>
-              @csrf 
-                <button class="button" type="submit">Xem Chi Tiết</button>
-            </form>
-        `;
+    <span class="overlay1" style="text-align: center;">
+        <div style="padding-top: 5px; color: aliceblue; font-variant-caps: all-petite-caps; font-size: 20px;">
+            ${nhanViec.TenDuAn}
+        </div>
+    </span>
+    <table width="100%" cellspacing="0" style="margin-top: 55px;">
+        <tr>
+            <td style="font-size: 14px; text-align: left; font-family: monospace;">Tên Công Việc</td>
+            <td style="font-size: 14px; text-align: right; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;">
+                ${nhanViec.TenCongViec}
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size: 14px; text-align: left;">Thời Gian</td>
+            <td style="font-size: 12px; text-align: right;">
+                ${new Date(nhanViec.NgayBatDau).toLocaleDateString('vi-VN')} đến ${new Date(nhanViec.NgayKetThuc).toLocaleDateString('vi-VN')}
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size: 14px; text-align: left; font-family: monospace;">Tài Liệu</td>
+            <td style="font-size: 14px; text-align: right; font-family: monospace;">
+                <a href="${nhanViec.LinkTaiLieu}" class="link-tai-lieu">Tài liệu tham khảo</a>
+            </td>
+        </tr>
+    </table>
+    <form method="POST" action="/ChiTiet/CongViec/${nhanViec.id}" novalidate>
+        @csrf 
+        <button class="button" type="submit">Xem Chi Tiết</button>
+        ${nhanViec.IsSapDenHen ? `
+            <div class="button" style="transform: translateX(136px) translateY(-266px); z-index: 10; background-color: #ff934a;">
+                <div style="color: #8d0505; font-weight: 500;">Sắp đến hẹn!</div>
+            </div>
+        ` : ''}
+    </form>
+`;
 
         carouselUl.appendChild(li);
     });
@@ -616,6 +652,11 @@ function updateDangThucHien(data) {
                 <form method="POST" action="/CapNhatTienDo/CongViec/${dangThucHien.id}/${dangThucHien.idcapnhattiendo ?? 'null'}" novalidate>
                     @csrf 
                     <button class="button" type="submit">Cập Nhật Tiến Độ</button>
+                      ${dangThucHien.IsSapDenHen ? `
+                        <div class="button" style="transform: translateX(136px) translateY(-266px); z-index: 10; background-color: #ff934a;">
+                            <div style="color: #8d0505; font-weight: 500;">Sắp đến hẹn!</div>
+                        </div>
+                    ` : ''}
                 </form>
             </div>
         `;
@@ -651,7 +692,7 @@ function updateHoanThanh(data) {
                     </tr>
                     <tr>
                         <td>Tài Liệu</td>
-                        <td><a href="${hoanThanh.LinkTaiLieu}" class="link-tai-lieu">link tài liệu</a></td>
+                        <td><a href="${hoanThanh.LinkTaiLieu}" class="link-tai-lieu">Tài liệu tham khảo</a></td>
                     </tr>
                 </table>
                 <form method="POST" action="/ChiTietHoanThanh/CongViec/${hoanThanh.id}" novalidate>
@@ -692,7 +733,7 @@ function updateTreHen(data) {
                     </tr>
                     <tr>
                         <td style="font-size: 14px;text-align: left;font-family: monospace;">Tài Liệu</td>
-                        <td style="font-size: 14px;text-align: right;font-family: monospace;"><a href="${treHen.LinkTaiLieu}" class="link-tai-lieu">link tài liệu</a></td>
+                        <td style="font-size: 14px;text-align: right;font-family: monospace;"><a href="${treHen.LinkTaiLieu}" class="link-tai-lieu">Tài liệu tham khảo</a></td>
                     </tr>
                 </table>
             </div>

@@ -34,16 +34,20 @@
             <td class="text-left">{{ \Carbon\Carbon::parse($CongViec[0]->NgayBatDau)->format('d-m-Y') }} Đến {{ \Carbon\Carbon::parse($CongViec[0]->NgayKetThuc)->format('d-m-Y') }}</td>
         </tr>
         <tr>
-            <td class="text-left">Link tài liệu</td>
+            <td class="text-left">Tài liệu </td>
             <td class="text-left">
-               <a href="{{$CongViec[0]->LinkTaiLieu}}" class="link-tai-lieu">Link tài liệu</a>
+              @if(!empty($CongViec[0]->LinkTaiLieu))
+              <a href="{{$CongViec[0]->LinkTaiLieu}}" class="link-tai-lieu">Tài liệu tham khảo</a>
+          @else
+              Không có tài liệu
+          @endif
             </td>
         </tr>
         <tr>
             <td class="text-left"><div class="cmt">Mô tả công việc</div></td>
             <td class="text-left">
                 <div class="group">
-                    <textarea id="ghichuInput" name="GhiChu" class="form-control textarea" readonly>{{$CongViec[0]->MoTa}}</textarea>
+                    <textarea id="ghichuInput" style="min-height: 100px;" name="GhiChu" class="form-control textarea" readonly>{{$CongViec[0]->MoTa}}</textarea>
                     <span class="highlight"></span>
                     <span class="bar"></span>
                 </div>

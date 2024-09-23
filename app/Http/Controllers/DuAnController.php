@@ -42,16 +42,30 @@ class DuAnController extends Controller
      public function SoDoCongViecData($id)
      {
       
-         $SoDo = DB::select('SELECT congviecs.*, giaidoans.TenGiaiDoan ,thuchiens.NgayBatDau as GiaiDoanDau ,thuchiens.NgayKetThuc as GiaiDoanCuoi  ,duans.NgayBatDau AS NgayBatDauDuAn ,duans.NgayKetThuc AS NgayKetThucDuAn
-         FROM giaidoans,thuchiens, congviecs ,duans
-         WHERE congviecs.MaDuAn = ?
-         AND congviecs.MaThucHien = thuchiens.id  
-         AND congviecs.MaDuAn = duans.id  
-         AND thuchiens.MaGiaiDoan = giaidoans.id
-        AND congviecs.IsActive = true
-        AND duans.IsActive = true
-        AND thuchiens.IsActive = true
-        AND giaidoans.IsActive = true',[$id]);
+         $SoDo = DB::select('SELECT 
+                            congviecs.*, 
+                            giaidoans.TenGiaiDoan,
+                            thuchiens.NgayBatDau AS GiaiDoanDau,
+                            thuchiens.NgayKetThuc AS GiaiDoanCuoi,
+                            duans.NgayBatDau AS NgayBatDauDuAn,
+                            duans.NgayKetThuc AS NgayKetThucDuAn
+                        FROM 
+                            giaidoans,
+                            thuchiens, 
+                            congviecs,
+                            duans
+                        WHERE 
+                            congviecs.MaDuAn = ?
+                            AND congviecs.MaThucHien = thuchiens.id  
+                            AND congviecs.MaDuAn = duans.id  
+                            AND thuchiens.MaGiaiDoan = giaidoans.id
+                            AND congviecs.IsActive = true
+                            AND duans.IsActive = true
+                            AND thuchiens.IsActive = true
+                            AND giaidoans.IsActive = true
+                        ORDER BY 
+                            thuchiens.ThuGiaiDoan ASC;
+                        ',[$id]);
          return response()->json(['data' => $SoDo]);
      }
    public function listTienDoCongViec()
@@ -372,6 +386,7 @@ class DuAnController extends Controller
             $duAn->QuyMo = $request->QuyMo;
           
             $duAn->Mota = $request->MoTa;
+            $duAn->MaDonVi = $request->MaDonVi;
             $duAn->NgayKetThuc = $request->NgayKetThucDuAn;
             $duAn->NgayBatDau = $request->NgayBatDauDuAn;
             $duAn->TrangThai = 1;
@@ -664,29 +679,34 @@ class DuAnController extends Controller
 
     // Lấy thông tin giai đoạn và công việc
     $ListLopHoc = DB::select('SELECT 
-                    thuchiens.id, 
-                    thuchiens.NgayBatDau, 
-                    thuchiens.NgayKetThuc, 
-                    giaidoans.TenGiaiDoan,
-                    COUNT(congviecs.id) AS soLuongCongViec,
-                    SUM(CASE WHEN congviecs.TrangThai IN (1, 2) THEN 1 ELSE 0 END) AS soLuongDangThucHien,
-                    SUM(CASE WHEN congviecs.TrangThai = 3 THEN 1 ELSE 0 END) AS soLuongHoanThanh,
-                    SUM(CASE WHEN congviecs.TrangThai NOT IN (1, 2, 3) THEN 1 ELSE 0 END) AS soLuongTreHen
+                giaidoans.TenGiaiDoan,
+                    congviecs.TenCongViec,
+                    congviecs.NgayBatDau,
+                    congviecs.NgayKetThuc,
+                    congviecs.TrangThai,
+                    GROUP_CONCAT(giaoviecs.id SEPARATOR ", ") AS MaGiaoViecid,
+                    thuchiens.ThuGiaiDoan
                 FROM 
-                    thuchiens
+                    congviecs
                 JOIN 
-                    duans ON thuchiens.MaDuAn = duans.id
+                    giaoviecs ON giaoviecs.MaCongViec = congviecs.id
                 LEFT JOIN 
-                    giaidoans ON thuchiens.MaGiaiDoan = giaidoans.id
+                    thuchiens ON congviecs.MaThucHien = thuchiens.id
                 LEFT JOIN 
-                    congviecs ON thuchiens.id = congviecs.MaThucHien
+                giaidoans ON thuchiens.MaGiaiDoan = giaidoans.id
                 WHERE 
-                    thuchiens.MaDuAn = ?
+                    congviecs.MaDuAn = ?
                 GROUP BY 
-                    thuchiens.id, 
-                    giaidoans.TenGiaiDoan,
-                    thuchiens.NgayBatDau, 
-                    thuchiens.NgayKetThuc', [$id]);
+                giaidoans.TenGiaiDoan,
+                    congviecs.TenCongViec,
+                    congviecs.NgayBatDau,
+                    congviecs.NgayKetThuc,
+                    congviecs.TrangThai,
+                    thuchiens.ThuGiaiDoan
+                ORDER BY 
+                    thuchiens.ThuGiaiDoan ASC;
+
+                ', [$id]);
 
     // Tạo file Excel
     $spreadsheet = new Spreadsheet();
@@ -748,68 +768,145 @@ class DuAnController extends Controller
     $sheet->getStyle('B2:B8')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     $sheet->getStyle('B9')->getAlignment()->setWrapText(true); // Enable wrap text for Thành Viên
 
-    // Bảng giai đoạn và công việc
-    $row = 11; // Điều chỉnh dòng bắt đầu cho bảng giai đoạn
-    $sheet->setCellValue('A' . $row, 'Các giai đoạn');
-    $sheet->setCellValue('B' . $row, 'Thời gian giai đoạn');
-    $sheet->setCellValue('C' . $row, 'Số lượng công việc');
-    $sheet->setCellValue('D' . $row, 'Đang thực hiện');
-    $sheet->setCellValue('E' . $row, 'Hoàn thành');
-    $sheet->setCellValue('F' . $row, 'Trễ hẹn');
+   // Bảng giai đoạn và công việc
+$row = 11; // Điều chỉnh dòng bắt đầu cho bảng giai đoạn
+$sheet->setCellValue('A' . $row, 'Các giai đoạn');
+$sheet->setCellValue('B' . $row, 'Công việc');
+$sheet->setCellValue('C' . $row, 'Thời gian');
+$sheet->setCellValue('D' . $row, 'Trạng thái');
+
+// Định dạng tiêu đề bảng giai đoạn
+$sheet->getStyle('A' . $row . ':D' . $row)->getFont()->setBold(true);
+$sheet->getStyle('A' . $row . ':D' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+$sheet->getStyle('A' . $row . ':D' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+// Điều chỉnh độ rộng của cột
+foreach (range('A', 'D') as $columnID) {
+    $sheet->getColumnDimension($columnID)->setAutoSize(true);
+}
+
+// Thêm dữ liệu cho các giai đoạn
+$row++;
+$currentStage = null;
+
+foreach ($ListLopHoc as $giaiDoan) {
+    $ngayBatDau = Carbon::parse($giaiDoan->NgayBatDau)->format('d/m/Y');
+    $ngayKetThuc = Carbon::parse($giaiDoan->NgayKetThuc)->format('d/m/Y');
     
-    // Định dạng tiêu đề bảng giai đoạn
-    $sheet->getStyle('A' . $row . ':F' . $row)->getFont()->setBold(true);
-    $sheet->getStyle('A' . $row . ':F' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    $sheet->getStyle('A' . $row . ':F' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-    // Điều chỉnh độ rộng của cột
-    foreach (range('A', 'F') as $columnID) {
-        $sheet->getColumnDimension($columnID)->setAutoSize(true);
-    }
-
-    // Thêm dữ liệu cho các giai đoạn
-    $row++;
-    $totalCongViec = 0;
-    $totalDangThucHien = 0;
-    $totalHoanThanh = 0;
-    $totalTreHen = 0;
-
-    foreach ($ListLopHoc as $giaiDoan) {
-        $ngayBatDau = Carbon::parse($giaiDoan->NgayBatDau)->format('d/m/Y');
-        $ngayKetThuc = Carbon::parse($giaiDoan->NgayKetThuc)->format('d/m/Y');
+    if ($currentStage !== $giaiDoan->TenGiaiDoan) {
+        // Nếu giai đoạn thay đổi, in tên giai đoạn
         $sheet->setCellValue('A' . $row, $giaiDoan->TenGiaiDoan);
-        $sheet->setCellValue('B' . $row, "$ngayBatDau - $ngayKetThuc");
-        $sheet->setCellValue('C' . $row, $giaiDoan->soLuongCongViec);
-        $sheet->setCellValue('D' . $row, $giaiDoan->soLuongDangThucHien);
-        $sheet->setCellValue('E' . $row, $giaiDoan->soLuongHoanThanh);
-        $sheet->setCellValue('F' . $row, $giaiDoan->soLuongTreHen);
-
-        // Cộng dồn các giá trị
-        $totalCongViec += $giaiDoan->soLuongCongViec;
-        $totalDangThucHien += $giaiDoan->soLuongDangThucHien;
-        $totalHoanThanh += $giaiDoan->soLuongHoanThanh;
-        $totalTreHen += $giaiDoan->soLuongTreHen;
-
-        $row++;
+        $currentStage = $giaiDoan->TenGiaiDoan;
+        $sheet->getStyle('A' . $row)->getFont()->setSize(16)->setBold(true)->setItalic(true); // Kích thước chữ cho giai đoạn
+    } else {
+        // Nếu giai đoạn giống nhau, để ô trống
+        $sheet->setCellValue('A' . $row, '');
     }
 
-    // Thêm dòng tổng hợp
-    $sheet->setCellValue('A' . $row, 'Tổng');
-    $sheet->setCellValue('C' . $row, $totalCongViec);
-    $sheet->setCellValue('D' . $row, $totalDangThucHien);
-    $sheet->setCellValue('E' . $row, $totalHoanThanh);
-    $sheet->setCellValue('F' . $row, $totalTreHen);
+    // Thêm thông tin công việc
+    $sheet->setCellValue('B' . $row, $giaiDoan->TenCongViec);
+    $sheet->getStyle('B' . $row)->getFont()->setSize(14); // Đặt kích thước chữ cho công việc
+    $sheet->setCellValue('C' . $row, "$ngayBatDau - $ngayKetThuc");
 
-    // Định dạng dòng tổng hợp
-    $sheet->getStyle('A' . $row . ':F' . $row)->getFont()->setBold(true);
-    $sheet->getStyle('A' . $row . ':F' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-    $sheet->getStyle('A' . $row . ':F' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    // Quy đổi trạng thái
+    switch ($giaiDoan->TrangThai) {
+        case 1:
+        case 2:
+            $statusText = 'Đang thực hiện';
+            break;
+        case 3:
+            $statusText = 'Hoàn thành';
+            break;
+        case 4:
+            $statusText = 'Trễ hẹn';
+            break;
+        default:
+            $statusText = 'Không xác định';
+            break;
+    }
+    $sheet->setCellValue('D' . $row, $statusText);
 
-    // Định dạng bảng giai đoạn
-    $sheet->getStyle('A11:F' . ($row))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-    $sheet->getStyle('A11:F' . ($row))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    $sheet->getStyle('A11:F' . ($row))->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+    // Lấy thông tin người nhận việc
+    $maGiaoViecid = $giaiDoan->MaGiaoViecid; // Giả sử MaGiaoViecid chứa nhiều ID
+    $maGiaoViecidArray = explode(', ', $maGiaoViecid); // Tách chuỗi thành mảng nếu có nhiều ID
+    
+    // Tiêu đề cột
+    $row++;
+    $sheet->setCellValue('C' . $row, 'Người nhận việc'); // Dời qua bên phải 1 cột
+    $sheet->setCellValue('D' . $row, 'Email');
+    $sheet->setCellValue('E' . $row, 'SDT');
+    $sheet->setCellValue('F' . $row, 'Tiến độ');
+    $sheet->setCellValue('G' . $row, 'Trạng thái'); // Cột trạng thái
 
+    // Định dạng tiêu đề bảng
+    $sheet->getStyle('C' . $row . ':G' . $row)->getFont()->setBold(true);
+    $sheet->getStyle('C' . $row . ':G' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+    // Đặt độ rộng cho cột SDT và Trạng Thái
+    $sheet->getColumnDimension('E')->setWidth(120 / 7.5); // SDT
+    $sheet->getColumnDimension('G')->setWidth(120 / 7.5); // Trạng Thái
+
+    // Thêm thông tin người nhận việc
+    $row++;
+
+    foreach ($maGiaoViecidArray as $id) {
+        $assignees = DB::select('SELECT nguoidungs.UserName, nguoidungs.Email, nguoidungs.SDT, capnhattiendos.TienDo, giaoviecs.TrangThai
+                                  FROM giaoviecs
+                                  JOIN nguoidungs ON giaoviecs.MaNguoiDung = nguoidungs.id
+                                  LEFT JOIN capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
+                                  WHERE giaoviecs.id = ?
+                                  AND giaoviecs.IsActive = true 
+                                  AND nguoidungs.IsActive = true', [$id]);
+
+        foreach ($assignees as $assignee) {
+            // Quy đổi trạng thái
+            switch ($assignee->TrangThai) {
+                case 1:
+                case 2:
+                    $assigneeStatus = 'Đang thực hiện';
+                    break;
+                case 3:
+                    $assigneeStatus = 'Hoàn thành';
+                    break;
+                case 4:
+                    $assigneeStatus = 'Trễ hẹn';
+                    break;
+                default:
+                    $assigneeStatus = 'Không xác định';
+                    break;
+            }
+               // Đảm bảo Tiến Độ có %; nếu không có, gán là 0%
+               $tienDo = $assignee->TienDo ? $assignee->TienDo . '%' : '0%';
+
+
+            // In thông tin người nhận việc vào bảng
+            $sheet->setCellValue('C' . $row, $assignee->UserName);
+            $sheet->setCellValue('D' . $row, $assignee->Email);
+            $sheet->setCellValue('E' . $row, $assignee->SDT);
+            $sheet->setCellValue('F' . $row, $tienDo);
+            $sheet->setCellValue('G' . $row, $assigneeStatus);
+
+            // Căn giữa cho cột Trạng Thái
+            $sheet->getStyle('G' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+            // Đặt kích thước chữ cho thông tin người nhận việc
+            $sheet->getStyle('C' . $row . ':G' . $row)->getFont()->setSize(12);
+
+            $row++;
+        }
+    }
+    
+    // Thêm dòng trống sau bảng thông tin người nhận việc
+    $row += 1; // Tăng dòng cho khoảng cách
+
+    // Định dạng bảng thông tin người nhận việc
+    $sheet->getStyle('C' . ($row - count($maGiaoViecidArray) - 3) . ':G' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+}
+
+// Định dạng bảng giai đoạn
+$sheet->getStyle('A11:G' . ($row))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+$sheet->getStyle('A11:G' . ($row))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+$sheet->getStyle('A11:G' . ($row))->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
     // Tạo đối tượng writer và lưu file Excel
     $writer = new Xlsx($spreadsheet);
     $filename = 'DuAn_' . $TenMa . '.xlsx';
@@ -876,11 +973,11 @@ $startRowForGiaoViec = $row + 2;
 
 // Đặt tiêu đề và tiêu đề cột cho bảng giao việc
 $sheet->setCellValue('B' . $startRowForGiaoViec, 'Thông Tin Giao Việc');
-$sheet->setCellValue('B' . ($startRowForGiaoViec + 1), 'UserName');
+$sheet->setCellValue('B' . ($startRowForGiaoViec + 1), 'Người nhận việc');
 $sheet->setCellValue('C' . ($startRowForGiaoViec + 1), 'Email');
 $sheet->setCellValue('D' . ($startRowForGiaoViec + 1), 'SDT');
-$sheet->setCellValue('E' . ($startRowForGiaoViec + 1), 'Tiến Độ');
-$sheet->setCellValue('F' . ($startRowForGiaoViec + 1), 'Trạng Thái');
+$sheet->setCellValue('E' . ($startRowForGiaoViec + 1), 'Tiến độ');
+$sheet->setCellValue('F' . ($startRowForGiaoViec + 1), 'Trạng thái');
 
 // Căn lề và định dạng tiêu đề
 $sheet->getStyle('B' . $startRowForGiaoViec . ':F' . ($startRowForGiaoViec + 1))->getFont()->setBold(true);
@@ -928,6 +1025,117 @@ return response()->download(public_path($filename));
 
     
 }
+public function ExportNguoiDung($id) {
+// Truy vấn dữ liệu công việc và thông tin liên quan
+$tasks = DB::select('
+    SELECT duans.TenDuAn, 
+           congviecs.TenCongViec, 
+           congviecs.NgayBatDau, 
+           congviecs.NgayKetThuc, 
+           COALESCE(capnhattiendos.TienDo, 0) AS TienDo, 
+           giaoviecs.TrangThai 
+    FROM congviecs
+    JOIN giaoviecs ON giaoviecs.MaCongViec = congviecs.id
+    JOIN duans ON congviecs.MaDuAn = duans.id
+    LEFT JOIN capnhattiendos ON capnhattiendos.MaGiaoViec = giaoviecs.id
+    WHERE giaoviecs.MaNguoiDung = ?
+', [$id]);
 
+// Truy vấn tên người dùng
+$userName = DB::select('SELECT UserName FROM nguoidungs WHERE id = ?', [$id]);
+$userName = $userName ? $userName[0]->UserName : 'Người Dùng';
+
+// Tạo một đối tượng Spreadsheet mới
+$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setTitle('Danh sách công việc');
+
+// Đặt tiêu đề và tiêu đề cột
+$sheet->setCellValue('B1', 'Danh Sách Công Việc của ' . $userName);
+$sheet->setCellValue('B2', 'Tên Dự Án');
+$sheet->setCellValue('C2', 'Tên Công Việc');
+$sheet->setCellValue('D2', 'Ngày Bắt Đầu');
+$sheet->setCellValue('E2', 'Ngày Kết Thúc');
+$sheet->setCellValue('F2', 'Tiến Độ (%)');
+$sheet->setCellValue('G2', 'Trạng Thái');
+
+// Định dạng tiêu đề bảng
+$sheet->getStyle('B1')->getFont()->setBold(true)->setSize(14);
+$sheet->getStyle('B2:G2')->getFont()->setBold(true);
+$sheet->getStyle('B2:G2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+$sheet->getStyle('B2:G2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+// Khởi tạo các biến đếm
+$totalTasks = 0;
+$inProgressTasks = 0;
+$completedTasks = 0;
+$overdueTasks = 0;
+
+// Điền dữ liệu vào bảng
+$row = 3;
+foreach ($tasks as $task) {
+    $sheet->setCellValue('B' . $row, $task->TenDuAn);
+    $sheet->setCellValue('C' . $row, $task->TenCongViec);
+    $sheet->setCellValue('D' . $row, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel(new \DateTime($task->NgayBatDau)));
+    $sheet->setCellValue('E' . $row, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel(new \DateTime($task->NgayKetThuc)));
+    $sheet->setCellValue('F' . $row, $task->TienDo . '%');
+
+    // Xử lý trạng thái
+    $trangThai = match($task->TrangThai) {
+        1, 2 => 'Đang thực hiện',
+        3 => 'Hoàn thành',
+        4 => 'Trễ hạn',
+        default => 'Không xác định',
+    };
+    $sheet->setCellValue('G' . $row, $trangThai);
+
+    // Cập nhật bộ đếm
+    $totalTasks++;
+    if ($task->TrangThai == 1 || $task->TrangThai == 2) {
+        $inProgressTasks++;
+    } elseif ($task->TrangThai == 3) {
+        $completedTasks++;
+    } elseif ($task->TrangThai == 4) {
+        $overdueTasks++;
+    }
+
+    // Định dạng ngày
+    $sheet->getStyle('D' . $row . ':E' . $row)->getNumberFormat()->setFormatCode('dd/mm/yyyy');
+
+    $row++;
+}
+
+// Đặt kích thước cột tự động
+foreach (range('B', 'G') as $columnID) {
+    $sheet->getColumnDimension($columnID)->setAutoSize(true);
+}
+
+// Định dạng căn giữa cho tất cả các ô
+$sheet->getStyle('B3:G' . ($row - 1))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+// Thêm thông tin tổng kết vào cuối bảng
+$summaryRow = $row + 2;
+$sheet->setCellValue('B' . $summaryRow, 'Tổng số công việc: ' . $totalTasks);
+$sheet->setCellValue('B' . ($summaryRow + 1), 'Số công việc đang thực hiện: ' . $inProgressTasks);
+$sheet->setCellValue('B' . ($summaryRow + 2), 'Số công việc hoàn thành: ' . $completedTasks);
+$sheet->setCellValue('B' . ($summaryRow + 3), 'Số công việc trễ hạn: ' . $overdueTasks);
+
+// Định dạng tổng kết
+$sheet->getStyle('B' . $summaryRow . ':B' . ($summaryRow + 3))->getFont()->setBold(true);
+
+// Kẽ đường viền cho nội dung công việc
+$sheet->getStyle('B3:G' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+// Kẽ đường viền cho phần tổng kết
+$sheet->getStyle('B' . $summaryRow . ':B' . ($summaryRow + 3))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+// Tạo đối tượng writer và lưu file Excel
+$filename = 'DanhSachCongViec_' . $userName . '.xlsx';
+$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+$writer->save(public_path($filename));
+
+// Trả về file tải xuống
+return response()->download(public_path($filename));
+}
 
 }

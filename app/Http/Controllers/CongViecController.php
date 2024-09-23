@@ -20,19 +20,22 @@ class CongViecController extends Controller
    public function list()
    {
        $title = "Danh Sách Công Việc";
-       return view('CongViec.ListCongViec', compact('title'));
+       $DuAn = duan::where('IsActive', 1)->get();
+       $GiaiDoan = giaidoan::where('IsActive', 1)->get();
+       return view('CongViec.ListCongViec', compact('title','DuAn','GiaiDoan'));
    }
    public function getCongViec()
    {
-        $CongViec = DB::select('SELECT congviecs.* ,duans.TenDuAn ,duans.TenMa , giaidoans.TenGiaiDoan 
-        FROM congviecs , duans, thuchiens, giaidoans 
-        WHERE congviecs.MaDuAn = duans.id 
-        AND congviecs.MaThucHien = thuchiens.id 
-        AND thuchiens.MaGiaiDoan = giaidoans.id
-        AND congviecs.IsActive = true
-        AND duans.IsActive = true
-        AND thuchiens.IsActive = true
-        AND giaidoans.IsActive = true');
+        $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn, duans.TenMa, giaidoans.TenGiaiDoan 
+                                FROM congviecs 
+                                JOIN duans ON congviecs.MaDuAn = duans.id 
+                                JOIN thuchiens ON congviecs.MaThucHien = thuchiens.id 
+                                JOIN giaidoans ON thuchiens.MaGiaiDoan = giaidoans.id
+                                WHERE congviecs.IsActive = true
+                                AND duans.IsActive = true
+                                AND thuchiens.IsActive = true
+                                AND giaidoans.IsActive = true
+                                ORDER BY congviecs.id ASC;');
        return response()->json(['data' => $CongViec]);
    }
     public function addview()
@@ -262,22 +265,14 @@ class CongViecController extends Controller
         $CongViec->MoTa = $request->MoTa;
         $CongViec->MaDuAn = $request->MaDuAn;
         $CongViec->MaThucHien = $request->MaGiaiDoan;
-
         $CongViec->NgayBatDau = $request->NgayBatDau;
         $CongViec->NgayKetThuc = $request->NgayKetThuc;
-
-       
-
         $CongViec->LinkTaiLieu = $request->LinkTaiLieu;
         $CongViec->TrangThai = 1;
         $sessionUserId = Session::get('sessionUserId');
         $CongViec->MaNguoiTao = $sessionUserId;
-   
         $CongViec->IsActive = true;
-        $CongViec->save();
-    
-
-        
+        $CongViec->save();   
         $ThucHien = thuchien::find($request->MaGiaiDoan);
         $ThucHien->IsCongViec = true;
         $ThucHien->save();
@@ -290,6 +285,7 @@ class CongViecController extends Controller
             $GiaoViec->MaNguoiDung = $nguoiDungId;
             $GiaoViec->TrangThai = 1;
             $GiaoViec->IsActive = true;
+            $GiaoViec->IsSapDenHen = false;
             $GiaoViec->save();
         }
     
@@ -441,9 +437,23 @@ class CongViecController extends Controller
                     // Duyệt qua tất cả các bản ghi giao việc
                     foreach ($giaoviecs as $giaoviec) {
                         // Kiểm tra trạng thái của từng bản ghi
-                        if ($giaoviec->TrangThai == 4) {
-                            $giaoviec->TrangThai = 2; // Chuyển trạng thái từ 4 thành 2
-                            $giaoviec->save();
+
+                        $NgayKetThuc11 = Carbon::parse($request->NgayKetThuc); // Chuyển đổi ngày kết thúc thành đối tượng Carbon
+                        $NgayHienTai11 = Carbon::now(); // Lấy ngày hiện tại
+                        
+                        // Kiểm tra nếu ngày kết thúc cách hiện tại không quá 3 ngày
+                        if ($NgayKetThuc11->diffInDays($NgayHienTai11, false) <= 3 && $NgayKetThuc11->greaterThan($NgayHienTai11)) {
+                            if ($giaoviec->TrangThai == 4) {
+                                $giaoviec->TrangThai = 2; // Chuyển trạng thái từ 4 thành 2
+                                $giaoviec->IsSapDenHen = true; // Chuyển trạng thái từ 4 thành 2
+                                $giaoviec->save();
+                            }
+                        } else {
+                            if ($giaoviec->TrangThai == 4) {
+                                $giaoviec->TrangThai = 2; // Chuyển trạng thái từ 4 thành 2
+                                $giaoviec->IsSapDenHen = false; // Chuyển trạng thái từ 4 thành 2
+                                $giaoviec->save();
+                            }
                         }
                     }
                 }
@@ -528,7 +538,53 @@ class CongViecController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
       }
+    // Lọc học viên
+    public function getDanhSachCongViec($id)
+    {
+        $MaDuAn = request()->query('id');
+        $MaGiaiDoan = request()->query('MaGiaiDoan');
+        $MaTrangThai = request()->query('MaTrangThai');
+        
+        // Khởi tạo câu truy vấn với các điều kiện WHERE mặc định
+        $DanhSachCongViecQuery = '
+            SELECT congviecs.*, duans.TenDuAn, duans.TenMa, giaidoans.TenGiaiDoan 
+            FROM congviecs 
+            JOIN duans ON congviecs.MaDuAn = duans.id 
+            JOIN thuchiens ON congviecs.MaThucHien = thuchiens.id 
+            JOIN giaidoans ON thuchiens.MaGiaiDoan = giaidoans.id
+            WHERE congviecs.IsActive = true
+            AND duans.IsActive = true
+            AND thuchiens.IsActive = true
+            AND giaidoans.IsActive = true
+        ';
+        
+        $parameters = [];
+        
+        // Thêm các điều kiện truy vấn nếu có
+        if (!empty($MaDuAn)) {
+            $DanhSachCongViecQuery .= ' AND duans.id = ?';
+            $parameters[] = $MaDuAn;
+        }
+        if (!empty($MaGiaiDoan)) {
+            $DanhSachCongViecQuery .= ' AND thuchiens.MaGiaiDoan = ?';
+            $parameters[] = $MaGiaiDoan;
+        }
+        if (!empty($MaTrangThai)) {
+            $DanhSachCongViecQuery .= ' AND congviecs.TrangThai = ?';
+            $parameters[] = $MaTrangThai;
+        }
+        
+        // Thực hiện truy vấn với các tham số
+        $DanhSachCongViec = DB::select($DanhSachCongViecQuery, $parameters);
+        
+        if (count($DanhSachCongViec) > 0) {
+            return response()->json(['data' => $DanhSachCongViec]);
+        } else {
+            return response()->json(['error' => 'Không có giá trị'], 400);
+        }
+        
 
+    }
 
 
 }

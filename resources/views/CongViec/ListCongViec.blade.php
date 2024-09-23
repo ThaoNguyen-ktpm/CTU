@@ -51,27 +51,65 @@
             transform: rotate(360deg);
         }
         }
-
-
-
         </style>
+    <div class="col">
+        <div class="container" style="width: 100%; padding-bottom:0 ;padding: 0px 50px 0px; margin: 10px auto 0;">
+            <form id="myForm" class="needs-validation">
+            @csrf
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="group">
+            <label>Mã dự án </label>
+            <select name="MaDuAn" style="width:240px ;" class="form-control" >
+                <option value="" disabled selected>Chọn mã dự án</option>
+                @foreach($DuAn as $DuAn1)
+                <option value="{{$DuAn1->id}}">{{$DuAn1->TenMa}}</option>
+                @endforeach
+            </select>
+            </div>
+            <div class="group" style="margin-left: -60px;">
+            <label>Giai đoạn </label>
+            <select name="MaGiaiDoan" style="width:240px ;" class="form-control" >
+                <option value="" disabled selected>Chọn giai đoạn</option>
+                @foreach($GiaiDoan as $GiaiDoan1)
+                <option value="{{$GiaiDoan1->id}}">{{$GiaiDoan1->TenGiaiDoan}}</option>
+                @endforeach
+            </select>
+            </div> 
+            <div class="group" style="margin-left: -60px;">
+            <label>Trạng Thái </label>
+            <select name="MaTrangThai" style="width:240px ;" class="form-control" >
+                <option value="" disabled selected>Chọn trạng thái</option>
+                <option value="1">Đang thực hiện</option>
+                <option value="3">Hoàn thành</option>
+                <option value="4">Trễ hẹn</option>
+            </select>
+            </div>
+            <button type="submit" class="submit-btn"  style=" transform: translateX(0px); margin-top:12px;margin-right:4px;height:37px;width:130px;" onclick="submitForm(event)">Tìm</button>
+            </div>
+            </form>
+            <button type="submit" class="submit-btn" style="height:37px;width:130px;transform: translateX(-55px);" onclick="submitFormAll(event)">Tất cả</button>
+           
+    </div>
+
+  
    
         <div class="logoutForm" style="width:100px">
-            <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(46px); z-index: 10;" >
+            <button class="Btn"  style="background-color: rgb(13 55 111);transform: translateX(153px) translateY(10px); z-index: 10;" >
             <a href="/CongViec/addview"  aria-expanded="false" >
             <div class="sign" style="display: block;"><i class="fa-solid fa-plus" style="color: beige; margin-left: 5px;"></i></div>
             </a>
             <div class="text" style=" margin-left: 5px;" >Thêm</div>
             </button>
-            </div>
+        </div>
 
-          
+       
  
 
-       <div class="col" >
-                <table id="myTableCongViec">
+       <div class="col" style="    margin-top: -35px;">
+                <table id="myTableCongViec" >
                     <thead>
                         <tr>
+                            <th>Thứ Tự</th>
                             <th>Mã Dự Án</th>
                             <th>Tên Công Việc</th>
                             <th>Dự Án</th>
@@ -91,77 +129,87 @@
             <div id="toast1"></div>
             
         <script>
-            $(document).ready(function() {
-            var table = $('#myTableCongViec').DataTable({
-                ajax: {
-                    url: "{{ route('CongViec.data') }}",
-                    dataSrc: 'data'
-                },
-                columns: [
-                    { 
-                        data: 'TenMa' 
-                    },
-                    { data: 'TenCongViec' },
-                    { data: 'TenDuAn' },
-                    { data: 'TenGiaiDoan' },
-                    {
-                        data: 'TrangThai',
-                        render: function(data, type, row) {
-                            if (data == 1) {
-                                return 'Đang Thực Hiện';
-                            } else if (data == 3){
-                                return 'Hoàn Thành';
-                            }else if ( data == 4){
-                                return 'Trễ Hẹn';
-                            } else {
-                                return 'Trống';
-                            }
-                        }
-                    },
-                    {
-                        data: 'NgayBatDau',
-                        render: function(data) {
-                            if (data === null || data === '') {
-                            return ' ';
-                            } else {
-                            var ngaySinh = new Date(data);
-                            var ngay = ngaySinh.getDate();
-                            var thang = ngaySinh.getMonth() + 1;
-                            var nam = ngaySinh.getFullYear();
-                            return ngay + '-' + thang + '-' + nam;
-                            }
-                        }
-                },
-                {
-                        data: 'NgayKetThuc',
-                        render: function(data) {
-                            if (data === null || data === '') {
-                            return ' ';
-                            } else {
-                            var ngaySinh = new Date(data);
-                            var ngay = ngaySinh.getDate();
-                            var thang = ngaySinh.getMonth() + 1;
-                            var nam = ngaySinh.getFullYear();
-                            return ngay + '-' + thang + '-' + nam;
-                            }
-                        }
-                },
-                {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '<a href="/DuAn/CongViecThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
-                   
+          $(document).ready(function() {
+    var table = $('#myTableCongViec').DataTable({
+        ajax: {
+            url: "{{ route('CongViec.data') }}",
+            dataSrc: 'data'
+        },
+        columns: [
+            { 
+                data: null, 
+                render: function (data, type, row, meta) {
+                    // Không tính thứ tự tại đây mà trong drawCallback
+                    return meta.row + 1;
+                }
+            },
+            { 
+                data: 'TenMa' 
+            },
+            { data: 'TenCongViec' },
+            { data: 'TenDuAn' },
+            { data: 'TenGiaiDoan' },
+            {
+                data: 'TrangThai',
+                render: function(data, type, row) {
+                    if (data == 1) {
+                        return '<div style="color: #20679d;font-weight: bold;">Đang Thực Hiện</div>'; // Màu xanh nước biển cây
+                    } else if (data == 3){
+                        return '<div style="color: #1b7b35;font-weight: bold;">Hoàn Thành</div>'; // Màu xanh lá cây
+                    } else if (data == 4){
+                        return '<div style="color: red;font-weight: bold;">Trễ Hẹn</div>'; // Màu đỏ
+                    } else {
+                        return '<div>Trống</div>';
                     }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '<form method="get" action="/CongViec/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
+                }
+            },
+            {
+                data: 'NgayBatDau',
+                render: function(data) {
+                    if (data === null || data === '') {
+                    return ' ';
+                    } else {
+                    var ngaySinh = new Date(data);
+                    var ngay = ngaySinh.getDate();
+                    var thang = ngaySinh.getMonth() + 1;
+                    var nam = ngaySinh.getFullYear();
+                    return ngay + '-' + thang + '-' + nam;
                     }
+                }
+            },
+            {
+                data: 'NgayKetThuc',
+                render: function(data) {
+                    if (data === null || data === '') {
+                    return ' ';
+                    } else {
+                    var ngaySinh = new Date(data);
+                    var ngay = ngaySinh.getDate();
+                    var thang = ngaySinh.getMonth() + 1;
+                    var nam = ngaySinh.getFullYear();
+                    return ngay + '-' + thang + '-' + nam;
                     }
-                ]
-            });
-        });
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return '<a href="/DuAn/CongViecThanhVien?id='+row.id+'" style="text-decoration: none;" class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return '<form method="get" action="/CongViec/updateview/'+row.id+'">@csrf <button class="btn btn-success" type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
+                }
+            }
+        ],
+        order: [[0, 'desc']], // Sắp xếp theo cột thứ tự giảm dần
+       
+        
+    });
+});
+
 
         function deleteCongViec(CongViecId) {
             if (confirm('Bạn có chắc chắn muốn xóa vai trò này?')) {
@@ -184,6 +232,58 @@
                 });
             }
         }
+        function submitForm(event) {
+            event.preventDefault();
+            var id = $('#myForm select[name="MaDuAn"]').val();
+            var MaGiaiDoan = $('#myForm select[name="MaGiaiDoan"]').val(); // Lấy giá trị tên học viên
+            var MaTrangThai = $('#myForm select[name="MaTrangThai"]').val(); // Lấy giá trị tên học viên
+         
+            $.ajax({
+                url: "{{ route('DanhSachCongViec.data', ['id' => '__id__']) }}".replace('__id__', id),
+                type: 'GET',
+                data: {
+                    id: id,
+                    MaGiaiDoan: MaGiaiDoan,
+                    MaTrangThai : MaTrangThai,
+                    
+                },
+                dataSrc: 'data',
+                success: function (response) {
+                    var table = $('#myTableCongViec').DataTable();
+                    table.clear().rows.add(response.data).draw();
+                    // Xóa giá trị của các thẻ input và select
+                    $('#myForm select[name="MaGiaiDoan"]').val('');
+                    $('#myForm select[name="MaTrangThai"]').val('');
+                    $('#myForm select[name="MaDuAn"]').val('');
+                  
+                },
+                error: function (error) {
+                    alert('Không tìm thấy dữ liệu!');
+                    $('#myForm select[name="MaGiaiDoan"]').val('');
+                    $('#myForm select[name="MaTrangThai"]').val('');
+                    $('#myForm select[name="MaDuAn"]').val('');
+                  
+        }
+            });
+        }
+        function submitFormAll(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "{{ route('CongViec.data') }}",
+                type: 'GET',
+                success: function (response) {
+                    var table = $('#myTableCongViec').DataTable();
+                    table.clear().rows.add(response.data).draw();
+                    // Xóa giá trị của các thẻ input và select
+                    $('#myForm select[name="MaGiaiDoan"]').val('');
+                    $('#myForm select[name="MaTrangThai"]').val('');
+                    $('#myForm select[name="MaDuAn"]').val('');
+                },
+                error: function (error) {
+                    alert('Đã có lỗi xảy ra: ' + error.responseText);
+                }
+            });
+        }
         $(document).ready(function() {
 	$('.DeleteCongViec-form').click(function(event) {
 		event.preventDefault(); // Ngăn chặn hành động mặc định của button
@@ -200,7 +300,7 @@
 		});
 
 		if (!isError) {
-			khoiphucHocVien(id);
+			khoiphucCongViec(id);
 		}
 	});
 });

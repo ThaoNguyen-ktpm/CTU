@@ -22,7 +22,7 @@ class IndexController extends Controller
          $userId = Session::get('sessionUserId');
     
          // Sử dụng $userId trong truy vấn
-         $NhanViec = DB::select('SELECT congviecs.* ,duans.TenDuAn
+         $NhanViec = DB::select('SELECT congviecs.* ,duans.TenDuAn , giaoviecs.IsSapDenHen
             FROM giaoviecs, congviecs ,duans
             WHERE giaoviecs.MaNguoiDung = ? 
             AND congviecs.MaDuAn = ?
@@ -47,6 +47,7 @@ class IndexController extends Controller
                 congviecs.*, 
                 capnhattiendos.ThoiGian, 
                 duans.TenDuAn, 
+                 giaoviecs.IsSapDenHen,
                 capnhattiendos.id AS idcapnhattiendo, 
                 capnhattiendos.TienDo
             FROM 
@@ -113,9 +114,10 @@ class IndexController extends Controller
         $userId = Session::get('sessionUserId');
     
         // Sử dụng $userId trong truy vấn
-        $NhanViec = DB::select('SELECT congviecs.* ,duans.TenDuAn
+        $NhanViec = DB::select('SELECT congviecs.* ,duans.TenDuAn ,giaoviecs.IsSapDenHen
             FROM giaoviecs, congviecs ,duans
             WHERE giaoviecs.MaNguoiDung = ? 
+            
             AND giaoviecs.MaCongViec = congviecs.id 
             AND duans.id = congviecs.MaDuAn 
             AND giaoviecs.TrangThai = 1
@@ -126,6 +128,7 @@ class IndexController extends Controller
                 capnhattiendos.ThoiGian, 
                 duans.TenDuAn, 
                 capnhattiendos.id AS idcapnhattiendo, 
+                giaoviecs.IsSapDenHen,
                 capnhattiendos.TienDo
             FROM giaoviecs
             JOIN congviecs ON giaoviecs.MaCongViec = congviecs.id 
@@ -207,7 +210,7 @@ class IndexController extends Controller
                 AND duans.IsActive = true
                 AND congviecs.IsActive = true', [$id]);
             } else {
-                $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn, capnhattiendos.TienDo, capnhattiendos.ThoiGian, capnhattiendos.NoiDung, files.DuongDanFile , files.TenFile ,capnhattiendos.id as idcapnhattiendo
+                $CongViec = DB::select('SELECT congviecs.*, duans.TenDuAn, capnhattiendos.TienDo, capnhattiendos.ThoiGian, capnhattiendos.NoiDung, files.DuongDanFile , files.TenFile ,capnhattiendos.id as idcapnhattiendo ,files.LinkNop
                 FROM congviecs 
                 JOIN duans ON congviecs.MaDuAn = duans.id
                 LEFT JOIN giaoviecs ON giaoviecs.MaCongViec = congviecs.id
@@ -268,6 +271,7 @@ class IndexController extends Controller
             $capnhattiendo->MaGiaoViec = $CongViecid[0]->id;
             $capnhattiendo->ThoiGian = now();
             $capnhattiendo->TienDo = $request->input('TienDo');
+
             $capnhattiendo->IsActive = true;
             $capnhattiendo->save();
 
@@ -304,6 +308,7 @@ class IndexController extends Controller
                     'MaCapNhatTienDo' => $capnhattiendo->id,
                     'DuongDanFile' => 'uploads/' . $fileName,
                     'IsActive' => true,
+                    'LinkNop' => $request->input('LinkNop'),
                     'ThoiGianNop' => now(),
                     'TenFile' => $originalFileName,
                 ];
@@ -312,8 +317,16 @@ class IndexController extends Controller
             // Thực hiện batch insert
             DB::table('files')->insert($fileRecords);
         } else {
-            return response()->json(['success' => false, 'message' =>  ' vượt quá 15MB.'], 400);
-
+            $fileRecords[] = [
+                'MaCapNhatTienDo' => $capnhattiendo->id,
+                'DuongDanFile' => NUll,
+                'IsActive' => true,
+                'LinkNop' => $request->input('LinkNop'),
+                'ThoiGianNop' => now(),
+                'TenFile' => Null,
+            ];
+              // Thực hiện batch insert
+              DB::table('files')->insert($fileRecords);
         }
             $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                         ->where('TrangThai', '!=', 3)
@@ -334,6 +347,7 @@ class IndexController extends Controller
               $capnhattiendo->MaGiaoViec = $CongViecid[0]->id;
               $capnhattiendo->ThoiGian = now();
               $capnhattiendo->TienDo = $request->input('TienDo');
+         
               $capnhattiendo->IsActive = true;
               $capnhattiendo->save();
   
@@ -369,6 +383,7 @@ class IndexController extends Controller
                     'MaCapNhatTienDo' => $capnhattiendo->id,
                     'DuongDanFile' => 'uploads/' . $fileName,
                     'IsActive' => true,
+                    'LinkNop' => $request->input('LinkNop'),
                     'ThoiGianNop' => now(),
                     'TenFile' => $originalFileName,
                 ];
@@ -377,10 +392,17 @@ class IndexController extends Controller
             // Thực hiện batch insert
             DB::table('files')->insert($fileRecords);
         }else {
-            return response()->json(['success' => false, 'message' =>  ' vượt quá 15MB.'], 400);
-
+            $fileRecords[] = [
+                'MaCapNhatTienDo' => $capnhattiendo->id,
+                'DuongDanFile' => NUll,
+                'IsActive' => true,
+                'LinkNop' => $request->input('LinkNop'),
+                'ThoiGianNop' => now(),
+                'TenFile' => Null,
+            ];
+            // Thực hiện batch insert
+            DB::table('files')->insert($fileRecords);
         }
-      
               $soLuongHoanThanh = giaoviec::where('MaCongViec', $id)
                                           ->where('TrangThai', '!=', 3)
                                         ->where('IsActive', true)

@@ -18,7 +18,7 @@
   </div>
     <div class="group">
       <label>Tên người dùng <span style="color:red;">(*)</span></label>
-      <input id="usernameInput" name="Name" value="{{$TacVu[0]->Name}}" type="text" class="form-control" required readonly>
+      <input id="usernameInput" name="Name" value="{{$TacVu[0]->UserName}}" type="text" class="form-control" required readonly>
       <span class="highlight"></span>
       <span class="bar"></span>
       <div class="valid-feedback">

@@ -25,6 +25,7 @@
                             <th>Vai Trò</th>
                             <th>Đổi Mật Khẩu</th>
                             <th>Sửa</th>
+                            <th>Export</th>
                             <th>Xóa</th>
                         </tr>
                     </thead>
@@ -88,10 +89,18 @@
                     {
                         data: null,
                         render: function(data, type, row) {
+                            return '<button class="btn btn-success"><a href="/Excel/ExportNguoiDung/'+row.id+'"><i class="fa-solid fa-file-export" style="color: #ffffff;margin:0"></i></a></button>';
+                        }
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
                             return '<button class="btn btn-danger DeleteUser-form" onclick="deleteUser(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     }
-                ]
+                ],
+                order: [[0, 'desc']]
+
             });
         });
 

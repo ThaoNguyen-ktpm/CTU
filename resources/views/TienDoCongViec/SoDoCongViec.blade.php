@@ -109,7 +109,7 @@
 
 <div class="gantt-container">
         <div class="gantt-headers">
-            <div class="task-header">Tên Công Việc</div>
+            <div class="task-header">Giai đoạn : tên công việc</div>
             <div class="timeline-header">Thời Gian</div>
         </div>
         <div class="gantt-chart" id="ganttChart"></div>
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const taskName = document.createElement('div');
             taskName.className = 'task-name';
-            taskName.textContent = stage.TenCongViec;
+            taskName.textContent = stage.TenGiaiDoan + ': ' + stage.TenCongViec;
 
             const barContainer = document.createElement('div');
             barContainer.className = 'gantt-bar-container';

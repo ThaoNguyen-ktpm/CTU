@@ -74,7 +74,6 @@
                             <th>Quy Mô</th> --}}
                             <th>Thời Gian</th>
                             <th>Thành Viên</th>
-                            <th>Giai Đoạn</th>
                             <th>Thêm Công Việc</th>
                             <th>Xem</th>
                             <th>Sửa</th>
@@ -112,99 +111,68 @@
             <div id="toast1"></div>
             
         <script>
-            $(document).ready(function() {
-            var table = $('#myTableDuAn').DataTable({
-                ajax: {
-                    url: "{{ route('DuAn.data') }}",
-                    dataSrc: 'data'
-                },
-                columns: [
-                    { 
-                        data: 'TenMa' 
-                    },
-                    { data: 'TenDuAn' },
-                    // { data: 'TenLoaiDuAn' },
-                    // {
-                    //     data: 'QuyMo',
-                    //     render: function(data, type, row) {
-                    //         if (data == 1) {
-                    //             return 'Nhỏ';
-                    //         } else if (data == 2){
-                    //             return 'Vừa';
-                    //         }else if ( data == 3){
-                    //             return 'Lớn';
-                    //         } else if ( data == 4){
-                    //             return 'Rất Lớn';
-                    //         }else {
-                    //             return 'Trống';
-                    //         }
-                    //     }
-                    // },
-                    {
-                        data: null, // Chỉ định một cột dữ liệu trống để render
-                        render: function (data, type, row) {
-                            // Định dạng ngày bắt đầu và ngày kết thúc
-                            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-                            const ngayBatDau = new Date(row.NgayBatDau).toLocaleDateString('vi-VN', options);
-                            const ngayKetThuc = new Date(row.NgayKetThuc).toLocaleDateString('vi-VN', options);
-                            return `${ngayBatDau} đến ${ngayKetThuc}`;
-                        }
-                    },
-                    // { data: 'Mota' },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '<a href="/DuAn/ThanhVien?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';                            
-                   
-                    }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '<a href="/DuAn/GiaiDoan?id='+row.id+'" style="text-decoration: none;"  class="text-white">@csrf  <i class="fa-solid fa-bars-staggered" style="color: #20679d; font-size:25px"></i></a>';                            
-                   
-                    }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '  <form method="get" action="CongViec/viewid/'+row.id+'"> @csrf <button class="btn btn-success" style="      border-radius: 50%;  background-color: #0d376f;" type="submit"><i class="fa-solid fa-plus" style="color: #ffffff;margin:0 "></i></button></form>';
-                    }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return `
-                                <button class="btn btn-success" style="background-color: #5f1c83;border-color: #5f1c83;" 
-                                        onclick="loadUpdateView(${row.id})" type="button">
-                                    <i class="fa-solid fa-eye" style="color: #ffffff;margin:0"></i>
-                                </button>`;
-                        }
-                    },
-
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                        return '<form method="get" action="/DuAn/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
-                    }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return '<button class="btn btn-success" ><a href="/Excel/ExportDuAn/'+row.id+'"><i class="fa-solid fa-file-export" style="color: #ffffff;margin:0"></i></a> </button>';
-                        }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return '<button class="btn btn-danger DeleteDuAn-form" onclick="deleteDuAn(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
-                        }
-                    }
-                    
-                ]
-            });
-        });
-
+          $(document).ready(function() {
+    var table = $('#myTableDuAn').DataTable({
+        ajax: {
+            url: "{{ route('DuAn.data') }}",
+            dataSrc: 'data'
+        },
+        columns: [
+            { data: 'TenMa' },
+            { data: 'TenDuAn' },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                    const ngayBatDau = new Date(row.NgayBatDau).toLocaleDateString('vi-VN', options);
+                    const ngayKetThuc = new Date(row.NgayKetThuc).toLocaleDateString('vi-VN', options);
+                    return `${ngayBatDau} đến ${ngayKetThuc}`;
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return '<a href="/DuAn/ThanhVien?id='+row.id+'" style="text-decoration: none;" class="text-white">@csrf  <i class="fa-solid fa-user" style="color: #20679d; font-size:25px"></i></a>';
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return '<form method="get" action="CongViec/viewid/'+row.id+'">@csrf <button class="btn btn-success" style="border-radius: 50%; background-color: #0d376f;" type="submit"><i class="fa-solid fa-plus" style="color: #ffffff;margin:0"></i></button></form>';
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return `
+                        <button class="btn btn-success" style="background-color: #5f1c83;border-color: #5f1c83;" 
+                                onclick="loadUpdateView(${row.id})" type="button">
+                            <i class="fa-solid fa-eye" style="color: #ffffff;margin:0"></i>
+                        </button>`;
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return '<form method="get" action="/DuAn/updateview/'+row.id+'">@csrf <button class="btn btn-success" type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return '<button class="btn btn-success"><a href="/Excel/ExportDuAn/'+row.id+'"><i class="fa-solid fa-file-export" style="color: #ffffff;margin:0"></i></a></button>';
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return '<button class="btn btn-danger DeleteDuAn-form" onclick="deleteDuAn(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
+                }
+            }
+        ],
+        order: [[0, 'desc']] // Sắp xếp theo cột đầu tiên (TenMa) theo thứ tự giảm dần
+    });
+});
 
         function formatDate(dateString) {
             if (!dateString) return '';

@@ -88,23 +88,27 @@ input[type="range"]::-moz-range-thumb {
             </td>
         </tr>
         <tr>
-            <td class="text-left">Link tài liệu</td>
+            <td class="text-left">Tài liệu</td>
             <td class="text-left">
-               <a href="{{$CongViec[0]->LinkTaiLieu}}">Link tài liệu</a>
+                @if(!empty($CongViec[0]->LinkTaiLieu))
+                <a href="{{$CongViec[0]->LinkTaiLieu}}" class="link-tai-lieu">Tài liệu tham khảo</a>
+            @else
+                Không có tài liệu
+            @endif
             </td>
           </tr>
           <tr>
               <td class="text-left"><div class="cmt">Mô tả công việc</div></td>
               <td class="text-left">
                   <div class="group">
-                      <textarea id="ghichuInput" name="GhiChu" class="form-control textarea" readonly>{{$CongViec[0]->MoTa}}</textarea>
+                      <textarea id="ghichuInput" name="GhiChu" style="min-height: 100px;" class="form-control textarea" readonly>{{$CongViec[0]->MoTa}}</textarea>
                       <span class="highlight"></span>
                       <span class="bar"></span>
                   </div>
               </td>
           </tr>
           <tr>
-            <td class="text-left">Phần trăm cập nhật</td>
+            <td class="text-left">Tiến độ</td>
             <td class="text-left">
             <div style="display: flex; align-items: center;">
                 <input type="range" id="progressSlider" name="TienDo" min="0" max="100" step="1" style="width: 80%;">
@@ -113,13 +117,13 @@ input[type="range"]::-moz-range-thumb {
             </td>
         </tr> 
         <tr>
-            <td class="text-left">Chọn File Nộp</td>
+            <td class="text-left">File nộp</td>
             <td class="text-left" id="fileContainer">
             <div class="file-upload-group">
                 <label for="fileInput" class="file-label">
                     <i class="fa-solid fa-file-import"></i> Chọn File : giới hạn file 15MB!.
                 </label>
-                <input type="file" id="fileInput" name="file_nop[]" class="form-control-file" multiple required style="display: none;">
+                <input type="file" id="fileInput" name="file_nop[]" class="form-control-file" multiple style="display: none;">
                 <div id="fileNameDisplay" style="margin-top: 10px;"></div>
             </div>
                 @if(isset($CongViec[0]->DuongDanFile))
@@ -139,7 +143,35 @@ input[type="range"]::-moz-range-thumb {
             </td>
         </tr>
         <tr>
-            <td class="text-left"><div class="cmt">Bình Luận Nội Dung</div></td>
+            <td class="text-left"><div class="cmt">Link tài liệu nộp</div></td>
+            <td class="text-left">
+                <div class="group">
+                    <input 
+                        id="githubLinkInput" 
+                        name="LinkNop" 
+                        class="form-control" 
+                        type="url" 
+                        placeholder="Nhập link tài liệu" 
+                        value=""
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    @if(isset($CongViec[0]->LinkNop)) 
+                    @foreach($CongViec as $index => $CongViec1) 
+                    <div style="margin-top:20px"> <span style="margin-left:30px">Link đã nộp: </span>
+                        <a  href="{{ $CongViec1->LinkNop }}"  style="margin-left: 10px;">
+                            {{ $CongViec1->LinkNop }}
+                        </a>
+                    </div>
+                    @endforeach
+                   
+                    @endif
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="text-left"><div class="cmt">Bình luận nội dung</div></td>
             <td class="text-left">
                 <div class="group">
                     <textarea id="ghichuInput" name="NoiDung" class="form-control textarea" required>   @if(isset($CongViec[0]->DuongDanFile)){{ $CongViec[0]->NoiDung }}  @endif</textarea>
@@ -148,6 +180,7 @@ input[type="range"]::-moz-range-thumb {
                 </div>
             </td>
         </tr>
+        
     </tbody>
 </table>
    <div style="width: 100% ;text-align: right; ">

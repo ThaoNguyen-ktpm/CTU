@@ -167,7 +167,7 @@
               
             <div>
                 <p style="z-index: 5; margin-left: 20px; margin-bottom: 0; color: #474747; font-size: 22px;    font-style: oblique;font-family: ui-serif;" class="text-weight">
-                    Trung Tâm Công Nghệ Phần Mềm Đại Học Cần Thơ
+                    Trung tâm Công nghệ Phần mềm Đại học Cần Thơ
                 </p>
             </div>
           

@@ -40,11 +40,12 @@ class ThongBaoController extends Controller
    }
    public function getThongBao()
    {
-        $ThongBao = DB::select('SELECT thongbaos.* , nguoidungs.UserName AS Name
-                                FROM thongbaos ,nguoidungs
-                                WHERE thongbaos.MaNguoiDung = nguoidungs.id
-                                AND thongbaos.IsActive = true
-                                AND nguoidungs.IsActive = true
+        $ThongBao = DB::select('SELECT thongbaos.*, nguoidungs.UserName AS Name
+                                    FROM thongbaos
+                                    JOIN nguoidungs ON thongbaos.MaNguoiDung = nguoidungs.id
+                                    WHERE thongbaos.IsActive = true
+                                    AND nguoidungs.IsActive = true
+                                    ORDER BY thongbaos.id ASC;
                                 ');
        return response()->json(['data' => $ThongBao]);
    }

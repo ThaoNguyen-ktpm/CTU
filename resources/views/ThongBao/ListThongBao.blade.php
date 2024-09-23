@@ -100,14 +100,17 @@
                     },
                     { data: 'NoiDung' },
                     { data: 'Name' },
-                    { data: 'ThoiGian' },
+                    {
+                        data: 'ThoiGian',   
+                    },
+
                     {
                         data: null,
                         render: function(data, type, row) {
                             return '<button class="btn btn-danger DeleteThongBao-form" onclick="deleteThongBao(' + row.id + ')"><i class="fa-solid fa-trash-can" style="color: #ffffff;margin:0"></i></button>';
                         }
                     }
-                ]
+                ], order: [[0, 'desc']]
             });
         });
 

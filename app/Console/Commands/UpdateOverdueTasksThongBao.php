@@ -54,6 +54,11 @@ class UpdateOverdueTasksThongBao extends Command
             'IsSee' => false,
             'ThoiGian' => now(),
         ]);
+
+        // Cập nhật bảng giaoviecs
+        DB::table('giaoviecs')->where('MaCongViec', $item->MaCongViec)->update([
+            'IsSapDenHen' => true,
+        ]);
     }
     
     Log::info('Thời gian hiện tại: ' . $now);

@@ -81,7 +81,7 @@
     </div>
 </div>
     <div class="group">
-    <label>Link tài liệu <span style="color:red;"></span></label>
+    <label>Tài liệu tham khảo <span style="color:red;"></span></label>
       <input  id="linkInput" name="LinkTaiLieu" type="text"  class="form-control" pattern="^\S.*">
       <span class="highlight"></span>
       <span class="bar"></span>
@@ -89,7 +89,7 @@
       
       </div>
       <div class="invalid-feedback">
-        Vui lòng nhập link tài liệu !
+        Vui lòng nhập tài liệu tham khảo !
       </div>
     </div>
     <div class="group">

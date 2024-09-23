@@ -39,6 +39,7 @@
                 <table id="myTableTreHen">
                     <thead>
                         <tr>
+                            <th>Thứ Tự</th>
                             <th>Mã Dự Án</th>
                             <th>Tên Công Việc</th>
                             <th>Dự Án</th>
@@ -65,6 +66,12 @@
                     dataSrc: 'data'
                 },
                 columns: [
+                    { 
+                        data: null, // Không lấy dữ liệu từ server
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Trả về thứ tự hàng (bắt đầu từ 1)
+                        }
+                    },
                     { data: 'TenMa' },
                     { data: 'TenCongViec' },
                     { data: 'TenDuAn' },
@@ -73,13 +80,13 @@
                         data: 'TrangThai',
                         render: function(data, type, row) {
                             if (data == 1) {
-                                return 'Đang Thực Hiện';
+                                return '<div style="color: #20679d;font-weight: bold;">Đang Thực Hiện</div>'; // Màu xanh nước biển cây
                             } else if (data == 3){
-                                return 'Hoàn Thành';
-                            }else if ( data == 4){
-                                return 'Trễ Hẹn';
+                                return '<div style="color: #1b7b35;font-weight: bold;">Hoàn Thành</div>'; // Màu xanh lá cây
+                            } else if (data == 4){
+                                return '<div style="color: red;font-weight: bold;">Trễ Hẹn</div>'; // Màu đỏ
                             } else {
-                                return 'Trống';
+                                return '<div>Trống</div>';
                             }
                         }
                     },
@@ -123,7 +130,8 @@
                         return '<form method="get" action="/CongViec/updateview/'+row.id+'">@csrf <button class="btn btn-success"  type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;margin:0"></i></button></form>';
                     }
                     }
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
 

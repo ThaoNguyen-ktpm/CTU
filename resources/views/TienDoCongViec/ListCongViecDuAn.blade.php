@@ -39,13 +39,13 @@
                         data: 'TrangThai',
                         render: function(data, type, row) {
                             if (data == 1) {
-                                return 'Đang Thực Hiện';
+                                return '<div style="color: #20679d;font-weight: bold;">Đang Thực Hiện</div>'; // Màu xanh nước biển cây
                             } else if (data == 3){
-                                return 'Hoàn Thành';
-                            }else if ( data == 4){
-                                return 'Trễ Hẹn';
+                                return '<div style="color: #1b7b35;font-weight: bold;">Hoàn Thành</div>'; // Màu xanh lá cây
+                            } else if (data == 4){
+                                return '<div style="color: red;font-weight: bold;">Trễ Hẹn</div>'; // Màu đỏ
                             } else {
-                                return 'Trống';
+                                return '<div>Trống</div>';
                             }
                         }
                     },
@@ -91,6 +91,7 @@
                         }
                     }
                 ]
+                
             });
         });
 </script>

@@ -35,27 +35,31 @@
             <td class="text-left">{{ \Carbon\Carbon::parse($CongViec[0]->NgayBatDau)->format('d-m-Y') }} Đến {{ \Carbon\Carbon::parse($CongViec[0]->NgayKetThuc)->format('d-m-Y') }}</td>
         </tr>
         <tr>
-            <td class="text-left">Thời gian Nộp</td>
+            <td class="text-left">Thời gian nộp</td>
             <td class="text-left">{{ \Carbon\Carbon::parse($CongViec[0]->ThoiGian)->format('H:i:s d-m-Y') }} </td>
         </tr>
         <tr>
-            <td class="text-left">Link tài liệu</td>
+            <td class="text-left">Tài liệu</td>
             <td class="text-left">
-               <a href="{{$CongViec[0]->LinkTaiLieu}}" class="link-tai-lieu">Link tài liệu</a>
+              @if(!empty($CongViec[0]->LinkTaiLieu))
+                        <a href="{{$CongViec[0]->LinkTaiLieu}}" class="link-tai-lieu">Tài liệu tham khảo</a>
+                    @else
+                        Không có tài liệu
+                    @endif
             </td>
         </tr>
         <tr>
             <td class="text-left"><div class="cmt">Mô tả công việc</div></td>
             <td class="text-left">
                 <div class="group">
-                    <textarea id="ghichuInput" name="GhiChu" class="form-control textarea" readonly>{{$CongViec[0]->MoTa}}</textarea>
+                    <textarea id="ghichuInput" style="min-height: 100px;" name="GhiChu" class="form-control textarea" readonly>{{$CongViec[0]->MoTa}}</textarea>
                     <span class="highlight"></span>
                     <span class="bar"></span>
                 </div>
             </td>
         </tr>
         <tr>
-          <td class="text-left">File Đã Nộp</td>
+          <td class="text-left">File đã nộp</td>
           <td class="text-left">
           <div>
                 <!-- Hiển thị liên kết tải xuống nếu có tệp tin trước đó -->
@@ -78,8 +82,47 @@
             </div>
           </td>
       </tr>
+      <tr>
+        <td class="text-left"><div class="cmt">Link tài liệu nộp</div></td>
+        <td class="text-left">
+            <div class="group">
+                
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                @if(isset($CongViec) && count($CongViec) > 0)
+    @php
+        $hasLinkNop = false;
+                  @endphp
+                  @foreach($CongViec as $index => $CongViec1)
+                      @if(!empty($CongViec1->LinkNop))
+                          @php
+                              $hasLinkNop = true;
+                          @endphp
+                          <div style="margin-top: 20px">
+                              <span style="margin-left: 30px">Link đã nộp: </span>
+                              <a href="{{ $CongViec1->LinkNop }}" style="margin-left: 10px;">
+                                  {{ $CongViec1->LinkNop }}
+                              </a>
+                          </div>
+                      @endif
+                  @endforeach
+
+                  @if(!$hasLinkNop)
+                      <div style="">
+                          <span style="margin-left: 30px">Link đã nộp: Trống</span>
+                      </div>
+                  @endif
+              @else
+                  <div style="margin-top: 20px">
+                      <span style="margin-left: 30px">Link nộp: Trống</span>
+                  </div>
+              @endif
+
+            </div>
+        </td>
+    </tr>
         <tr>
-            <td class="text-left"><div class="cmt"> Nội Dung Bình Luận</div></td>
+            <td class="text-left"><div class="cmt"> Nội dung bình luận</div></td>
             <td class="text-left">
                 <div class="group">
                     <textarea id="ghichuInput"  name="NoiDung" class="form-control textarea" readonly required>{{$CongViec[0]->NoiDung}}</textarea>
@@ -193,10 +236,5 @@
       })
     }
 </script>
-<script>
-    document.getElementById('fileInput').addEventListener('change', function() {
-        var fileName = this.files[0].name;
-        document.getElementById('fileNameDisplay').textContent = 'File đã chọn: ' + fileName;
-    });
-</script>
+
 @endsection
